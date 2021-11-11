@@ -20,3 +20,9 @@ _*
 *.png
 tags
 *.DS_Store
+.idea/vcs.xml
+.idea/pyDatView.iml
+.idea/modules.xml
+.idea/misc.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
