@@ -1,19 +1,17 @@
-import os
-import numpy as np
-import wx
-import wx.lib.buttons  as  buttons
-import dateutil # required by matplotlib
-#from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 import matplotlib
-matplotlib.use('wxAgg') # Important for Windows version of installer. NOTE: changed from Agg to wxAgg
+
+matplotlib.use('wxAgg')  # Important for Windows version of installer. NOTE: changed from Agg to wxAgg
 from matplotlib import rc as matplotlib_rc
+
 try:
     from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
 except Exception as e:
     print('')
     print('Error: problem importing `matplotlib.backends.backend_wx`.')
     import platform
-    if platform.system()=='Darwin':
+
+    if platform.system() == 'Darwin':
         print('')
         print('pyDatView help:')
         print('  This is a typical issue on MacOS, most likely you are')
@@ -26,6 +24,7 @@ except Exception as e:
         print('    - using anaconda with python 2 or 3');
         print('')
         import sys
+
         sys.exit(1)
     else:
         raise e
@@ -36,178 +35,180 @@ from pandas.plotting import register_matplotlib_converters
 
 import gc
 
-from .common import * # unique, CHAR
+from .common import *  # unique, CHAR
 from .plotdata import PlotData, compareMultiplePD
-from .GUICommon import * 
-from .GUIToolBox import MyMultiCursor, MyNavigationToolbar2Wx, TBAddTool, TBAddCheckTool
+from .GUICommon import *
+from .GUIToolBox import MyMultiCursor, MyNavigationToolbar2Wx, TBAddCheckTool
 from .GUIMeasure import GUIMeasure
 from . import icons
 
-font = {'size'   : 8}
+font = {'size': 8}
 matplotlib_rc('font', **font)
 pyplot_rc['agg.path.chunksize'] = 20000
 
 
 class PDFCtrlPanel(wx.Panel):
     def __init__(self, parent):
-        super(PDFCtrlPanel,self).__init__(parent)
-        self.parent   = parent
-        lb = wx.StaticText( self, -1, 'Number of bins:')
-        self.scBins = wx.SpinCtrl(self, value='50',size=wx.Size(70,-1))
+        super(PDFCtrlPanel, self).__init__(parent)
+        self.parent = parent
+        lb = wx.StaticText(self, -1, 'Number of bins:')
+        self.scBins = wx.SpinCtrl(self, value='50', size=wx.Size(70, -1))
         self.scBins.SetRange(3, 10000)
-        self.cbSmooth = wx.CheckBox(self, -1, 'Smooth',(10,10))
+        self.cbSmooth = wx.CheckBox(self, -1, 'Smooth', (10, 10))
         self.cbSmooth.SetValue(False)
         dummy_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        dummy_sizer.Add(lb                    ,0, flag = wx.CENTER|wx.LEFT,border = 1)
-        dummy_sizer.Add(self.scBins           ,0, flag = wx.CENTER|wx.LEFT,border = 1)
-        dummy_sizer.Add(self.cbSmooth         ,0, flag = wx.CENTER|wx.LEFT,border = 6)
+        dummy_sizer.Add(lb, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(self.scBins, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(self.cbSmooth, 0, flag=wx.CENTER | wx.LEFT, border=6)
         self.SetSizer(dummy_sizer)
-        self.Bind(wx.EVT_TEXT    , self.onPDFOptionChange, self.scBins)
+        self.Bind(wx.EVT_TEXT, self.onPDFOptionChange, self.scBins)
         self.Bind(wx.EVT_CHECKBOX, self.onPDFOptionChange)
-        self.Hide() 
+        self.Hide()
 
-    def onPDFOptionChange(self,event=None):
-        self.parent.load_and_draw(); # DATA HAS CHANGED
+    def onPDFOptionChange(self, event=None):
+        self.parent.load_and_draw();  # DATA HAS CHANGED
+
 
 class MinMaxPanel(wx.Panel):
     def __init__(self, parent):
-        super(MinMaxPanel,self).__init__(parent)
-        self.parent   = parent
-        self.cbxMinMax = wx.CheckBox(self, -1, 'xMinMax',(10,10))
-        self.cbyMinMax = wx.CheckBox(self, -1, 'yMinMax',(10,10))
+        super(MinMaxPanel, self).__init__(parent)
+        self.parent = parent
+        self.cbxMinMax = wx.CheckBox(self, -1, 'xMinMax', (10, 10))
+        self.cbyMinMax = wx.CheckBox(self, -1, 'yMinMax', (10, 10))
         self.cbxMinMax.SetValue(False)
         self.cbyMinMax.SetValue(True)
         dummy_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        dummy_sizer.Add(self.cbxMinMax ,0, flag=wx.CENTER|wx.LEFT, border = 1)
-        dummy_sizer.Add(self.cbyMinMax ,0, flag=wx.CENTER|wx.LEFT, border = 1)
+        dummy_sizer.Add(self.cbxMinMax, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(self.cbyMinMax, 0, flag=wx.CENTER | wx.LEFT, border=1)
         self.SetSizer(dummy_sizer)
         self.Bind(wx.EVT_CHECKBOX, self.onMinMaxChange)
-        self.Hide() 
+        self.Hide()
 
-    def onMinMaxChange(self,event=None):
-        self.parent.load_and_draw(); # DATA HAS CHANGED
+    def onMinMaxChange(self, event=None):
+        self.parent.load_and_draw();  # DATA HAS CHANGED
+
 
 class CompCtrlPanel(wx.Panel):
     def __init__(self, parent):
-        super(CompCtrlPanel,self).__init__(parent)
-        self.parent   = parent
-        lblList = ['Relative', '|Relative|','Ratio','Absolute','Y-Y'] 
-        self.rbType = wx.RadioBox(self, label = 'Type', choices = lblList,
-                majorDimension = 1, style = wx.RA_SPECIFY_ROWS) 
+        super(CompCtrlPanel, self).__init__(parent)
+        self.parent = parent
+        lblList = ['Relative', '|Relative|', 'Ratio', 'Absolute', 'Y-Y']
+        self.rbType = wx.RadioBox(self, label='Type', choices=lblList,
+                                  majorDimension=1, style=wx.RA_SPECIFY_ROWS)
         dummy_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        dummy_sizer.Add(self.rbType           ,0, flag = wx.CENTER|wx.LEFT,border = 1)
+        dummy_sizer.Add(self.rbType, 0, flag=wx.CENTER | wx.LEFT, border=1)
         self.SetSizer(dummy_sizer)
-        self.rbType.Bind(wx.EVT_RADIOBOX,self.onTypeChange)
-        self.Hide() 
+        self.rbType.Bind(wx.EVT_RADIOBOX, self.onTypeChange)
+        self.Hide()
 
-    def onTypeChange(self,e): 
-        self.parent.load_and_draw(); # DATA HAS CHANGED
+    def onTypeChange(self, e):
+        self.parent.load_and_draw();  # DATA HAS CHANGED
 
 
 class SpectralCtrlPanel(wx.Panel):
     def __init__(self, parent):
-        super(SpectralCtrlPanel,self).__init__(parent)
-        self.parent   = parent
+        super(SpectralCtrlPanel, self).__init__(parent)
+        self.parent = parent
         # --- GUI widgets
-        lb = wx.StaticText( self, -1, 'Type:')
-        self.cbType            = wx.ComboBox(self, choices=['PSD','f x PSD','Amplitude'] , style=wx.CB_READONLY)
+        lb = wx.StaticText(self, -1, 'Type:')
+        self.cbType = wx.ComboBox(self, choices=['PSD', 'f x PSD', 'Amplitude'], style=wx.CB_READONLY)
         self.cbType.SetSelection(0)
-        lbAveraging            = wx.StaticText( self, -1, 'Avg.:')
-        self.cbAveraging       = wx.ComboBox(self, choices=['None','Welch'] , style=wx.CB_READONLY)
+        lbAveraging = wx.StaticText(self, -1, 'Avg.:')
+        self.cbAveraging = wx.ComboBox(self, choices=['None', 'Welch'], style=wx.CB_READONLY)
         self.cbAveraging.SetSelection(1)
-        self.lbAveragingMethod = wx.StaticText( self, -1, 'Window:')
-        self.cbAveragingMethod = wx.ComboBox(self, choices=['Hamming','Hann','Rectangular'] , style=wx.CB_READONLY)
+        self.lbAveragingMethod = wx.StaticText(self, -1, 'Window:')
+        self.cbAveragingMethod = wx.ComboBox(self, choices=['Hamming', 'Hann', 'Rectangular'], style=wx.CB_READONLY)
         self.cbAveragingMethod.SetSelection(0)
-        self.lbP2 = wx.StaticText( self, -1, '2^n:')
-        self.scP2 = wx.SpinCtrl(self, value='11',size=wx.Size(40,-1))
-        self.lbWinLength = wx.StaticText( self, -1, '(2048) ')
+        self.lbP2 = wx.StaticText(self, -1, '2^n:')
+        self.scP2 = wx.SpinCtrl(self, value='11', size=wx.Size(40, -1))
+        self.lbWinLength = wx.StaticText(self, -1, '(2048) ')
         self.scP2.SetRange(3, 19)
-        lbMaxFreq     = wx.StaticText( self, -1, 'Xlim:')
-        self.tMaxFreq = wx.TextCtrl(self,size = (30,-1),style=wx.TE_PROCESS_ENTER)
+        lbMaxFreq = wx.StaticText(self, -1, 'Xlim:')
+        self.tMaxFreq = wx.TextCtrl(self, size=(30, -1), style=wx.TE_PROCESS_ENTER)
         self.tMaxFreq.SetValue("-1")
-        self.cbDetrend = wx.CheckBox(self, -1, 'Detrend',(10,10))
-        lbX = wx.StaticText( self, -1, 'x:')
-        self.cbTypeX = wx.ComboBox(self, choices=['1/x','2pi/x','x'] , style=wx.CB_READONLY)
+        self.cbDetrend = wx.CheckBox(self, -1, 'Detrend', (10, 10))
+        lbX = wx.StaticText(self, -1, 'x:')
+        self.cbTypeX = wx.ComboBox(self, choices=['1/x', '2pi/x', 'x'], style=wx.CB_READONLY)
         self.cbTypeX.SetSelection(0)
         # Layout
         dummy_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        dummy_sizer.Add(lb                    ,0, flag = wx.CENTER|wx.LEFT,border = 1)
-        dummy_sizer.Add(self.cbType           ,0, flag = wx.CENTER|wx.LEFT,border = 1)
-        dummy_sizer.Add(lbAveraging           ,0, flag = wx.CENTER|wx.LEFT,border = 6)
-        dummy_sizer.Add(self.cbAveraging      ,0, flag = wx.CENTER|wx.LEFT,border = 1)
-        dummy_sizer.Add(self.lbAveragingMethod,0, flag = wx.CENTER|wx.LEFT,border = 6)
-        dummy_sizer.Add(self.cbAveragingMethod,0, flag = wx.CENTER|wx.LEFT,border = 1)
-        dummy_sizer.Add(self.lbP2             ,0, flag = wx.CENTER|wx.LEFT,border = 6)
-        dummy_sizer.Add(self.scP2             ,0, flag = wx.CENTER|wx.LEFT,border = 1)
-        dummy_sizer.Add(self.lbWinLength      ,0, flag = wx.CENTER|wx.LEFT,border = 1)
-        dummy_sizer.Add(lbMaxFreq             ,0, flag = wx.CENTER|wx.LEFT,border = 6)
-        dummy_sizer.Add(self.tMaxFreq         ,0, flag = wx.CENTER|wx.LEFT,border = 1)
-        dummy_sizer.Add(lbX                   ,0, flag = wx.CENTER|wx.LEFT,border = 6)
-        dummy_sizer.Add(self.cbTypeX          ,0, flag = wx.CENTER|wx.LEFT,border = 1)
-        dummy_sizer.Add(self.cbDetrend        ,0, flag = wx.CENTER|wx.LEFT,border = 7)
+        dummy_sizer.Add(lb, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(self.cbType, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(lbAveraging, 0, flag=wx.CENTER | wx.LEFT, border=6)
+        dummy_sizer.Add(self.cbAveraging, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(self.lbAveragingMethod, 0, flag=wx.CENTER | wx.LEFT, border=6)
+        dummy_sizer.Add(self.cbAveragingMethod, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(self.lbP2, 0, flag=wx.CENTER | wx.LEFT, border=6)
+        dummy_sizer.Add(self.scP2, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(self.lbWinLength, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(lbMaxFreq, 0, flag=wx.CENTER | wx.LEFT, border=6)
+        dummy_sizer.Add(self.tMaxFreq, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(lbX, 0, flag=wx.CENTER | wx.LEFT, border=6)
+        dummy_sizer.Add(self.cbTypeX, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(self.cbDetrend, 0, flag=wx.CENTER | wx.LEFT, border=7)
         self.SetSizer(dummy_sizer)
-        self.Bind(wx.EVT_COMBOBOX  ,self.onSpecCtrlChange)
-        self.Bind(wx.EVT_TEXT      ,self.onP2ChangeText  ,self.scP2     )
-        self.Bind(wx.EVT_TEXT_ENTER,self.onXlimChange    ,self.tMaxFreq )
-        self.Bind(wx.EVT_CHECKBOX  ,self.onDetrendChange ,self.cbDetrend)
-        self.Hide() 
+        self.Bind(wx.EVT_COMBOBOX, self.onSpecCtrlChange)
+        self.Bind(wx.EVT_TEXT, self.onP2ChangeText, self.scP2)
+        self.Bind(wx.EVT_TEXT_ENTER, self.onXlimChange, self.tMaxFreq)
+        self.Bind(wx.EVT_CHECKBOX, self.onDetrendChange, self.cbDetrend)
+        self.Hide()
 
-    def onXlimChange(self,event=None):
+    def onXlimChange(self, event=None):
         self.parent.redraw_same_data();
-    def onSpecCtrlChange(self,event=None):
-        self.parent.load_and_draw() # Data changes
-    def onDetrendChange(self,event=None):
-        self.parent.load_and_draw() # Data changes
 
-    def onP2ChangeText(self,event=None):
-        nExp=self.scP2.GetValue()
+    def onSpecCtrlChange(self, event=None):
+        self.parent.load_and_draw()  # Data changes
+
+    def onDetrendChange(self, event=None):
+        self.parent.load_and_draw()  # Data changes
+
+    def onP2ChangeText(self, event=None):
+        nExp = self.scP2.GetValue()
         self.updateP2(nExp)
-        self.parent.load_and_draw() # Data changes
+        self.parent.load_and_draw()  # Data changes
 
-    def updateP2(self,P2):
-        self.lbWinLength.SetLabel("({})".format(2**P2))
-
-
+    def updateP2(self, P2):
+        self.lbWinLength.SetLabel("({})".format(2 ** P2))
 
 
 class PlotTypePanel(wx.Panel):
     def __init__(self, parent):
         # Superclass constructor
-        super(PlotTypePanel,self).__init__(parent)
-        #self.SetBackgroundColour('yellow')
+        super(PlotTypePanel, self).__init__(parent)
+        # self.SetBackgroundColour('yellow')
         # data
-        self.parent   = parent
+        self.parent = parent
         # --- Ctrl Panel
-        self.cbRegular = wx.RadioButton(self, -1, 'Regular',style=wx.RB_GROUP)
-        self.cbPDF     = wx.RadioButton(self, -1, 'PDF'    ,                 )
-        self.cbFFT     = wx.RadioButton(self, -1, 'FFT'    ,                 )
-        self.cbMinMax  = wx.RadioButton(self, -1, 'MinMax' ,                 )
-        self.cbCompare = wx.RadioButton(self, -1, 'Compare',                 )
+        self.cbRegular = wx.RadioButton(self, -1, 'Regular', style=wx.RB_GROUP)
+        self.cbPDF = wx.RadioButton(self, -1, 'PDF', )
+        self.cbFFT = wx.RadioButton(self, -1, 'FFT', )
+        self.cbMinMax = wx.RadioButton(self, -1, 'MinMax', )
+        self.cbCompare = wx.RadioButton(self, -1, 'Compare', )
         self.cbRegular.SetValue(True)
-        self.Bind(wx.EVT_RADIOBUTTON, self.pdf_select    , self.cbPDF    )
-        self.Bind(wx.EVT_RADIOBUTTON, self.fft_select    , self.cbFFT    )
-        self.Bind(wx.EVT_RADIOBUTTON, self.minmax_select , self.cbMinMax )
+        self.Bind(wx.EVT_RADIOBUTTON, self.pdf_select, self.cbPDF)
+        self.Bind(wx.EVT_RADIOBUTTON, self.fft_select, self.cbFFT)
+        self.Bind(wx.EVT_RADIOBUTTON, self.minmax_select, self.cbMinMax)
         self.Bind(wx.EVT_RADIOBUTTON, self.compare_select, self.cbCompare)
         self.Bind(wx.EVT_RADIOBUTTON, self.regular_select, self.cbRegular)
         # LAYOUT
-        cb_sizer  = wx.FlexGridSizer(rows=5, cols=1, hgap=0, vgap=0)
-        cb_sizer.Add(self.cbRegular , 0, flag=wx.ALL, border=1)
-        cb_sizer.Add(self.cbPDF     , 0, flag=wx.ALL, border=1)
-        cb_sizer.Add(self.cbFFT     , 0, flag=wx.ALL, border=1)
-        cb_sizer.Add(self.cbMinMax  , 0, flag=wx.ALL, border=1)
-        cb_sizer.Add(self.cbCompare , 0, flag=wx.ALL, border=1)
+        cb_sizer = wx.FlexGridSizer(rows=5, cols=1, hgap=0, vgap=0)
+        cb_sizer.Add(self.cbRegular, 0, flag=wx.ALL, border=1)
+        cb_sizer.Add(self.cbPDF, 0, flag=wx.ALL, border=1)
+        cb_sizer.Add(self.cbFFT, 0, flag=wx.ALL, border=1)
+        cb_sizer.Add(self.cbMinMax, 0, flag=wx.ALL, border=1)
+        cb_sizer.Add(self.cbCompare, 0, flag=wx.ALL, border=1)
         self.SetSizer(cb_sizer)
 
     def plotType(self):
-        plotType='Regular'
+        plotType = 'Regular'
         if self.cbMinMax.GetValue():
-            plotType='MinMax'
+            plotType = 'MinMax'
         elif self.cbPDF.GetValue():
-            plotType='PDF'
+            plotType = 'PDF'
         elif self.cbFFT.GetValue():
-            plotType='FFT'
+            plotType = 'FFT'
         elif self.cbCompare.GetValue():
-            plotType='Compare'
+            plotType = 'Compare'
         return plotType
 
     def regular_select(self, event=None):
@@ -221,7 +222,7 @@ class PlotTypePanel(wx.Panel):
         self.parent.slEsth.Hide();
         self.parent.plotsizer.Layout()
         #
-        self.parent.load_and_draw() # Data changes
+        self.parent.load_and_draw()  # Data changes
 
     def compare_select(self, event=None):
         self.clear_measures()
@@ -231,7 +232,7 @@ class PlotTypePanel(wx.Panel):
         self.parent.pdfPanel.Hide();
         self.parent.mmxPanel.Hide();
         self.parent.plotsizer.Layout()
-        self.parent.load_and_draw() # Data changes
+        self.parent.load_and_draw()  # Data changes
 
     def fft_select(self, event=None):
         self.clear_measures()
@@ -240,7 +241,7 @@ class PlotTypePanel(wx.Panel):
         self.parent.pdfPanel.Hide();
         self.parent.mmxPanel.Hide();
         self.parent.plotsizer.Layout()
-        self.parent.load_and_draw() # Data changes
+        self.parent.load_and_draw()  # Data changes
 
     def pdf_select(self, event=None):
         self.clear_measures()
@@ -251,7 +252,7 @@ class PlotTypePanel(wx.Panel):
         self.parent.cmpPanel.Hide();
         self.parent.mmxPanel.Hide();
         self.parent.plotsizer.Layout()
-        self.parent.load_and_draw() # Data changes
+        self.parent.load_and_draw()  # Data changes
 
     def minmax_select(self, event):
         self.clear_measures()
@@ -261,7 +262,7 @@ class PlotTypePanel(wx.Panel):
         self.parent.pdfPanel.Hide();
         self.parent.cmpPanel.Hide();
         self.parent.plotsizer.Layout()
-        self.parent.load_and_draw() # Data changes
+        self.parent.load_and_draw()  # Data changes
 
     def clear_measures(self):
         self.parent.rightMeasure.clear()
@@ -269,94 +270,102 @@ class PlotTypePanel(wx.Panel):
         self.parent.lbDeltaX.SetLabel('')
         self.parent.lbDeltaY.SetLabel('')
 
+
 class EstheticsPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
-        self.parent=parent
-        #self.SetBackgroundColour('red')
+        self.parent = parent
+        # self.SetBackgroundColour('red')
 
-        lbFont = wx.StaticText( self, -1, 'Font:')
-        self.cbFont = wx.ComboBox(self, choices=['6','7','8','9','10','11','12','13','14','15','16','17','18'] , style=wx.CB_READONLY)
+        lbFont = wx.StaticText(self, -1, 'Font:')
+        self.cbFont = wx.ComboBox(self,
+                                  choices=['6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18'],
+                                  style=wx.CB_READONLY)
         self.cbFont.SetSelection(2)
         # NOTE: we don't offer "best" since best is slow
-        lbLegend = wx.StaticText( self, -1, 'Legend:')
-        self.cbLegend = wx.ComboBox(self, choices=['None','Upper right','Upper left','Lower left','Lower right','Right','Center left','Center right','Lower center','Upper center','Center'] , style=wx.CB_READONLY)
+        lbLegend = wx.StaticText(self, -1, 'Legend:')
+        self.cbLegend = wx.ComboBox(self,
+                                    choices=['None', 'Upper right', 'Upper left', 'Lower left', 'Lower right', 'Right',
+                                             'Center left', 'Center right', 'Lower center', 'Upper center', 'Center'],
+                                    style=wx.CB_READONLY)
         self.cbLegend.SetSelection(1)
-        lbLgdFont = wx.StaticText( self, -1, 'Legend font:')
-        self.cbLgdFont = wx.ComboBox(self, choices=['6','7','8','9','10','11','12','13','14','15','16','17','18'] , style=wx.CB_READONLY)
+        lbLgdFont = wx.StaticText(self, -1, 'Legend font:')
+        self.cbLgdFont = wx.ComboBox(self,
+                                     choices=['6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18'],
+                                     style=wx.CB_READONLY)
         self.cbLgdFont.SetSelection(2)
-        lbLW = wx.StaticText( self, -1, 'Line width:')
-        self.cbLW = wx.ComboBox(self, choices=['0.5','1.0','1.5','2.0','2.5','3.0'] , style=wx.CB_READONLY)
+        lbLW = wx.StaticText(self, -1, 'Line width:')
+        self.cbLW = wx.ComboBox(self, choices=['0.5', '1.0', '1.5', '2.0', '2.5', '3.0'], style=wx.CB_READONLY)
         self.cbLW.SetSelection(2)
-        lbMS = wx.StaticText( self, -1, 'Marker size:')
-        self.cbMS= wx.ComboBox(self, choices=['0.5','1','2','3','4','5','6','7','8'] , style=wx.CB_READONLY)
+        lbMS = wx.StaticText(self, -1, 'Marker size:')
+        self.cbMS = wx.ComboBox(self, choices=['0.5', '1', '2', '3', '4', '5', '6', '7', '8'], style=wx.CB_READONLY)
         self.cbMS.SetSelection(2)
 
         # Layout
-        #dummy_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        # dummy_sizer = wx.BoxSizer(wx.HORIZONTAL)
         dummy_sizer = wx.WrapSizer(orient=wx.HORIZONTAL)
-        dummy_sizer.Add(lbFont                ,0, flag = wx.CENTER|wx.LEFT,border = 1)
-        dummy_sizer.Add(self.cbFont           ,0, flag = wx.CENTER|wx.LEFT,border = 1)
-        dummy_sizer.Add(lbLW                  ,0, flag = wx.CENTER|wx.LEFT,border = 5)
-        dummy_sizer.Add(self.cbLW             ,0, flag = wx.CENTER|wx.LEFT,border = 1)
-        dummy_sizer.Add(lbMS                  ,0, flag = wx.CENTER|wx.LEFT,border = 5)
-        dummy_sizer.Add(self.cbMS             ,0, flag = wx.CENTER|wx.LEFT,border = 1)
-        dummy_sizer.Add(lbLegend              ,0, flag = wx.CENTER|wx.LEFT,border = 5)
-        dummy_sizer.Add(self.cbLegend         ,0, flag = wx.CENTER|wx.LEFT,border = 1)
-        dummy_sizer.Add(lbLgdFont             ,0, flag = wx.CENTER|wx.LEFT,border = 5)
-        dummy_sizer.Add(self.cbLgdFont        ,0, flag = wx.CENTER|wx.LEFT,border = 1)
+        dummy_sizer.Add(lbFont, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(self.cbFont, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(lbLW, 0, flag=wx.CENTER | wx.LEFT, border=5)
+        dummy_sizer.Add(self.cbLW, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(lbMS, 0, flag=wx.CENTER | wx.LEFT, border=5)
+        dummy_sizer.Add(self.cbMS, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(lbLegend, 0, flag=wx.CENTER | wx.LEFT, border=5)
+        dummy_sizer.Add(self.cbLegend, 0, flag=wx.CENTER | wx.LEFT, border=1)
+        dummy_sizer.Add(lbLgdFont, 0, flag=wx.CENTER | wx.LEFT, border=5)
+        dummy_sizer.Add(self.cbLgdFont, 0, flag=wx.CENTER | wx.LEFT, border=1)
         self.SetSizer(dummy_sizer)
         self.Hide()
         # Callbacks
-        self.Bind(wx.EVT_COMBOBOX  ,self.onAnyEsthOptionChange)
-        self.cbFont.Bind(wx.EVT_COMBOBOX  ,self.onFontOptionChange)
+        self.Bind(wx.EVT_COMBOBOX, self.onAnyEsthOptionChange)
+        self.cbFont.Bind(wx.EVT_COMBOBOX, self.onFontOptionChange)
 
-    def onAnyEsthOptionChange(self,event=None):
+    def onAnyEsthOptionChange(self, event=None):
         self.parent.redraw_same_data()
 
-    def onFontOptionChange(self,event=None):
-        matplotlib_rc('font', **{'size':int(self.cbFont.Value) }) # affect all (including ticks)
+    def onFontOptionChange(self, event=None):
+        matplotlib_rc('font', **{'size': int(self.cbFont.Value)})  # affect all (including ticks)
         self.onAnyEsthOptionChange()
 
 
 class PlotPanel(wx.Panel):
-    def __init__(self, parent, selPanel,infoPanel=None, mainframe=None):
+    def __init__(self, parent, selPanel, infoPanel=None, mainframe=None):
 
         # Superclass constructor
-        super(PlotPanel,self).__init__(parent)
+        super(PlotPanel, self).__init__(parent)
 
         # Font handling
         font = parent.GetFont()
-        font.SetPointSize(font.GetPointSize()-1)
-        self.SetFont(font) 
+        font.SetPointSize(font.GetPointSize() - 1)
+        self.SetFont(font)
         # Preparing a special font manager for chinese characters
-        self.specialFont=None
+        self.specialFont = None
         try:
             pyplot_path = matplotlib.get_data_path()
         except:
             pyplot_path = pyplot_rc['datapath']
         CH_F_PATHS = [
-                os.path.join(pyplot_path, 'fonts/ttf/SimHei.ttf'),
-                os.path.join(os.path.dirname(__file__),'../SimHei.ttf')]
+            os.path.join(pyplot_path, 'fonts/ttf/SimHei.ttf'),
+            os.path.join(os.path.dirname(__file__), '../SimHei.ttf')]
         for fpath in CH_F_PATHS:
             if os.path.exists(fpath):
                 fontP = font_manager.FontProperties(fname=fpath)
                 fontP.set_size(font.GetPointSize())
-                self.specialFont=fontP
+                self.specialFont = fontP
                 break
         # data
-        self.selPanel = selPanel # <<< dependency with selPanel should be minimum
-        self.selMode  = '' 
-        self.infoPanel=infoPanel
+        self.selPanel = selPanel  # <<< dependency with selPanel should be minimum
+        self.selMode = ''
+        self.infoPanel = infoPanel
         self.infoPanel.setPlotMatrixCallbacks(self._onPlotMatrixLeftClick, self._onPlotMatrixRightClick)
-        self.parent   = parent
-        self.mainframe= mainframe
+        self.parent = parent
+        self.mainframe = mainframe
         self.plotData = []
-        self.plotDataOptions=dict()
+        self.plotDataOptions = dict()
         if self.selPanel is not None:
-            bg=self.selPanel.BackgroundColour
-            self.SetBackgroundColour(bg) # sowhow, our parent has a wrong color
-        #self.SetBackgroundColour('red')
+            bg = self.selPanel.BackgroundColour
+            self.SetBackgroundColour(bg)  # sowhow, our parent has a wrong color
+        # self.SetBackgroundColour('red')
         self.leftMeasure = GUIMeasure(1, 'firebrick')
         self.rightMeasure = GUIMeasure(2, 'darkgreen')
         self.xlim_prev = [[0, 1]]
@@ -371,28 +380,27 @@ class PlotPanel(wx.Panel):
         self.canvas.mpl_connect('draw_event', self.onDraw)
         self.clickLocation = (None, 0, 0)
 
-        self.navTBTop    = MyNavigationToolbar2Wx(self.canvas, ['Home', 'Pan'])
+        self.navTBTop = MyNavigationToolbar2Wx(self.canvas, ['Home', 'Pan'])
         self.navTBBottom = MyNavigationToolbar2Wx(self.canvas, ['Subplots', 'Save'])
-        TBAddCheckTool(self.navTBBottom,'', icons.chart.GetBitmap(), self.onEsthToggle)
-        self.esthToggle=False
+        TBAddCheckTool(self.navTBBottom, '', icons.chart.GetBitmap(), self.onEsthToggle)
+        self.esthToggle = False
 
         self.navTBBottom.Realize()
 
-        #self.navTB = wx.ToolBar(self, style=wx.TB_HORIZONTAL|wx.TB_HORZ_LAYOUT|wx.TB_NODIVIDER|wx.TB_FLAT)
-        #self.navTB.SetMargins(0,0)
-        #self.navTB.SetToolPacking(0)
-        #self.navTB.AddCheckTool(-1, label='', bitmap1=icons.chart.GetBitmap())
-        #self.navTB.Realize()
+        # self.navTB = wx.ToolBar(self, style=wx.TB_HORIZONTAL|wx.TB_HORZ_LAYOUT|wx.TB_NODIVIDER|wx.TB_FLAT)
+        # self.navTB.SetMargins(0,0)
+        # self.navTB.SetToolPacking(0)
+        # self.navTB.AddCheckTool(-1, label='', bitmap1=icons.chart.GetBitmap())
+        # self.navTB.Realize()
 
-        self.toolbar_sizer  = wx.BoxSizer(wx.VERTICAL)
+        self.toolbar_sizer = wx.BoxSizer(wx.VERTICAL)
         self.toolbar_sizer.Add(self.navTBTop)
         self.toolbar_sizer.Add(self.navTBBottom)
 
-
         # --- Tool Panel
-        self.toolSizer= wx.BoxSizer(wx.VERTICAL)
+        self.toolSizer = wx.BoxSizer(wx.VERTICAL)
         # --- PlotType Panel
-        self.pltTypePanel= PlotTypePanel(self);
+        self.pltTypePanel = PlotTypePanel(self);
         # --- Plot type specific options
         self.spcPanel = SpectralCtrlPanel(self)
         self.pdfPanel = PDFCtrlPanel(self)
@@ -401,103 +409,102 @@ class PlotPanel(wx.Panel):
         # --- Esthetics panel
         self.esthPanel = EstheticsPanel(self)
 
-
         # --- Ctrl Panel
-        self.ctrlPanel= wx.Panel(self)
-        #self.ctrlPanel.SetBackgroundColour('blue')
+        self.ctrlPanel = wx.Panel(self)
+        # self.ctrlPanel.SetBackgroundColour('blue')
         # Check Boxes
-        self.cbCurveType = wx.ComboBox(self.ctrlPanel, choices=['Plain','LS','Markers','Mix'] , style=wx.CB_READONLY)
+        self.cbCurveType = wx.ComboBox(self.ctrlPanel, choices=['Plain', 'LS', 'Markers', 'Mix'], style=wx.CB_READONLY)
         self.cbCurveType.SetSelection(1)
-        self.cbSub        = wx.CheckBox(self.ctrlPanel, -1, 'Subplot',(10,10))
-        self.cbLogX       = wx.CheckBox(self.ctrlPanel, -1, 'Log-x',(10,10))
-        self.cbLogY       = wx.CheckBox(self.ctrlPanel, -1, 'Log-y',(10,10))
-        self.cbSync       = wx.CheckBox(self.ctrlPanel, -1, 'Sync-x',(10,10))
-        self.cbXHair      = wx.CheckBox(self.ctrlPanel, -1, 'CrossHair',(10,10))
-        self.cbPlotMatrix = wx.CheckBox(self.ctrlPanel, -1, 'Matrix',(10,10))
-        self.cbAutoScale  = wx.CheckBox(self.ctrlPanel, -1, 'AutoScale',(10,10))
-        self.cbGrid       = wx.CheckBox(self.ctrlPanel, -1, 'Grid',(10,10))
-        self.cbStepPlot   = wx.CheckBox(self.ctrlPanel, -1, 'StepPlot',(10,10))
-        self.cbMeasure    = wx.CheckBox(self.ctrlPanel, -1, 'Measure',(10,10))
-        #self.cbSub.SetValue(True) # DEFAULT TO SUB?
+        self.cbSub = wx.CheckBox(self.ctrlPanel, -1, 'Subplot', (10, 10))
+        self.cbLogX = wx.CheckBox(self.ctrlPanel, -1, 'Log-x', (10, 10))
+        self.cbLogY = wx.CheckBox(self.ctrlPanel, -1, 'Log-y', (10, 10))
+        self.cbSync = wx.CheckBox(self.ctrlPanel, -1, 'Sync-x', (10, 10))
+        self.cbXHair = wx.CheckBox(self.ctrlPanel, -1, 'CrossHair', (10, 10))
+        self.cbPlotMatrix = wx.CheckBox(self.ctrlPanel, -1, 'Matrix', (10, 10))
+        self.cbAutoScale = wx.CheckBox(self.ctrlPanel, -1, 'AutoScale', (10, 10))
+        self.cbGrid = wx.CheckBox(self.ctrlPanel, -1, 'Grid', (10, 10))
+        self.cbStepPlot = wx.CheckBox(self.ctrlPanel, -1, 'StepPlot', (10, 10))
+        self.cbMeasure = wx.CheckBox(self.ctrlPanel, -1, 'Measure', (10, 10))
+        # self.cbSub.SetValue(True) # DEFAULT TO SUB?
         self.cbSync.SetValue(True)
-        self.cbXHair.SetValue(True) # Have cross hair by default
+        self.cbXHair.SetValue(True)  # Have cross hair by default
         self.cbAutoScale.SetValue(True)
         # Callbacks
-        self.Bind(wx.EVT_CHECKBOX, self.redraw_event     , self.cbSub    )
-        self.Bind(wx.EVT_COMBOBOX, self.redraw_event     , self.cbCurveType)
-        self.Bind(wx.EVT_CHECKBOX, self.log_select       , self.cbLogX   )
-        self.Bind(wx.EVT_CHECKBOX, self.log_select       , self.cbLogY   )
-        self.Bind(wx.EVT_CHECKBOX, self.redraw_event     , self.cbSync )
-        self.Bind(wx.EVT_CHECKBOX, self.crosshair_event  , self.cbXHair )
-        self.Bind(wx.EVT_CHECKBOX, self.plot_matrix_select, self.cbPlotMatrix )
-        self.Bind(wx.EVT_CHECKBOX, self.redraw_event     , self.cbAutoScale )
-        self.Bind(wx.EVT_CHECKBOX, self.redraw_event     , self.cbGrid )
-        self.Bind(wx.EVT_CHECKBOX, self.redraw_event     , self.cbStepPlot )
-        self.Bind(wx.EVT_CHECKBOX, self.measure_select   , self.cbMeasure )
-        self.Bind(wx.EVT_CHECKBOX, self.measure_select   , self.cbMeasure )
+        self.Bind(wx.EVT_CHECKBOX, self.redraw_event, self.cbSub)
+        self.Bind(wx.EVT_COMBOBOX, self.redraw_event, self.cbCurveType)
+        self.Bind(wx.EVT_CHECKBOX, self.log_select, self.cbLogX)
+        self.Bind(wx.EVT_CHECKBOX, self.log_select, self.cbLogY)
+        self.Bind(wx.EVT_CHECKBOX, self.redraw_event, self.cbSync)
+        self.Bind(wx.EVT_CHECKBOX, self.crosshair_event, self.cbXHair)
+        self.Bind(wx.EVT_CHECKBOX, self.plot_matrix_select, self.cbPlotMatrix)
+        self.Bind(wx.EVT_CHECKBOX, self.redraw_event, self.cbAutoScale)
+        self.Bind(wx.EVT_CHECKBOX, self.redraw_event, self.cbGrid)
+        self.Bind(wx.EVT_CHECKBOX, self.redraw_event, self.cbStepPlot)
+        self.Bind(wx.EVT_CHECKBOX, self.measure_select, self.cbMeasure)
+        self.Bind(wx.EVT_CHECKBOX, self.measure_select, self.cbMeasure)
         # LAYOUT
-        cb_sizer  = wx.FlexGridSizer(rows=4, cols=3, hgap=0, vgap=0)
-        cb_sizer.Add(self.cbCurveType , 0, flag=wx.ALL, border=1)
-        cb_sizer.Add(self.cbSub       , 0, flag=wx.ALL, border=1)
-        cb_sizer.Add(self.cbAutoScale , 0, flag=wx.ALL, border=1)
-        cb_sizer.Add(self.cbLogX      , 0, flag=wx.ALL, border=1)
-        cb_sizer.Add(self.cbLogY      , 0, flag=wx.ALL, border=1)
-        cb_sizer.Add(self.cbStepPlot  , 0, flag=wx.ALL, border=1)
-        cb_sizer.Add(self.cbXHair     , 0, flag=wx.ALL, border=1)
-        cb_sizer.Add(self.cbGrid      , 0, flag=wx.ALL, border=1)
-        cb_sizer.Add(self.cbSync      , 0, flag=wx.ALL, border=1)
+        cb_sizer = wx.FlexGridSizer(rows=4, cols=3, hgap=0, vgap=0)
+        cb_sizer.Add(self.cbCurveType, 0, flag=wx.ALL, border=1)
+        cb_sizer.Add(self.cbSub, 0, flag=wx.ALL, border=1)
+        cb_sizer.Add(self.cbAutoScale, 0, flag=wx.ALL, border=1)
+        cb_sizer.Add(self.cbLogX, 0, flag=wx.ALL, border=1)
+        cb_sizer.Add(self.cbLogY, 0, flag=wx.ALL, border=1)
+        cb_sizer.Add(self.cbStepPlot, 0, flag=wx.ALL, border=1)
+        cb_sizer.Add(self.cbXHair, 0, flag=wx.ALL, border=1)
+        cb_sizer.Add(self.cbGrid, 0, flag=wx.ALL, border=1)
+        cb_sizer.Add(self.cbSync, 0, flag=wx.ALL, border=1)
         cb_sizer.Add(self.cbPlotMatrix, 0, flag=wx.ALL, border=1)
-        cb_sizer.Add(self.cbMeasure   , 0, flag=wx.ALL, border=1)
+        cb_sizer.Add(self.cbMeasure, 0, flag=wx.ALL, border=1)
 
         self.ctrlPanel.SetSizer(cb_sizer)
 
         # --- Crosshair Panel
-        crossHairPanel= wx.Panel(self)
+        crossHairPanel = wx.Panel(self)
         self.lbCrossHairX = wx.StaticText(crossHairPanel, -1, 'x = ...       ')
         self.lbCrossHairY = wx.StaticText(crossHairPanel, -1, 'y = ...       ')
-        self.lbDeltaX = wx.StaticText(crossHairPanel,     -1, '              ')
-        self.lbDeltaY = wx.StaticText(crossHairPanel,     -1, '              ')
+        self.lbDeltaX = wx.StaticText(crossHairPanel, -1, '              ')
+        self.lbDeltaY = wx.StaticText(crossHairPanel, -1, '              ')
         self.lbCrossHairX.SetFont(getMonoFont(self))
         self.lbCrossHairY.SetFont(getMonoFont(self))
         self.lbDeltaX.SetFont(getMonoFont(self))
         self.lbDeltaY.SetFont(getMonoFont(self))
-        cbCH  = wx.FlexGridSizer(rows=4, cols=1, hgap=0, vgap=0)
-        cbCH.Add(self.lbCrossHairX   , 0, flag=wx.ALL, border=1)
-        cbCH.Add(self.lbCrossHairY   , 0, flag=wx.ALL, border=1)
-        cbCH.Add(self.lbDeltaX       , 0, flag=wx.ALL, border=1)
-        cbCH.Add(self.lbDeltaY       , 0, flag=wx.ALL, border=1)
+        cbCH = wx.FlexGridSizer(rows=4, cols=1, hgap=0, vgap=0)
+        cbCH.Add(self.lbCrossHairX, 0, flag=wx.ALL, border=1)
+        cbCH.Add(self.lbCrossHairY, 0, flag=wx.ALL, border=1)
+        cbCH.Add(self.lbDeltaX, 0, flag=wx.ALL, border=1)
+        cbCH.Add(self.lbDeltaY, 0, flag=wx.ALL, border=1)
         crossHairPanel.SetSizer(cbCH)
 
         # --- layout of panels
         row_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sl2 = wx.StaticLine(self, -1, size=wx.Size(1,-1), style=wx.LI_VERTICAL)
-        sl3 = wx.StaticLine(self, -1, size=wx.Size(1,-1), style=wx.LI_VERTICAL)
-        sl4 = wx.StaticLine(self, -1, size=wx.Size(1,-1), style=wx.LI_VERTICAL)
-        row_sizer.Add(self.pltTypePanel , 0 , flag=wx.LEFT|wx.RIGHT|wx.CENTER          , border=1)
-        row_sizer.Add(sl2               , 0 , flag=wx.LEFT|wx.RIGHT|wx.EXPAND|wx.CENTER, border=0)
-        row_sizer.Add(self.toolbar_sizer, 0 , flag=wx.LEFT|wx.RIGHT|wx.CENTER          , border=1)
-        row_sizer.Add(sl3               , 0 , flag=wx.LEFT|wx.RIGHT|wx.EXPAND|wx.CENTER, border=0)
-        row_sizer.Add(self.ctrlPanel    , 1 , flag=wx.LEFT|wx.RIGHT|wx.EXPAND|wx.CENTER, border=0)
-        row_sizer.Add(sl4               , 0 , flag=wx.LEFT|wx.RIGHT|wx.EXPAND|wx.CENTER, border=0)
-        row_sizer.Add(crossHairPanel    , 0 , flag=wx.LEFT|wx.RIGHT|wx.EXPAND|wx.CENTER, border=1)
+        sl2 = wx.StaticLine(self, -1, size=wx.Size(1, -1), style=wx.LI_VERTICAL)
+        sl3 = wx.StaticLine(self, -1, size=wx.Size(1, -1), style=wx.LI_VERTICAL)
+        sl4 = wx.StaticLine(self, -1, size=wx.Size(1, -1), style=wx.LI_VERTICAL)
+        row_sizer.Add(self.pltTypePanel, 0, flag=wx.LEFT | wx.RIGHT | wx.CENTER, border=1)
+        row_sizer.Add(sl2, 0, flag=wx.LEFT | wx.RIGHT | wx.EXPAND | wx.CENTER, border=0)
+        row_sizer.Add(self.toolbar_sizer, 0, flag=wx.LEFT | wx.RIGHT | wx.CENTER, border=1)
+        row_sizer.Add(sl3, 0, flag=wx.LEFT | wx.RIGHT | wx.EXPAND | wx.CENTER, border=0)
+        row_sizer.Add(self.ctrlPanel, 1, flag=wx.LEFT | wx.RIGHT | wx.EXPAND | wx.CENTER, border=0)
+        row_sizer.Add(sl4, 0, flag=wx.LEFT | wx.RIGHT | wx.EXPAND | wx.CENTER, border=0)
+        row_sizer.Add(crossHairPanel, 0, flag=wx.LEFT | wx.RIGHT | wx.EXPAND | wx.CENTER, border=1)
 
         plotsizer = wx.BoxSizer(wx.VERTICAL)
-        self.slCtrl = wx.StaticLine(self, -1, size=wx.Size(-1,1), style=wx.LI_HORIZONTAL)
+        self.slCtrl = wx.StaticLine(self, -1, size=wx.Size(-1, 1), style=wx.LI_HORIZONTAL)
         self.slCtrl.Hide()
-        self.slEsth = wx.StaticLine(self, -1, size=wx.Size(-1,1), style=wx.LI_HORIZONTAL)
+        self.slEsth = wx.StaticLine(self, -1, size=wx.Size(-1, 1), style=wx.LI_HORIZONTAL)
         self.slEsth.Hide()
-        sl1 = wx.StaticLine(self, -1, size=wx.Size(-1,1), style=wx.LI_HORIZONTAL)
-        plotsizer.Add(self.toolSizer,0,flag = wx.EXPAND|wx.CENTER|wx.TOP|wx.BOTTOM,border = 10)
-        plotsizer.Add(self.canvas   ,1,flag = wx.EXPAND,border = 5 )
-        plotsizer.Add(sl1           ,0,flag = wx.EXPAND,border = 0)
-        plotsizer.Add(self.spcPanel ,0,flag = wx.EXPAND|wx.CENTER|wx.TOP|wx.BOTTOM,border = 10)
-        plotsizer.Add(self.pdfPanel ,0,flag = wx.EXPAND|wx.CENTER|wx.TOP|wx.BOTTOM,border = 10)
-        plotsizer.Add(self.cmpPanel ,0,flag = wx.EXPAND|wx.CENTER|wx.TOP|wx.BOTTOM,border = 10)
-        plotsizer.Add(self.mmxPanel ,0,flag = wx.EXPAND|wx.CENTER|wx.TOP|wx.BOTTOM,border = 10)
-        plotsizer.Add(self.slEsth   ,0,flag = wx.EXPAND,border = 0)
-        plotsizer.Add(self.esthPanel,0,flag = wx.EXPAND|wx.CENTER|wx.TOP|wx.BOTTOM,border = 10)
-        plotsizer.Add(self.slCtrl   ,0,flag = wx.EXPAND,border = 0)
-        plotsizer.Add(row_sizer     ,0,flag = wx.EXPAND|wx.NORTH ,border = 2)
+        sl1 = wx.StaticLine(self, -1, size=wx.Size(-1, 1), style=wx.LI_HORIZONTAL)
+        plotsizer.Add(self.toolSizer, 0, flag=wx.EXPAND | wx.CENTER | wx.TOP | wx.BOTTOM, border=10)
+        plotsizer.Add(self.canvas, 1, flag=wx.EXPAND, border=5)
+        plotsizer.Add(sl1, 0, flag=wx.EXPAND, border=0)
+        plotsizer.Add(self.spcPanel, 0, flag=wx.EXPAND | wx.CENTER | wx.TOP | wx.BOTTOM, border=10)
+        plotsizer.Add(self.pdfPanel, 0, flag=wx.EXPAND | wx.CENTER | wx.TOP | wx.BOTTOM, border=10)
+        plotsizer.Add(self.cmpPanel, 0, flag=wx.EXPAND | wx.CENTER | wx.TOP | wx.BOTTOM, border=10)
+        plotsizer.Add(self.mmxPanel, 0, flag=wx.EXPAND | wx.CENTER | wx.TOP | wx.BOTTOM, border=10)
+        plotsizer.Add(self.slEsth, 0, flag=wx.EXPAND, border=0)
+        plotsizer.Add(self.esthPanel, 0, flag=wx.EXPAND | wx.CENTER | wx.TOP | wx.BOTTOM, border=10)
+        plotsizer.Add(self.slCtrl, 0, flag=wx.EXPAND, border=0)
+        plotsizer.Add(row_sizer, 0, flag=wx.EXPAND | wx.NORTH, border=2)
 
         self.show_hide(self.spcPanel, self.pltTypePanel.cbFFT.GetValue())
         self.show_hide(self.cmpPanel, self.pltTypePanel.cbCompare.GetValue())
@@ -505,11 +512,11 @@ class PlotPanel(wx.Panel):
         self.show_hide(self.mmxPanel, self.pltTypePanel.cbMinMax.GetValue())
 
         self.SetSizer(plotsizer)
-        self.plotsizer=plotsizer;
+        self.plotsizer = plotsizer;
         self.set_subplot_spacing(init=True)
 
-    def onEsthToggle(self,event):
-        self.esthToggle=not self.esthToggle
+    def onEsthToggle(self, event):
+        self.esthToggle = not self.esthToggle
         if self.esthToggle:
             self.slCtrl.Show()
             self.esthPanel.Show()
@@ -529,38 +536,38 @@ class PlotPanel(wx.Panel):
            - need to change if right axis needed 
            - this will override the user settings
         """
-        #self.fig.set_tight_layout(True)  # NOTE: works almost fine, but problem with FFT multiple
+        # self.fig.set_tight_layout(True)  # NOTE: works almost fine, but problem with FFT multiple
         # TODO this is definitely not generic, but tight fails..
-        if init: 
+        if init:
             # NOTE: at init size is (20,20) because sizer is not initialized yet
             bottom = 0.12
-            left   = 0.12
+            left = 0.12
         else:
-            if self.Size[1]<300:
-                bottom=0.20
-            elif self.Size[1]<350:
-                bottom=0.18
-            elif self.Size[1]<430:
-                bottom=0.16
-            elif self.Size[1]<600:
-                bottom=0.13
-            elif self.Size[1]<800:
-                bottom=0.09
+            if self.Size[1] < 300:
+                bottom = 0.20
+            elif self.Size[1] < 350:
+                bottom = 0.18
+            elif self.Size[1] < 430:
+                bottom = 0.16
+            elif self.Size[1] < 600:
+                bottom = 0.13
+            elif self.Size[1] < 800:
+                bottom = 0.09
             else:
-                bottom=0.07
-            if self.Size[0]<300:
-                left=0.22
-            elif self.Size[0]<450:
-                left=0.20
-            elif self.Size[0]<950:
-                left=0.12
+                bottom = 0.07
+            if self.Size[0] < 300:
+                left = 0.22
+            elif self.Size[0] < 450:
+                left = 0.20
+            elif self.Size[0] < 950:
+                left = 0.12
             else:
-                left=0.06
-        #print(self.Size,'bottom', bottom, 'left',left)
-        if self.cbPlotMatrix.GetValue(): # TODO detect it
-            self.fig.subplots_adjust(top=0.97,bottom=bottom,left=left,right=0.98-left)
+                left = 0.06
+        # print(self.Size,'bottom', bottom, 'left',left)
+        if self.cbPlotMatrix.GetValue():  # TODO detect it
+            self.fig.subplots_adjust(top=0.97, bottom=bottom, left=left, right=0.98 - left)
         else:
-            self.fig.subplots_adjust(top=0.97,bottom=bottom,left=left,right=0.98)
+            self.fig.subplots_adjust(top=0.97, bottom=bottom, left=left, right=0.98)
 
     def plot_matrix_select(self, event):
         self.infoPanel.togglePlotMatrix(self.cbPlotMatrix.GetValue())
@@ -583,13 +590,13 @@ class PlotPanel(wx.Panel):
 
     def crosshair_event(self, event):
         try:
-            self.multiCursors.vertOn =self.cbXHair.GetValue()
-            self.multiCursors.horizOn=self.cbXHair.GetValue()
+            self.multiCursors.vertOn = self.cbXHair.GetValue()
+            self.multiCursors.horizOn = self.cbXHair.GetValue()
             self.multiCursors._update()
         except:
             pass
 
-    def show_hide(self,panel,bShow):
+    def show_hide(self, panel, bShow):
         if bShow:
             panel.Show()
             self.slEsth.Show()
@@ -601,22 +608,22 @@ class PlotPanel(wx.Panel):
     def sharex(self):
         return self.cbSync.IsChecked() and (not self.pltTypePanel.cbPDF.GetValue())
 
-    def set_subplots(self,nPlots):
+    def set_subplots(self, nPlots):
         self.set_subplot_spacing()
         # Creating subplots
         for ax in self.fig.axes:
             self.fig.delaxes(ax)
-        sharex=None
+        sharex = None
         for i in range(nPlots):
             # Vertical stack
-            if i==0:
-                ax=self.fig.add_subplot(nPlots,1,i+1)
+            if i == 0:
+                ax = self.fig.add_subplot(nPlots, 1, i + 1)
                 if self.sharex:
-                    sharex=ax
+                    sharex = ax
             else:
-                ax=self.fig.add_subplot(nPlots,1,i+1,sharex=sharex)
+                ax = self.fig.add_subplot(nPlots, 1, i + 1, sharex=sharex)
             # Horizontal stack
-            #self.fig.add_subplot(1,nPlots,i+1)
+            # self.fig.add_subplot(1,nPlots,i+1)
 
     def onMouseMove(self, event):
         if event.inaxes:
@@ -649,7 +656,7 @@ class PlotPanel(wx.Panel):
                         return
                     if self.cbAutoScale.IsChecked() is False:
                         self._restore_limits()
-                        
+
                     if self.leftMeasure.axis_idx == self.rightMeasure.axis_idx and self.leftMeasure.axis_idx != -1:
                         self.lbDeltaX.SetLabel('dx=' + self.formatLabelValue(self.rightMeasure.x - self.leftMeasure.x))
                         self.lbDeltaY.SetLabel('dy=' + self.formatLabelValue(self.rightMeasure.y - self.leftMeasure.y))
@@ -663,7 +670,7 @@ class PlotPanel(wx.Panel):
 
     def formatLabelValue(self, value):
         try:
-            if abs(value)<1000 and abs(value)>1e-4:
+            if abs(value) < 1000 and abs(value) > 1e-4:
                 s = '{:10.5f}'.format(value)
             else:
                 s = '{:10.3e}'.format(value)
@@ -671,68 +678,69 @@ class PlotPanel(wx.Panel):
             s = '            '
         return s
 
-    def removeTools(self,event=None,Layout=True):
+    def removeTools(self, event=None, Layout=True):
         try:
-            self.toolPanel.destroy() # call the "destroy" function which might clean up data
+            self.toolPanel.destroy()  # call the "destroy" function which might clean up data
         except:
             pass
         try:
             # Python3
-            self.toolSizer.Clear(delete_windows=True) # Delete Windows
+            self.toolSizer.Clear(delete_windows=True)  # Delete Windows
         except:
             # Python2
-            if hasattr(self,'toolPanel'):
+            if hasattr(self, 'toolPanel'):
                 self.toolSizer.Remove(self.toolPanel)
                 self.toolPanel.Destroy()
                 del self.toolPanel
-            self.toolSizer.Clear() # Delete Windows
+            self.toolSizer.Clear()  # Delete Windows
         if Layout:
             self.plotsizer.Layout()
 
-    def showTool(self,toolName=''):
+    def showTool(self, toolName=''):
         from .GUITools import TOOLS
         self.Freeze()
         self.removeTools(Layout=False)
         if toolName in TOOLS.keys():
-            self.toolPanel=TOOLS[toolName](self) # calling the panel constructor
+            self.toolPanel = TOOLS[toolName](self)  # calling the panel constructor
         else:
             raise Exception('Unknown tool {}'.format(toolName))
-        self.toolSizer.Add(self.toolPanel, 0, wx.EXPAND|wx.ALL, 5)
+        self.toolSizer.Add(self.toolPanel, 0, wx.EXPAND | wx.ALL, 5)
         self.plotsizer.Layout()
         self.Thaw()
 
-    def setPD_PDF(self,PD,c):
+    def setPD_PDF(self, PD, c):
         """ Convert plot data to PDF data based on GUI options"""
         # ---PDF
-        nBins   = self.pdfPanel.scBins.GetValue()
+        nBins = self.pdfPanel.scBins.GetValue()
         bSmooth = self.pdfPanel.cbSmooth.GetValue()
-        nBins_out= PD.toPDF(nBins,bSmooth)
-        if nBins_out!=nBins:
+        nBins_out = PD.toPDF(nBins, bSmooth)
+        if nBins_out != nBins:
             self.pdfPanel.scBins.SetValue(nBins)
 
-    def setPD_MinMax(self,PD):
+    def setPD_MinMax(self, PD):
         """ Convert plot data to MinMax data based on GUI options"""
-        yScale=self.mmxPanel.cbyMinMax.IsChecked()
-        xScale=self.mmxPanel.cbxMinMax.IsChecked()
+        yScale = self.mmxPanel.cbyMinMax.IsChecked()
+        xScale = self.mmxPanel.cbxMinMax.IsChecked()
         try:
-            PD.toMinMax(xScale,yScale)
+            PD.toMinMax(xScale, yScale)
         except Exception as e:
             self.mmxPanel.cbxMinMax.SetValue(False)
-            raise e # Used to be Warn
+            raise e  # Used to be Warn
 
-    def setPD_FFT(self,pd):
+    def setPD_FFT(self, pd):
         """ Convert plot data to FFT data based on GUI options"""
-        yType      = self.spcPanel.cbType.GetStringSelection()
-        xType      = self.spcPanel.cbTypeX.GetStringSelection()
-        avgMethod  = self.spcPanel.cbAveraging.GetStringSelection()
-        avgWindow  = self.spcPanel.cbAveragingMethod.GetStringSelection()
-        bDetrend   = self.spcPanel.cbDetrend.IsChecked()
-        nExp       = self.spcPanel.scP2.GetValue()
+        yType = self.spcPanel.cbType.GetStringSelection()
+        xType = self.spcPanel.cbTypeX.GetStringSelection()
+        avgMethod = self.spcPanel.cbAveraging.GetStringSelection()
+        avgWindow = self.spcPanel.cbAveragingMethod.GetStringSelection()
+        bDetrend = self.spcPanel.cbDetrend.IsChecked()
+        nExp = self.spcPanel.scP2.GetValue()
         # Convert plotdata to FFT data
         try:
-            Info = pd.toFFT(yType=yType, xType=xType, avgMethod=avgMethod, avgWindow=avgWindow, bDetrend=bDetrend, nExp=nExp) 
+            Info = pd.toFFT(yType=yType, xType=xType, avgMethod=avgMethod, avgWindow=avgWindow, bDetrend=bDetrend,
+                            nExp=nExp)
             # Trigger
-            if hasattr(Info,'nExp') and Info.nExp!=nExp:
+            if hasattr(Info, 'nExp') and Info.nExp != nExp:
                 self.spcPanel.scP2.SetValue(Info.nExp)
                 self.spcPanel.updateP2(Info.nExp)
         except Exception as e:
@@ -740,47 +748,46 @@ class PlotPanel(wx.Panel):
             self.plotsizer.Layout()
             raise e
 
-
-    def transformPlotData(self,PD):
+    def transformPlotData(self, PD):
         """" 
         Apply MinMax, PDF or FFT transform to plot based on GUI data
         """
-        plotType=self.pltTypePanel.plotType()
-        if plotType=='MinMax':
-            self.setPD_MinMax(PD) 
-        elif plotType=='PDF':
-            self.setPD_PDF(PD,PD.c)  
-        elif plotType=='FFT':
-            self.setPD_FFT(PD) 
+        plotType = self.pltTypePanel.plotType()
+        if plotType == 'MinMax':
+            self.setPD_MinMax(PD)
+        elif plotType == 'PDF':
+            self.setPD_PDF(PD, PD.c)
+        elif plotType == 'FFT':
+            self.setPD_FFT(PD)
 
-    def getPlotData(self,plotType):
-        ID,SameCol,selMode=self.selPanel.getPlotDataSelection()
-        self.selMode=selMode # we store the selection mode
+    def getPlotData(self, plotType):
+        ID, SameCol, selMode = self.selPanel.getPlotDataSelection()
+        self.selMode = selMode  # we store the selection mode
         del self.plotData
-        self.plotData=[]
-        tabs=self.selPanel.tabList.getTabs() # TODO, selPanel should just return the PlotData...
+        self.plotData = []
+        tabs = self.selPanel.tabList.getTabs()  # TODO, selPanel should just return the PlotData...
         try:
-            for i,idx in enumerate(ID):
+            for i, idx in enumerate(ID):
                 # Initialize each plotdata based on selected table and selected id channels
-                pd=PlotData();
-                pd.fromIDs(tabs,i,idx,SameCol, self.plotDataOptions) 
+                pd = PlotData();
+                pd.fromIDs(tabs, i, idx, SameCol, self.plotDataOptions)
                 # Possible change of data
-                if plotType=='MinMax':
-                    self.setPD_MinMax(pd) 
-                elif plotType=='PDF':
-                    self.setPD_PDF(pd,pd.c)  
-                elif plotType=='FFT':
-                    self.setPD_FFT(pd) 
+                if plotType == 'MinMax':
+                    self.setPD_MinMax(pd)
+                elif plotType == 'PDF':
+                    self.setPD_PDF(pd, pd.c)
+                elif plotType == 'FFT':
+                    self.setPD_FFT(pd)
                 self.plotData.append(pd)
         except Exception as e:
-            self.plotData=[]
+            self.plotData = []
             raise e
 
-    def PD_Compare(self,mode):
+    def PD_Compare(self, mode):
         """ Perform comparison of the selected PlotData, returns new plotData with the comparison. """
         sComp = self.cmpPanel.rbType.GetStringSelection()
         try:
-            self.plotData = compareMultiplePD(self.plotData,mode, sComp)
+            self.plotData = compareMultiplePD(self.plotData, mode, sComp)
         except Exception as e:
             self.pltTypePanel.cbRegular.SetValue(True)
             raise e
@@ -840,48 +847,48 @@ class PlotPanel(wx.Panel):
             PDs: list of plot data
         """
         # TODO option for tight axes
-        tight=False
+        tight = False
 
-        plotType=self.pltTypePanel.plotType()
-        if plotType in ['FFT','Compare']:
+        plotType = self.pltTypePanel.plotType()
+        if plotType in ['FFT', 'Compare']:
             axis.autoscale(True, axis='both', tight=tight)
             return
-        vXString=[PDs[i].xIsString for i in axis.iPD]
-        vYString=[PDs[i].yIsString for i in axis.iPD]
+        vXString = [PDs[i].xIsString for i in axis.iPD]
+        vYString = [PDs[i].yIsString for i in axis.iPD]
         if not any(vXString) and not self.cbLogX.IsChecked():
             try:
-                xMin=np.min([PDs[i]._xMin[0] for i in axis.iPD])
-                xMax=np.max([PDs[i]._xMax[0] for i in axis.iPD])
-                if np.isclose(xMin,xMax): 
-                    delta=1 if np.isclose(xMax,0) else 0.1*xMax
+                xMin = np.min([PDs[i]._xMin[0] for i in axis.iPD])
+                xMax = np.max([PDs[i]._xMax[0] for i in axis.iPD])
+                if np.isclose(xMin, xMax):
+                    delta = 1 if np.isclose(xMax, 0) else 0.1 * xMax
                 else:
                     if tight:
-                        delta=0
+                        delta = 0
                     else:
-                        delta = (xMax-xMin)*pyplot_rc['axes.xmargin']
-                axis.set_xlim(xMin-delta,xMax+delta)
+                        delta = (xMax - xMin) * pyplot_rc['axes.xmargin']
+                axis.set_xlim(xMin - delta, xMax + delta)
                 axis.autoscale(False, axis='x', tight=False)
             except:
                 pass
-        if not any(vYString) and not self.cbLogY.IsChecked(): 
+        if not any(vYString) and not self.cbLogY.IsChecked():
             try:
-                yMin=np.min([PDs[i]._yMin[0] for i in axis.iPD])
-                yMax=np.max([PDs[i]._yMax[0] for i in axis.iPD])
-                delta = (yMax-yMin)*pyplot_rc['axes.ymargin'] 
-                if np.isclose(yMin,yMax): 
-                    delta=1 if np.isclose(yMax,0) else 0.1*yMax
+                yMin = np.min([PDs[i]._yMin[0] for i in axis.iPD])
+                yMax = np.max([PDs[i]._yMax[0] for i in axis.iPD])
+                delta = (yMax - yMin) * pyplot_rc['axes.ymargin']
+                if np.isclose(yMin, yMax):
+                    delta = 1 if np.isclose(yMax, 0) else 0.1 * yMax
                 else:
                     if tight:
-                        delta=0
+                        delta = 0
                     else:
-                        delta = (yMax-yMin)*pyplot_rc['axes.xmargin']
-                axis.set_ylim(yMin-delta,yMax+delta)
+                        delta = (yMax - yMin) * pyplot_rc['axes.xmargin']
+                axis.set_ylim(yMin - delta, yMax + delta)
                 axis.autoscale(False, axis='y', tight=False)
             except:
                 pass
 
     def plot_all(self, keep_limits=True):
-        self.multiCursors=[]
+        self.multiCursors = []
 
         if self.cbMeasure.GetValue() is False:
             for measure in [self.leftMeasure, self.rightMeasure]:
@@ -890,51 +897,48 @@ class PlotPanel(wx.Panel):
                 self.lbDeltaX.SetLabel('')
                 self.lbDeltaY.SetLabel('')
 
-        axes=self.fig.axes
-        PD=self.plotData
-
+        axes = self.fig.axes
+        PD = self.plotData
 
         # --- Plot options
-        bStep    = self.cbStepPlot.IsChecked()
+        bStep = self.cbStepPlot.IsChecked()
         plot_options = dict()
-        plot_options['lw']=float(self.esthPanel.cbLW.Value)
-        plot_options['ms']=float(self.esthPanel.cbMS.Value)
-        if self.cbCurveType.Value=='Plain':
+        plot_options['lw'] = float(self.esthPanel.cbLW.Value)
+        plot_options['ms'] = float(self.esthPanel.cbMS.Value)
+        if self.cbCurveType.Value == 'Plain':
             plot_options['LineStyles'] = ['-']
-            plot_options['Markers']    = ['']
-        elif self.cbCurveType.Value=='LS':
-            plot_options['LineStyles'] = ['-','--','-.',':']
-            plot_options['Markers']    = ['']
-        elif self.cbCurveType.Value=='Markers':
+            plot_options['Markers'] = ['']
+        elif self.cbCurveType.Value == 'LS':
+            plot_options['LineStyles'] = ['-', '--', '-.', ':']
+            plot_options['Markers'] = ['']
+        elif self.cbCurveType.Value == 'Markers':
             plot_options['LineStyles'] = ['']
-            plot_options['Markers']    = ['o','d','v','^','s']
-        elif self.cbCurveType.Value=='Mix': # NOTE, can be improved
-            plot_options['LineStyles'] = ['-','--', '-','-','-']
-            plot_options['Markers']    = ['' ,''   ,'o','^','s']
+            plot_options['Markers'] = ['o', 'd', 'v', '^', 's']
+        elif self.cbCurveType.Value == 'Mix':  # NOTE, can be improved
+            plot_options['LineStyles'] = ['-', '--', '-', '-', '-']
+            plot_options['Markers'] = ['', '', 'o', '^', 's']
         else:
             # Combination of linestyles markers, colors, etc.
             # But at that stage, if the user really want this, then we can implement an option to set styles per plot. Not high priority.
             raise Exception('Not implemented')
 
-
-
         # --- Font options
-        font_options      = dict()
+        font_options = dict()
         font_options_legd = dict()
-        font_options['size']          = int(self.esthPanel.cbFont.Value)  # affect labels
+        font_options['size'] = int(self.esthPanel.cbFont.Value)  # affect labels
         font_options_legd['fontsize'] = int(self.esthPanel.cbLgdFont.Value)
         needChineseFont = any([pd.needChineseFont for pd in PD])
         if needChineseFont and self.specialFont is not None:
-            font_options['fontproperties']=  self.specialFont
-            font_options_legd['prop']     =  self.specialFont 
+            font_options['fontproperties'] = self.specialFont
+            font_options_legd['prop'] = self.specialFont
 
-        # --- Loop on axes. Either use ax.iPD to chose the plot data, or rely on plotmatrix
+            # --- Loop on axes. Either use ax.iPD to chose the plot data, or rely on plotmatrix
         for axis_idx, ax_left in enumerate(axes):
             ax_right = None
             # Checks
-            vDate=[PD[i].yIsDate for i in ax_left.iPD]
-            if any(vDate) and len(vDate)>1:
-                Error(self,'Cannot plot date and other value on the same axis')
+            vDate = [PD[i].yIsDate for i in ax_left.iPD]
+            if any(vDate) and len(vDate) > 1:
+                Error(self, 'Cannot plot date and other value on the same axis')
                 return
 
             # Set limit before plot when possible, for optimization
@@ -942,7 +946,7 @@ class PlotPanel(wx.Panel):
 
             # Actually plot
             pm = self.infoPanel.getPlotMatrix(PD, self.cbSub.IsChecked())
-            __, bAllNegLeft        = self.plotSignals(ax_left, axis_idx, PD, pm, 1, bStep, plot_options)
+            __, bAllNegLeft = self.plotSignals(ax_left, axis_idx, PD, pm, 1, bStep, plot_options)
             ax_right, bAllNegRight = self.plotSignals(ax_left, axis_idx, PD, pm, 2, bStep, plot_options)
 
             self.infoPanel.setMeasurements(self.leftMeasure.get_xydata(), self.rightMeasure.get_xydata())
@@ -952,33 +956,33 @@ class PlotPanel(wx.Panel):
             # Log Axes
             if self.cbLogX.IsChecked():
                 try:
-                    ax_left.set_xscale("log", nonpositive='clip') # latest
+                    ax_left.set_xscale("log", nonpositive='clip')  # latest
                 except:
-                    ax_left.set_xscale("log", nonposx='clip') # legacy
+                    ax_left.set_xscale("log", nonposx='clip')  # legacy
 
             if self.cbLogY.IsChecked():
                 if bAllNegLeft is False:
                     try:
-                        ax_left.set_yscale("log", nonpositive='clip') # latest
+                        ax_left.set_yscale("log", nonpositive='clip')  # latest
                     except:
                         ax_left.set_yscale("log", nonposy='clip')
                 if bAllNegRight is False and ax_right is not None:
                     try:
-                        ax_right.set_yscale("log", nonpositive='clip') # latest
+                        ax_right.set_yscale("log", nonpositive='clip')  # latest
                     except:
-                        ax_left.set_yscale("log", nonposy='clip') # legacy
+                        ax_left.set_yscale("log", nonposy='clip')  # legacy
 
             # XLIM - TODO FFT ONLY NASTY
             if self.pltTypePanel.cbFFT.GetValue():
                 try:
-                    xlim=float(self.spcPanel.tMaxFreq.GetLineText(0))
-                    if xlim>0:
-                        ax_left.set_xlim([0,xlim])
-                        pd=PD[ax_left.iPD[0]]
-                        I=pd.x<xlim
+                    xlim = float(self.spcPanel.tMaxFreq.GetLineText(0))
+                    if xlim > 0:
+                        ax_left.set_xlim([0, xlim])
+                        pd = PD[ax_left.iPD[0]]
+                        I = pd.x < xlim
                         ymin = np.min([np.min(PD[ipd].y[I]) for ipd in ax_left.iPD])
-                        ax_left.set_ylim(bottom=ymin/2)
-                    if self.spcPanel.cbTypeX.GetStringSelection()=='x':
+                        ax_left.set_ylim(bottom=ymin / 2)
+                    if self.spcPanel.cbTypeX.GetStringSelection() == 'x':
                         ax_left.invert_xaxis()
                 except:
                     pass
@@ -989,7 +993,7 @@ class PlotPanel(wx.Panel):
             if ax_right is not None:
                 l = ax_left.get_ylim()
                 l2 = ax_right.get_ylim()
-                f = lambda x : l2[0]+(x-l[0])/(l[1]-l[0])*(l2[1]-l2[0])
+                f = lambda x: l2[0] + (x - l[0]) / (l[1] - l[0]) * (l2[1] - l2[0])
                 ticks = f(ax_left.get_yticks())
                 ax_right.yaxis.set_major_locator(matplotlib.ticker.FixedLocator(ticks))
                 if len(ax_left.lines) == 0:
@@ -999,9 +1003,9 @@ class PlotPanel(wx.Panel):
 
             # Special Grids
             if self.pltTypePanel.cbCompare.GetValue():
-                if self.cmpPanel.rbType.GetStringSelection()=='Y-Y':
-                    xmin,xmax=ax_left.get_xlim()
-                    ax_left.plot([xmin,xmax],[xmin,xmax],'k--',linewidth=0.5)
+                if self.cmpPanel.rbType.GetStringSelection() == 'Y-Y':
+                    xmin, xmax = ax_left.get_xlim()
+                    ax_left.plot([xmin, xmax], [xmin, xmax], 'k--', linewidth=0.5)
 
             # Labels
             yleft_labels = []
@@ -1036,35 +1040,36 @@ class PlotPanel(wx.Panel):
 
             # Legends
             lgdLoc = self.esthPanel.cbLegend.Value.lower()
-            if (self.pltTypePanel.cbCompare.GetValue() or 
-                ((len(yleft_legends) + len(yright_legends)) > 1)):
-                if lgdLoc !='none':
+            if (self.pltTypePanel.cbCompare.GetValue() or
+                    ((len(yleft_legends) + len(yright_legends)) > 1)):
+                if lgdLoc != 'none':
                     if len(yleft_legends) > 0:
                         ax_left.legend(fancybox=False, loc=lgdLoc, **font_options_legd)
                 if ax_right is not None and len(yright_legends) > 0:
                     ax_right.legend(fancybox=False, loc=4, **font_options_legd)
-            elif len(axes)>1 and len(axes)==len(PD):
+            elif len(axes) > 1 and len(axes) == len(PD):
                 # TODO: can this be removed? If there is only one unique signal
                 # per subplot, normally only ylabel is displayed and no legend.
                 # Special case when we have subplots and all plots have the same label
-                if lgdLoc !='none':
+                if lgdLoc != 'none':
                     usy = unique([pd.sy for pd in PD])
-                    if len(usy)==1:
+                    if len(usy) == 1:
                         for ax in axes:
                             ax.legend(fancybox=False, loc=lgdLoc, **font_options_legd)
 
         axes[-1].set_xlabel(PD[axes[-1].iPD[0]].sx, **font_options)
 
-        #print('sy :',[pd.sy for pd in PD])
-        #print('syl:',[pd.syl for pd in PD])
+        # print('sy :',[pd.sy for pd in PD])
+        # print('syl:',[pd.syl for pd in PD])
 
         # --- Cursors for each individual plot
         # NOTE: cursors needs to be stored in the object!
-        #for ax_left in self.fig.axes:
+        # for ax_left in self.fig.axes:
         #    self.cursors.append(MyCursor(ax_left,horizOn=True, vertOn=False, useblit=True, color='gray', linewidth=0.5, linestyle=':'))
         # Vertical cusor for all, commonly
         bXHair = self.cbXHair.GetValue()
-        self.multiCursors = MyMultiCursor(self.canvas, tuple(self.fig.axes), useblit=True, horizOn=bXHair, vertOn=bXHair, color='gray', linewidth=0.5, linestyle=':')
+        self.multiCursors = MyMultiCursor(self.canvas, tuple(self.fig.axes), useblit=True, horizOn=bXHair,
+                                          vertOn=bXHair, color='gray', linewidth=0.5, linestyle=':')
 
     def plotSignals(self, ax, axis_idx, PD, pm, left_right, is_step, opts):
         axis = None
@@ -1074,7 +1079,7 @@ class PlotPanel(wx.Panel):
         else:
             loop_range = range(len(PD))
 
-        iPlot=-1
+        iPlot = -1
         for signal_idx in loop_range:
             do_plot = False
             if left_right == 1 and (pm is None or pm[signal_idx][axis_idx] == left_right):
@@ -1084,189 +1089,189 @@ class PlotPanel(wx.Panel):
                 do_plot = True
                 if axis is None:
                     axis = ax.twinx()
-                    ax.set_zorder(axis.get_zorder()+1)
+                    ax.set_zorder(axis.get_zorder() + 1)
                     ax.patch.set_visible(False)
                     axis._get_lines.prop_cycler = ax._get_lines.prop_cycler
-            pd=PD[signal_idx]
+            pd = PD[signal_idx]
             if do_plot:
-                iPlot+=1 
+                iPlot += 1
                 # --- styling per plot 
-                if len(pd.x)==1:
-                    marker='o'; ls=''
+                if len(pd.x) == 1:
+                    marker = 'o';
+                    ls = ''
                 else:
                     # TODO allow PlotData to override for "per plot" options in the future
-                    marker = opts['Markers'][np.mod(iPlot,len(opts['Markers']))]
-                    ls     = opts['LineStyles'][np.mod(iPlot,len(opts['LineStyles']))]
+                    marker = opts['Markers'][np.mod(iPlot, len(opts['Markers']))]
+                    ls = opts['LineStyles'][np.mod(iPlot, len(opts['LineStyles']))]
                 if is_step:
                     plot = axis.step
                 else:
                     plot = axis.plot
-                plot(pd.x,pd.y,label=pd.syl,ms=opts['ms'], lw=opts['lw'], marker=marker, ls=ls)
+                plot(pd.x, pd.y, label=pd.syl, ms=opts['ms'], lw=opts['lw'], marker=marker, ls=ls)
                 try:
-                    bAllNeg = bAllNeg and all(pd.y<=0)
+                    bAllNeg = bAllNeg and all(pd.y <= 0)
                 except:
-                    pass # Dates or strings
+                    pass  # Dates or strings
         return axis, bAllNeg
-            
-    def findPlotMode(self,PD):
+
+    def findPlotMode(self, PD):
         uTabs = unique([pd.it for pd in PD])
-        usy   = unique([pd.sy for pd in PD])
-        uiy   = unique([pd.iy for pd in PD])
-        if len(uTabs)<=0:
+        usy = unique([pd.sy for pd in PD])
+        uiy = unique([pd.iy for pd in PD])
+        if len(uTabs) <= 0:
             raise Exception('No Table. Contact developer')
-        if len(uTabs)==1:
-            mode='1Tab_nCols'
+        if len(uTabs) == 1:
+            mode = '1Tab_nCols'
         else:
             if PD[0].SameCol:
-                mode='nTabs_SameCols'
+                mode = 'nTabs_SameCols'
             else:
                 # Now that we allow multiple selections detecting "simColumns" is more difficult 
                 if len(uTabs) == len(PD):
-                    mode='nTabs_1Col'
-                elif self.selMode=='simColumnsMode':
-                    mode='nTabs_SimCols'
+                    mode = 'nTabs_1Col'
+                elif self.selMode == 'simColumnsMode':
+                    mode = 'nTabs_SimCols'
                 else:
-                    mode='nTabs_mCols'
+                    mode = 'nTabs_mCols'
         return mode
 
-    def findSubPlots(self,PD,mode):
+    def findSubPlots(self, PD, mode):
         uTabs = unique([pd.it for pd in PD])
-        usy   = unique([pd.sy for pd in PD])
+        usy = unique([pd.sy for pd in PD])
         bSubPlots = self.cbSub.IsChecked()
-        bCompare  = self.pltTypePanel.cbCompare.GetValue() # NOTE bCompare somehow always 1Tab_nCols
-        nSubPlots=1
-        spreadBy='none'
+        bCompare = self.pltTypePanel.cbCompare.GetValue()  # NOTE bCompare somehow always 1Tab_nCols
+        nSubPlots = 1
+        spreadBy = 'none'
         self.infoPanel.setTabMode(mode)
-        if mode=='1Tab_nCols':
+        if mode == '1Tab_nCols':
             if bSubPlots:
-                if bCompare or len(uTabs)==1:
+                if bCompare or len(uTabs) == 1:
                     nSubPlots = self.infoPanel.getNumberOfSubplots(PD, bSubPlots)
                 else:
-                    nSubPlots=len(usy)
-                spreadBy='iy'
-        elif mode=='nTabs_SameCols':
+                    nSubPlots = len(usy)
+                spreadBy = 'iy'
+        elif mode == 'nTabs_SameCols':
             if bSubPlots:
                 if bCompare:
-                    print('>>>TODO ',mode,len(usy),len(uTabs))
+                    print('>>>TODO ', mode, len(usy), len(uTabs))
                 else:
-                    if len(usy)==1:
+                    if len(usy) == 1:
                         # Temporary hack until we have an option for spread by tabs or col
-                        nSubPlots=len(uTabs)
-                        spreadBy='it'
+                        nSubPlots = len(uTabs)
+                        spreadBy = 'it'
                     else:
-                        nSubPlots=len(usy)
-                        spreadBy='iy'
-        elif mode=='nTabs_SimCols':
+                        nSubPlots = len(usy)
+                        spreadBy = 'iy'
+        elif mode == 'nTabs_SimCols':
             if bSubPlots:
                 if bCompare:
-                    print('>>>TODO ',mode,len(usy),len(uTabs))
+                    print('>>>TODO ', mode, len(usy), len(uTabs))
                 else:
-                    nSubPlots=int(len(PD)/len(uTabs))
-                    spreadBy='mod-ip'
-        elif mode=='nTabs_mCols':
+                    nSubPlots = int(len(PD) / len(uTabs))
+                    spreadBy = 'mod-ip'
+        elif mode == 'nTabs_mCols':
             if bSubPlots:
                 if bCompare:
-                    print('>>>TODO ',mode,len(usy),len(uTabs))
+                    print('>>>TODO ', mode, len(usy), len(uTabs))
                 else:
-                    if bCompare or len(uTabs)==1:
+                    if bCompare or len(uTabs) == 1:
                         nSubPlots = self.infoPanel.getNumberOfSubplots(PD, bSubPlots)
                     else:
-                        nSubPlots=len(PD)
-                    spreadBy='mod-ip'
-        elif mode=='nTabs_1Col':
+                        nSubPlots = len(PD)
+                    spreadBy = 'mod-ip'
+        elif mode == 'nTabs_1Col':
             if bSubPlots:
                 if bCompare:
-                    print('>>> TODO',mode,len(uTabs))
+                    print('>>> TODO', mode, len(uTabs))
                 else:
-                    nSubPlots=len(uTabs)
-                    spreadBy='it'
+                    nSubPlots = len(uTabs)
+                    spreadBy = 'it'
         else:
             raise Exception('Unknown mode, contact developer.')
-        return nSubPlots,spreadBy
+        return nSubPlots, spreadBy
 
-    def distributePlots(self,mode,nSubPlots,spreadBy):
+    def distributePlots(self, mode, nSubPlots, spreadBy):
         """ Assigns plot data to axes and axes to plot data """
-        axes=self.fig.axes
+        axes = self.fig.axes
 
         # Link plot data to axes
-        if nSubPlots==1 or spreadBy=='none':
-            axes[0].iPD=[i for i in range(len(self.plotData))]
+        if nSubPlots == 1 or spreadBy == 'none':
+            axes[0].iPD = [i for i in range(len(self.plotData))]
         else:
             for ax in axes:
-                ax.iPD=[]
-            PD=self.plotData
-            uTabs=unique([pd.it for pd in PD])
-            uiy=unique([pd.iy for pd in PD])
-            if spreadBy=='iy':
-                for ipd,pd in enumerate(PD):
-                    i=uiy.index(pd.iy)
+                ax.iPD = []
+            PD = self.plotData
+            uTabs = unique([pd.it for pd in PD])
+            uiy = unique([pd.iy for pd in PD])
+            if spreadBy == 'iy':
+                for ipd, pd in enumerate(PD):
+                    i = uiy.index(pd.iy)
                     if i < len(axes):
                         axes[i].iPD.append(ipd)
-            elif spreadBy=='it':
-                for ipd,pd in enumerate(PD):
-                    i=uTabs.index(pd.it)
+            elif spreadBy == 'it':
+                for ipd, pd in enumerate(PD):
+                    i = uTabs.index(pd.it)
                     axes[i].iPD.append(ipd)
-            elif spreadBy=='mod-ip':
-                for ipd,pd in enumerate(PD):
-                    i=np.mod(ipd, nSubPlots)
+            elif spreadBy == 'mod-ip':
+                for ipd, pd in enumerate(PD):
+                    i = np.mod(ipd, nSubPlots)
                     axes[i].iPD.append(ipd)
             else:
                 raise Exception('Wrong spreadby value')
 
-    def setLegendLabels(self,mode):
+    def setLegendLabels(self, mode):
         """ Set labels for legend """
-        if mode=='1Tab_nCols':
+        if mode == '1Tab_nCols':
             for pd in self.plotData:
                 if self.pltTypePanel.cbMinMax.GetValue():
                     pd.syl = no_unit(pd.sy)
                 else:
                     pd.syl = pd.sy
 
-        elif mode=='nTabs_SameCols':
+        elif mode == 'nTabs_SameCols':
             for pd in self.plotData:
-                pd.syl=pd.st
+                pd.syl = pd.st
 
-        elif mode=='nTabs_1Col':
-            usy=unique([pd.sy for pd in self.plotData])
-            if len(usy)==1:
+        elif mode == 'nTabs_1Col':
+            usy = unique([pd.sy for pd in self.plotData])
+            if len(usy) == 1:
                 for pd in self.plotData:
-                    pd.syl=pd.st
+                    pd.syl = pd.st
             else:
                 for pd in self.plotData:
                     if self.pltTypePanel.cbMinMax.GetValue():
-                        pd.syl=no_unit(pd.sy)
+                        pd.syl = no_unit(pd.sy)
                     else:
-                        pd.syl=pd.sy #pd.syl=pd.st + ' - '+pd.sy
-        elif mode=='nTabs_SimCols':
+                        pd.syl = pd.sy  # pd.syl=pd.st + ' - '+pd.sy
+        elif mode == 'nTabs_SimCols':
             bSubPlots = self.cbSub.IsChecked()
-            if bSubPlots: # spread by table name
+            if bSubPlots:  # spread by table name
                 for pd in self.plotData:
-                    pd.syl=pd.st
+                    pd.syl = pd.st
             else:
                 for pd in self.plotData:
-                    pd.syl=pd.st + ' - '+pd.sy
-        elif mode=='nTabs_mCols':
-            usy=unique([pd.sy for pd in self.plotData])
+                    pd.syl = pd.st + ' - ' + pd.sy
+        elif mode == 'nTabs_mCols':
+            usy = unique([pd.sy for pd in self.plotData])
             bSubPlots = self.cbSub.IsChecked()
-            if bSubPlots and len(usy)==1: # spread by table name
+            if bSubPlots and len(usy) == 1:  # spread by table name
                 for pd in self.plotData:
-                    pd.syl=pd.st
+                    pd.syl = pd.st
             else:
                 for pd in self.plotData:
-                    pd.syl=pd.st + ' - '+pd.sy
+                    pd.syl = pd.st + ' - ' + pd.sy
         else:
             raise Exception('Unknown mode {}'.format(mode))
-
 
     def empty(self):
         self.cleanPlot()
 
     def clean_memory(self):
-        if hasattr(self,'plotData'):
+        if hasattr(self, 'plotData'):
             del self.plotData
-            self.plotData=[]
+            self.plotData = []
             for ax in self.fig.axes:
-                ax.iPD=[]
+                ax.iPD = []
                 self.fig.delaxes(ax)
             gc.collect()
 
@@ -1275,14 +1280,14 @@ class PlotPanel(wx.Panel):
 
     def cleanPlot(self):
         for ax in self.fig.axes:
-            if hasattr(ax,'iPD'):
+            if hasattr(ax, 'iPD'):
                 del ax.iPD
             self.fig.delaxes(ax)
         gc.collect()
         self.fig.add_subplot(111)
         ax = self.fig.axes[0]
         ax.set_axis_off()
-        #ax.plot(1,1)
+        # ax.plot(1,1)
         self.canvas.draw()
         gc.collect()
 
@@ -1295,50 +1300,50 @@ class PlotPanel(wx.Panel):
         """
         self.clean_memory()
         self.getPlotData(self.pltTypePanel.plotType())
-        if len(self.plotData)==0: 
+        if len(self.plotData) == 0:
             self.cleanPlot();
             return
-        mode=self.findPlotMode(self.plotData)
+        mode = self.findPlotMode(self.plotData)
         if self.pltTypePanel.cbCompare.GetValue():
             self.PD_Compare(mode)
-            if len(self.plotData)==0: 
+            if len(self.plotData) == 0:
                 self.cleanPlot();
                 return
         self.redraw_same_data()
         if self.infoPanel is not None:
-            self.infoPanel.showStats(self.plotData,self.pltTypePanel.plotType())
+            self.infoPanel.showStats(self.plotData, self.pltTypePanel.plotType())
 
     def redraw_same_data(self, keep_limits=True):
-        if len(self.plotData)==0: 
+        if len(self.plotData) == 0:
             self.cleanPlot();
             return
         elif len(self.plotData) == 1:
-            if self.plotData[0].xIsString or self.plotData[0].yIsString or self.plotData[0].xIsDate or self.plotData[0].yIsDate:
+            if self.plotData[0].xIsString or self.plotData[0].yIsString or self.plotData[0].xIsDate or self.plotData[
+                0].yIsDate:
                 self.cbAutoScale.SetValue(True)
             else:
-                if len(self.xlim_prev)==0: # Might occur if some date didn't plot before (e.g. strings)
+                if len(self.xlim_prev) == 0:  # Might occur if some date didn't plot before (e.g. strings)
                     self.cbAutoScale.SetValue(True)
-                elif rectangleOverlap(self.plotData[0]._xMin[0], self.plotData[0]._yMin[0], 
-                            self.plotData[0]._xMax[0], self.plotData[0]._yMax[0],
-                            self.xlim_prev[0][0], self.ylim_prev[0][0], 
-                            self.xlim_prev[0][1], self.ylim_prev[0][1]):
-                        pass
+                elif rectangleOverlap(self.plotData[0]._xMin[0], self.plotData[0]._yMin[0],
+                                      self.plotData[0]._xMax[0], self.plotData[0]._yMax[0],
+                                      self.xlim_prev[0][0], self.ylim_prev[0][0],
+                                      self.xlim_prev[0][1], self.ylim_prev[0][1]):
+                    pass
                 else:
                     self.cbAutoScale.SetValue(True)
 
-        mode=self.findPlotMode(self.plotData)
-        nPlots,spreadBy=self.findSubPlots(self.plotData,mode)
+        mode = self.findPlotMode(self.plotData)
+        nPlots, spreadBy = self.findSubPlots(self.plotData, mode)
 
         self.clean_memory_plot()
         self.set_subplots(nPlots)
-        self.distributePlots(mode,nPlots,spreadBy)
+        self.distributePlots(mode, nPlots, spreadBy)
 
         if not self.pltTypePanel.cbCompare.GetValue():
             self.setLegendLabels(mode)
 
         self.plot_all(keep_limits)
         self.canvas.draw()
-
 
     def _store_limits(self):
         self.xlim_prev = []
@@ -1355,33 +1360,37 @@ class PlotPanel(wx.Panel):
 
 if __name__ == '__main__':
     import pandas as pd;
-    from Tables import Table,TableList
+    from Tables import Table, TableList
 
     app = wx.App(False)
-    self=wx.Frame(None,-1,"Title")
+    self = wx.Frame(None, -1, "Title")
     self.SetSize((800, 600))
-    #self.SetBackgroundColour('red')
+
+
+    # self.SetBackgroundColour('red')
     class FakeSelPanel(wx.Panel):
         def __init__(self, parent):
-            super(FakeSelPanel,self).__init__(parent)
-            d ={'ColA': np.linspace(0,1,100)+1,'ColB': np.random.normal(0,1,100)+0,'ColC':np.random.normal(0,1,100)+1}
+            super(FakeSelPanel, self).__init__(parent)
+            d = {'ColA': np.linspace(0, 1, 100) + 1, 'ColB': np.random.normal(0, 1, 100) + 0,
+                 'ColC': np.random.normal(0, 1, 100) + 1}
             df = pd.DataFrame(data=d)
-            self.tabList=TableList([Table(data=df)])
+            self.tabList = TableList([Table(data=df)])
 
         def getPlotDataSelection(self):
-            ID=[]
-            ID.append([0,0,2,'x','ColB','tab'])
-            ID.append([0,0,3,'x','ColC','tab'])
-            return ID,True
+            ID = []
+            ID.append([0, 0, 2, 'x', 'ColB', 'tab'])
+            ID.append([0, 0, 3, 'x', 'ColC', 'tab'])
+            return ID, True
 
-    selpanel=FakeSelPanel(self)
+
+    selpanel = FakeSelPanel(self)
     #     selpanel.SetBackgroundColour('blue')
-    p1=PlotPanel(self,selpanel)
+    p1 = PlotPanel(self, selpanel)
     p1.load_and_draw()
-    #p1=SpectralCtrlPanel(self)
+    # p1=SpectralCtrlPanel(self)
     sizer = wx.BoxSizer(wx.VERTICAL)
-    sizer.Add(selpanel,0, flag = wx.EXPAND|wx.ALL,border = 10)
-    sizer.Add(p1,1, flag = wx.EXPAND|wx.ALL,border = 10)
+    sizer.Add(selpanel, 0, flag=wx.EXPAND | wx.ALL, border=10)
+    sizer.Add(p1, 1, flag=wx.EXPAND | wx.ALL, border=10)
     self.SetSizer(sizer)
 
     self.Center()
@@ -1390,8 +1399,6 @@ if __name__ == '__main__':
     self.Show()
     self.SendSizeEvent()
 
-    #p1.showStats(None,[tab],[0],[0,1],tab.columns,0,erase=False)
+    # p1.showStats(None,[tab],[0],[0,1],tab.columns,0,erase=False)
 
     app.MainLoop()
-
-

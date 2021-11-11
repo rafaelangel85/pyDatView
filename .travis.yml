@@ -6,17 +6,17 @@ python:
   - "3.6"
   - "3.7"
   - "3.8"
-os: 
- - linux
+os:
+  - linux
 sudo: true
 
 install:
-#  - sudo apt-get install python-wxgtk3.0
+  #  - sudo apt-get install python-wxgtk3.0
   - sudo apt-get install nsis
   - pip install -r _tools/travis_requirements.txt
   - pip install -r weio/requirements.txt
 
-script: 
+script:
   - make test
   - if [[ "$TRAVIS_TAG" == "" ]]; then export TRAVIS_TAG="vdev" ; fi
 
@@ -30,7 +30,7 @@ before_deploy:
   - pip install pynsist
   - pip install distlib
   - git clone https://github.com/takluyver/pynsist
-  - mv pynsist/nsist nsist 
+  - mv pynsist/nsist nsist
   - make installer
   - mv build/nsis/pyDatView.exe "pyDatView_"$VERSION_NAME"_setup.exe"
   - mv _tools/pyDatView.cmd build/nsis/
@@ -44,15 +44,15 @@ deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
   file_glob: true
-  overwrite:  true
+  overwrite: true
   skip_cleanup: true
   file:
-      - pyDatView*.exe
-      - pyDatView*.zip
+    - pyDatView*.exe
+    - pyDatView*.zip
   name: $FULL_VERSION_NAME
-  target_commitish: $TRAVIS_COMMIT 
-  tag_name: $TRAVIS_TAG 
+  target_commitish: $TRAVIS_COMMIT
+  tag_name: $TRAVIS_TAG
   on:
-     tags: true
-     branch: master
-     condition: $TRAVIS_PYTHON_VERSION = 3.6
+    tags: true
+    branch: master
+    condition: $TRAVIS_PYTHON_VERSION = 3.6

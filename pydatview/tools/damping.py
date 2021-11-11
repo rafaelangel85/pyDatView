@@ -1,8 +1,10 @@
 from __future__ import division, print_function
+
 import numpy as np
 
-__all__  = ['logDecFromDecay']
+__all__ = ['logDecFromDecay']
 __all__ += ['TestDamping']
+
 
 def indexes(y, thres=0.3, min_dist=1, thres_abs=False):
     """Peak detection routine.
@@ -35,15 +37,15 @@ def indexes(y, thres=0.3, min_dist=1, thres_abs=False):
 
     if not thres_abs:
         thres = thres * (np.max(y) - np.min(y)) + np.min(y)
-        
+
     min_dist = int(min_dist)
 
     # compute first order difference
     dy = np.diff(y)
 
     # propagate left and right values successively to fill all plateau pixels (0-value)
-    zeros,=np.where(dy == 0)
-    
+    zeros, = np.where(dy == 0)
+
     # check if the signal is totally flat
     if len(zeros) == len(y) - 1:
         return np.array([])
@@ -96,74 +98,69 @@ def indexes(y, thres=0.3, min_dist=1, thres_abs=False):
     return peaks
 
 
-#indexes =indexes(x, thres=0.02/max(x), min_dist=1, thres_abs=true)
-def logDecFromThreshold(x,threshold=None,bothSides=False):
+# indexes =indexes(x, thres=0.02/max(x), min_dist=1, thres_abs=true)
+def logDecFromThreshold(x, threshold=None, bothSides=False):
     """ Detect maxima in a signal, computes the log deg based on it """
     if bothSides:
-        ldPos,iTPos,stdPos,IPos = logDecFromThreshold( x, threshold=threshold)
-        ldNeg,iTNeg,stdNeg,INeg = logDecFromThreshold(-x, threshold=threshold)
-        return (ldPos+ldNeg)/2, (iTPos+iTNeg)/2, (stdPos+stdNeg)/2, (IPos,INeg)
+        ldPos, iTPos, stdPos, IPos = logDecFromThreshold(x, threshold=threshold)
+        ldNeg, iTNeg, stdNeg, INeg = logDecFromThreshold(-x, threshold=threshold)
+        return (ldPos + ldNeg) / 2, (iTPos + iTNeg) / 2, (stdPos + stdNeg) / 2, (IPos, INeg)
 
     if threshold is None:
-        threshold = np.mean(abs(x-np.mean(x)))/3;
-    I =indexes(x, thres=threshold, min_dist=1, thres_abs=True)
+        threshold = np.mean(abs(x - np.mean(x))) / 3;
+    I = indexes(x, thres=threshold, min_dist=1, thres_abs=True)
     # Estimating "index" period
     iT = round(np.median(np.diff(I)));
-    vn=np.arange(0,len(I)-1)+1
+    vn = np.arange(0, len(I) - 1) + 1
     # Quick And Dirty Way using one as ref and assuming all periods were found
-    vDamping   = 1/vn*np.log( x[I[0]]/x[I[1:]] ) # Damping Ratios
-    vLogDec    = 1/np.sqrt(1+ (2*np.pi/vDamping)**2 )
-    logdec     = np.mean(vLogDec);
-    std_logdec = np.std(vLogDec) ;
-    return logdec,iT,std_logdec,I
+    vDamping = 1 / vn * np.log(x[I[0]] / x[I[1:]])  # Damping Ratios
+    vLogDec = 1 / np.sqrt(1 + (2 * np.pi / vDamping) ** 2)
+    logdec = np.mean(vLogDec);
+    std_logdec = np.std(vLogDec);
+    return logdec, iT, std_logdec, I
 
 
-def logDecFromDecay(x,t,threshold=None):
+def logDecFromDecay(x, t, threshold=None):
     m = np.mean(x)
     if threshold is None:
-        threshold = np.mean(abs(x-m))/3;
-    
-    dt = t[1]-t[0] # todo signal with dt not uniform
+        threshold = np.mean(abs(x - m)) / 3;
+
+    dt = t[1] - t[0]  # todo signal with dt not uniform
 
     # Computing log decs from positive and negative side and taking the mean
-    logdec,iT,std,(IPos,INeg) = logDecFromThreshold( x-m, threshold=threshold, bothSides=True)
-    DampingRatio=2*np.pi*logdec/np.sqrt(1-logdec**2) # damping ratio
-
+    logdec, iT, std, (IPos, INeg) = logDecFromThreshold(x - m, threshold=threshold, bothSides=True)
+    DampingRatio = 2 * np.pi * logdec / np.sqrt(1 - logdec ** 2)  # damping ratio
 
     # Going to time space
-    T = iT*dt # Period of damped oscillations. Badly estimated due to dt resolution
-#     % Better estimate of period
-#     [T,~,iCross]=fGetPeriodFromZeroCrossing(x(1:IPos(end)),dt);
-    fd = 1/T           
-    fn = fd/np.sqrt(1-logdec**2)
+    T = iT * dt  # Period of damped oscillations. Badly estimated due to dt resolution
+    #     % Better estimate of period
+    #     [T,~,iCross]=fGetPeriodFromZeroCrossing(x(1:IPos(end)),dt);
+    fd = 1 / T
+    fn = fd / np.sqrt(1 - logdec ** 2)
     # --- Model
     # Estimating signal params 
-    delta   = DampingRatio
-    alpha   = delta/T    
-    omega   = 2*np.pi*fd  
+    delta = DampingRatio
+    alpha = delta / T
+    omega = 2 * np.pi * fd
     # Values at a peak half way through
-    i1      = IPos[int(len(IPos)/2)]   
-    A1      = x[i1]                                     ;
-    t1      = dt*i1                                     ;
-    XX=x[i1:]-m
-    ineg=i1+np.where(XX<0)[0][0]
-    ipos=ineg-1
-    xcross=[x[ipos],x[ineg]]-m
-    icross=[ipos,ineg]
-    i0 = np.interp(0,xcross,icross)
+    i1 = IPos[int(len(IPos) / 2)]
+    A1 = x[i1];
+    t1 = dt * i1;
+    XX = x[i1:] - m
+    ineg = i1 + np.where(XX < 0)[0][0]
+    ipos = ineg - 1
+    xcross = [x[ipos], x[ineg]] - m
+    icross = [ipos, ineg]
+    i0 = np.interp(0, xcross, icross)
     # For phase determination, we use a precise 0-up-crossing - 
-    t0=dt*i0
-    phi0    = np.mod(2*np.pi- omega*t0+np.pi/2,2*np.pi)                  ;
-    A = (A1-m)/(np.exp(-alpha*t1)*np.cos(omega*t1+phi0));
-    x_model = A*np.exp(-alpha*t)*np.cos(omega*t+phi0)+m;
-    epos   =  A*np.exp(-alpha*t)+m                   ;
-    eneg   = -A*np.exp(-alpha*t)+m                  ;
+    t0 = dt * i0
+    phi0 = np.mod(2 * np.pi - omega * t0 + np.pi / 2, 2 * np.pi);
+    A = (A1 - m) / (np.exp(-alpha * t1) * np.cos(omega * t1 + phi0));
+    x_model = A * np.exp(-alpha * t) * np.cos(omega * t + phi0) + m;
+    epos = A * np.exp(-alpha * t) + m;
+    eneg = -A * np.exp(-alpha * t) + m;
 
-    return logdec,DampingRatio,T,fn,fd,IPos,INeg,epos,eneg
-
-
-
-
+    return logdec, DampingRatio, T, fn, fd, IPos, INeg, epos, eneg
 
 
 # --------------------------------------------------------------------------------}
@@ -171,35 +168,33 @@ def logDecFromDecay(x,t,threshold=None):
 # --------------------------------------------------------------------------------{
 import unittest
 
+
 class TestDamping(unittest.TestCase):
 
     def test_logdec_from_decay(self):
-        T=10;
-        logdec=0.1; # log decrements (<1)   logdec  = 1./sqrt(1+ (2*pi./delta).^2 )  ;
-        delta=2*np.pi*logdec/np.sqrt(1-logdec**2); # damping ratio;
-        alpha=delta/T
-        t=np.linspace(0,30*T,1000)
-        x=np.cos(2*np.pi/T*t)*np.exp(-alpha*t)+10;
-        logdec_out,delta_out,T,fn,fd,IPos,INeg,epos,eneg=logDecFromDecay(x,t)
-        alpha_out=delta_out/T
-        self.assertAlmostEqual(logdec,logdec_out,3)
-        self.assertAlmostEqual(delta,delta_out,3)
+        T = 10;
+        logdec = 0.1;  # log decrements (<1)   logdec  = 1./sqrt(1+ (2*pi./delta).^2 )  ;
+        delta = 2 * np.pi * logdec / np.sqrt(1 - logdec ** 2);  # damping ratio;
+        alpha = delta / T
+        t = np.linspace(0, 30 * T, 1000)
+        x = np.cos(2 * np.pi / T * t) * np.exp(-alpha * t) + 10;
+        logdec_out, delta_out, T, fn, fd, IPos, INeg, epos, eneg = logDecFromDecay(x, t)
+        alpha_out = delta_out / T
+        self.assertAlmostEqual(logdec, logdec_out, 3)
+        self.assertAlmostEqual(delta, delta_out, 3)
         if __name__ == '__main__':
             import matplotlib.pyplot as plt
-            print('logdec in:  ',logdec)
-            print('logdec out: ',logdec_out)
-            print('alpha in :  ',alpha)
-            print('alpha out : ',delta_out/T)
-            plt.plot(t,x)
-            plt.plot(t[IPos],x[IPos],'o')
-            plt.plot(t[INeg],x[INeg],'o')
-            plt.plot(t,epos,'k--')
-            plt.plot(t,eneg,'k--')
+            print('logdec in:  ', logdec)
+            print('logdec out: ', logdec_out)
+            print('alpha in :  ', alpha)
+            print('alpha out : ', delta_out / T)
+            plt.plot(t, x)
+            plt.plot(t[IPos], x[IPos], 'o')
+            plt.plot(t[INeg], x[INeg], 'o')
+            plt.plot(t, epos, 'k--')
+            plt.plot(t, eneg, 'k--')
             plt.show()
 
 
-    
 if __name__ == '__main__':
     unittest.main()
-
-

@@ -1,15 +1,16 @@
-
-import wx
 import matplotlib
-from matplotlib.backends.backend_wx import NavigationToolbar2Wx
+import wx
 from matplotlib.backend_bases import NavigationToolbar2
-from matplotlib.widgets import Cursor, MultiCursor
+from matplotlib.backends.backend_wx import NavigationToolbar2Wx
+from matplotlib.widgets import MultiCursor
+
+
 # from matplotlib.widgets import AxesWidget
 
 def GetKeyString(evt):
     """ returns a string describing the key combination being pressed """
     keyMap = {}
-    keyMap[wx.WXK_TAB]    = 'TAB'
+    keyMap[wx.WXK_TAB] = 'TAB'
     keyMap[wx.WXK_ESCAPE] = 'ESCAPE'
     keyMap[wx.WXK_RETURN] = 'RETURN'
 
@@ -17,9 +18,9 @@ def GetKeyString(evt):
     keyname = keyMap.get(keycode, None)
     modifiers = ""
     for mod, ch in ((evt.ControlDown(), 'Ctrl+'),
-                    (evt.AltDown(),     'Alt+'),
-                    (evt.ShiftDown(),   'Shift+'),
-                    (evt.MetaDown(),    'Meta+')):
+                    (evt.AltDown(), 'Alt+'),
+                    (evt.ShiftDown(), 'Shift+'),
+                    (evt.MetaDown(), 'Meta+')):
         if mod:
             modifiers += ch
 
@@ -30,68 +31,68 @@ def GetKeyString(evt):
             keyname = str(keycode)
     return modifiers + keyname
 
-# --------------------------------------------------------------------------------}
-# --- Toolbar utils for backwards compatibilty 
-# --------------------------------------------------------------------------------{
+    # --------------------------------------------------------------------------------}
+    # --- Toolbar utils for backwards compatibilty
+    # --------------------------------------------------------------------------------{
     """ """
 
 
-def TBAddCheckTool(tb,label,bitmap,callback=None,bitmap2=None):
+def TBAddCheckTool(tb, label, bitmap, callback=None, bitmap2=None):
     try:
-        tl = tb.AddCheckTool( -1, bitmap1=bitmap, label=label )
+        tl = tb.AddCheckTool(-1, bitmap1=bitmap, label=label)
         if callback is not None:
             tb.Bind(wx.EVT_TOOL, callback, tl)
         return tl
     except:
         pass
 
-    tl = tb.AddLabelTool( -1, bitmap=bitmap, label=label )
+    tl = tb.AddLabelTool(-1, bitmap=bitmap, label=label)
     if callback is not None:
         tb.Bind(wx.EVT_TOOL, callback, tl)
     return tl
 
-def TBAddTool(tb,label,bitmap,callback=None,Type=None):
+
+def TBAddTool(tb, label, bitmap, callback=None, Type=None):
     """ Adding a toolbar tool, safe depending on interface and compatibility
     see also wx_compat AddTool in wx backends 
     """
     # Modern API
-    if Type is None or Type==0:
+    if Type is None or Type == 0:
         try:
-            tl = tb.AddTool( -1, bitmap=bitmap, label=label )
+            tl = tb.AddTool(-1, bitmap=bitmap, label=label)
             if callback is not None:
                 tb.Bind(wx.EVT_TOOL, callback, tl)
             return tl
         except:
-            Type=None
+            Type = None
     # Old fashion API
-    if Type is None or Type==1:
+    if Type is None or Type == 1:
         try:
-            tl = tb.AddLabelTool( -1, bitmap=bitmap, label=label )
+            tl = tb.AddLabelTool(-1, bitmap=bitmap, label=label)
             if callback is not None:
                 tb.Bind(wx.EVT_TOOL, callback, tl)
             return tl
         except:
-            Type=None
+            Type = None
     # Using a Bitmap 
-    if Type is None or Type==2:
+    if Type is None or Type == 2:
         try:
-            bt=wx.Button(tb,wx.ID_ANY, " "+label+" ", style=wx.BU_EXACTFIT)
+            bt = wx.Button(tb, wx.ID_ANY, " " + label + " ", style=wx.BU_EXACTFIT)
             bt.SetBitmapLabel(bitmap)
-            #b.SetBitmapMargins((2,2)) # default is 4 but that seems too big to me.
-            #b.SetInitialSize()
-            tl=tb.AddControl(bt)
+            # b.SetBitmapMargins((2,2)) # default is 4 but that seems too big to me.
+            # b.SetInitialSize()
+            tl = tb.AddControl(bt)
             if callback is not None:
                 tb.Bind(wx.EVT_BUTTON, callback, bt)
             return tl
         except:
-            Type=None
+            Type = None
     # Last resort, we add a button only
-    bt=wx.Button(tb,wx.ID_ANY, label)
-    tl=tb.AddControl(bt)
+    bt = wx.Button(tb, wx.ID_ANY, label)
+    tl = tb.AddControl(bt)
     if callback is not None:
         tb.Bind(wx.EVT_BUTTON, callback, bt)
     return tl
-
 
 
 # --------------------------------------------------------------------------------}
@@ -128,7 +129,7 @@ class MyMultiCursor(MultiCursor):
     def __init__(self, canvas, axes, useblit=True, horizOn=False, vertOn=True, horizLocal=True,
                  **lineprops):
         # Taken from matplotlib/widget.py but added horizLocal
-        super(MyMultiCursor,self).__init__(canvas, axes, useblit, horizOn, vertOn, **lineprops)
+        super(MyMultiCursor, self).__init__(canvas, axes, useblit, horizOn, vertOn, **lineprops)
         self.canvas = canvas
         self.axes = axes
         self.horizOn = horizOn
@@ -177,7 +178,8 @@ class MyMultiCursor(MultiCursor):
                 line.set_visible(self.visible)
         # MANU: adding current axes
         self._update(currentaxes=event.inaxes)
-    def _update(self,currentaxes=None):
+
+    def _update(self, currentaxes=None):
         if self.useblit:
             if self.background is not None:
                 self.canvas.restore_region(self.background)
@@ -194,30 +196,31 @@ class MyMultiCursor(MultiCursor):
             self.canvas.draw_idle()
 
 
-class MyNavigationToolbar2Wx(NavigationToolbar2Wx): 
+class MyNavigationToolbar2Wx(NavigationToolbar2Wx):
     def __init__(self, canvas, keep_tools):
         # Taken from matplotlib/backend_wx.py but added style:
         self.VERSION = matplotlib.__version__
-        #print('MPL VERSION:',self.VERSION)
-        if self.VERSION[0]=='2' or self.VERSION[0]=='1': 
-            wx.ToolBar.__init__(self, canvas.GetParent(), -1, style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT | wx.TB_NODIVIDER)
+        # print('MPL VERSION:',self.VERSION)
+        if self.VERSION[0] == '2' or self.VERSION[0] == '1':
+            wx.ToolBar.__init__(self, canvas.GetParent(), -1,
+                                style=wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT | wx.TB_NODIVIDER)
             NavigationToolbar2.__init__(self, canvas)
 
             self.canvas = canvas
             self._idle = True
-            try: # Old matplotlib
-                self.statbar = None 
+            try:  # Old matplotlib
+                self.statbar = None
             except:
                 pass
             self.prevZoomRect = None
             self.retinaFix = 'wxMac' in wx.PlatformInfo
-            #NavigationToolbar2Wx.__init__(self, plotCanvas)
+            # NavigationToolbar2Wx.__init__(self, plotCanvas)
         else:
             NavigationToolbar2Wx.__init__(self, canvas)
 
         # Make sure we start in zoom mode
         if 'Pan' in keep_tools:
-            self.zoom() # NOTE: #22 BREAK cursors #12!
+            self.zoom()  # NOTE: #22 BREAK cursors #12!
 
         # Remove unnecessary tools
         tools = [self.GetToolByPos(i) for i in range(self.GetToolsCount())]
@@ -226,19 +229,19 @@ class MyNavigationToolbar2Wx(NavigationToolbar2Wx):
                 self.DeleteToolByPos(i)
 
     def press_zoom(self, event):
-        NavigationToolbar2Wx.press_zoom(self,event)
-        #self.SetToolBitmapSize((22,22))
+        NavigationToolbar2Wx.press_zoom(self, event)
+        # self.SetToolBitmapSize((22,22))
 
     def press_pan(self, event):
-        NavigationToolbar2Wx.press_pan(self,event)
+        NavigationToolbar2Wx.press_pan(self, event)
 
     def zoom(self, *args):
-        NavigationToolbar2Wx.zoom(self,*args)
+        NavigationToolbar2Wx.zoom(self, *args)
 
     def pan(self, *args):
         try:
-            #if self.VERSION[0]=='2' or self.VERSION[0]=='1': 
-            isPan = self._active=='PAN'
+            # if self.VERSION[0]=='2' or self.VERSION[0]=='1':
+            isPan = self._active == 'PAN'
         except:
             try:
                 from matplotlib.backend_bases import _Mode
@@ -246,11 +249,10 @@ class MyNavigationToolbar2Wx(NavigationToolbar2Wx):
             except:
                 raise Exception('Pan not found, report a pyDatView bug, with matplotlib version.')
         if isPan:
-            NavigationToolbar2Wx.pan(self,*args)
+            NavigationToolbar2Wx.pan(self, *args)
             self.zoom()
         else:
-            NavigationToolbar2Wx.pan(self,*args)
-
+            NavigationToolbar2Wx.pan(self, *args)
 
     def home(self, *args):
         """Restore the original view."""

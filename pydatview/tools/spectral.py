@@ -22,17 +22,18 @@ from __future__ import division, print_function, absolute_import
 import numpy as np
 from six import string_types
 
-__all__  = ['fft_wrap','welch', 'psd', 'fft_amplitude']
+__all__ = ['fft_wrap', 'welch', 'psd', 'fft_amplitude']
 __all__ += ['pwelch', 'csd', 'coherence']
 __all__ += ['fnextpow2']
-__all__ += ['hann','hamming','boxcar','general_hamming','get_window']
+__all__ += ['hann', 'hamming', 'boxcar', 'general_hamming', 'get_window']
 __all__ += ['TestSpectral']
 
 
 # --------------------------------------------------------------------------------}
 # --- FFT wrap
 # --------------------------------------------------------------------------------{
-def fft_wrap(t,y,dt=None, output_type='amplitude',averaging='None',averaging_window='hamming',detrend=False,nExp=None):
+def fft_wrap(t, y, dt=None, output_type='amplitude', averaging='None', averaging_window='hamming', detrend=False,
+             nExp=None):
     """ 
     Wrapper to compute FFT amplitude or power spectra, with averaging.
     INPUTS:
@@ -46,40 +47,40 @@ def fft_wrap(t,y,dt=None, output_type='amplitude',averaging='None',averaging_win
     """
 
     # Formatting inputs
-    output_type      = output_type.lower()
-    averaging        = averaging.lower()
+    output_type = output_type.lower()
+    averaging = averaging.lower()
     averaging_window = averaging_window.lower()
     y = np.asarray(y)
     y = y[~np.isnan(y)]
-    n = len(y) 
+    n = len(y)
 
     if dt is None:
-        dtDelta0 = t[1]-t[0]
+        dtDelta0 = t[1] - t[0]
         # Hack to use a constant dt
-        dt = (np.max(t)-np.min(t))/(n-1)
-        if dtDelta0 !=dt:
-            print('[WARN] dt from tmax-tmin different from dt from t2-t1' )
-    Fs = 1/dt
-    if averaging=='none':
+        dt = (np.max(t) - np.min(t)) / (n - 1)
+        if dtDelta0 != dt:
+            print('[WARN] dt from tmax-tmin different from dt from t2-t1')
+    Fs = 1 / dt
+    if averaging == 'none':
         frq, PSD, Info = psd(y, fs=Fs, detrend=detrend, return_onesided=True)
-    elif averaging=='welch':
+    elif averaging == 'welch':
         # --- Welch - PSD
-        #overlap_frac=0.5
-        #return fnextpow2(np.sqrt(len(x)/(1-overlap_frac)))
-        nFFTAll=fnextpow2(n)
+        # overlap_frac=0.5
+        # return fnextpow2(np.sqrt(len(x)/(1-overlap_frac)))
+        nFFTAll = fnextpow2(n)
         if nExp is None:
-            nExp=int(np.log(nFFTAll)/np.log(2))-1
-        nPerSeg=2**nExp
-        if nPerSeg>n:
+            nExp = int(np.log(nFFTAll) / np.log(2)) - 1
+        nPerSeg = 2 ** nExp
+        if nPerSeg > n:
             print('[WARN] Power of 2 value was too high and was reduced. Disable averaging to use the full spectrum.');
-            nExp=int(np.log(nFFTAll)/np.log(2))-1
-            nPerSeg=2**nExp
-        if averaging_window=='hamming':
-           window = hamming(nPerSeg, True)# True=Symmetric, like matlab
-        elif averaging_window=='hann':
-           window = hann(nPerSeg, True)
-        elif averaging_window=='rectangular':
-           window = boxcar(nPerSeg)
+            nExp = int(np.log(nFFTAll) / np.log(2)) - 1
+            nPerSeg = 2 ** nExp
+        if averaging_window == 'hamming':
+            window = hamming(nPerSeg, True)  # True=Symmetric, like matlab
+        elif averaging_window == 'hann':
+            window = hann(nPerSeg, True)
+        elif averaging_window == 'rectangular':
+            window = boxcar(nPerSeg)
         else:
             raise Exception('Averaging window unknown {}'.format(averaging_window))
         frq, PSD, Info = pwelch(y, fs=Fs, window=window, detrend=detrend)
@@ -88,67 +89,69 @@ def fft_wrap(t,y,dt=None, output_type='amplitude',averaging='None',averaging_win
         raise Exception('Averaging method unknown {}'.format(averaging))
 
     # --- Formatting output
-    if output_type=='amplitude':
-        deltaf = frq[1]-frq[0]
-        Y = np.sqrt(PSD*2*deltaf)
+    if output_type == 'amplitude':
+        deltaf = frq[1] - frq[0]
+        Y = np.sqrt(PSD * 2 * deltaf)
         # NOTE: the above should be the same as:Y=abs(Y[range(nhalf)])/n;Y[1:-1]=Y[1:-1]*2;
-    elif output_type=='psd': # one sided
+    elif output_type == 'psd':  # one sided
         Y = PSD
-    elif output_type=='f x psd':
-        Y = PSD*frq
+    elif output_type == 'f x psd':
+        Y = PSD * frq
     else:
         raise NotImplementedError('Contact developer')
     if detrend:
-        frq= frq[1:]
-        Y  = Y[1:]
+        frq = frq[1:]
+        Y = Y[1:]
     return frq, Y, Info
-
 
 
 # --------------------------------------------------------------------------------}
 # --- Spectral simple (averaging below) 
 # --------------------------------------------------------------------------------{
-def fft_amplitude(y, fs=1.0, detrend ='constant', return_onesided=True):
+def fft_amplitude(y, fs=1.0, detrend='constant', return_onesided=True):
     """ Returns FFT amplitude of signal """
     frq, PSD, Info = psd(y, fs=fs, detrend=detrend, return_onesided=return_onesided)
-    deltaf = frq[1]-frq[0]
-    Y = np.sqrt(PSD*2*deltaf)
+    deltaf = frq[1] - frq[0]
+    Y = np.sqrt(PSD * 2 * deltaf)
     return frq, Y, Info
 
-def psd(y, fs=1.0, detrend ='constant', return_onesided=True):
+
+def psd(y, fs=1.0, detrend='constant', return_onesided=True):
     """ Perform PSD without averaging """
     if not return_onesided:
         raise NotImplementedError('Double sided todo')
 
     if detrend is None:
-        detrend=False
+        detrend = False
 
-    if detrend=='constant' or detrend==True:
-        m=np.mean(y);
+    if detrend == 'constant' or detrend == True:
+        m = np.mean(y);
     else:
-        m=0;
+        m = 0;
 
-    n = len(y) 
-    if n%2==0:
-        nhalf = int(n/2+1)
+    n = len(y)
+    if n % 2 == 0:
+        nhalf = int(n / 2 + 1)
     else:
-        nhalf = int((n+1)/2)
+        nhalf = int((n + 1) / 2)
 
-    frq = np.arange(nhalf)*fs/n;
-    Y   = np.fft.rfft(y-m) #Y = np.fft.fft(y) 
-    PSD = abs(Y[range(nhalf)])**2 /(n*fs) # PSD
-    PSD[1:-1] = PSD[1:-1]*2;
-    class InfoClass():
+    frq = np.arange(nhalf) * fs / n;
+    Y = np.fft.rfft(y - m)  # Y = np.fft.fft(y)
+    PSD = abs(Y[range(nhalf)]) ** 2 / (n * fs)  # PSD
+    PSD[1:-1] = PSD[1:-1] * 2;
+
+    class InfoClass:
         pass
+
     Info = InfoClass();
-    Info.df    = frq[1]-frq[0]
-    Info.fMax  = frq[-1]
+    Info.df = frq[1] - frq[0]
+    Info.fMax = frq[-1]
     Info.LFreq = len(frq)
-    Info.LSeg  = len(Y)
-    Info.LWin  = len(Y)
+    Info.LSeg = len(Y)
+    Info.LWin = len(Y)
     Info.LOvlp = 0
-    Info.nFFT  = len(Y)
-    Info.nseg  = 1
+    Info.nFFT = len(Y)
+    Info.nseg = 1
     return frq, PSD, Info
 
 
@@ -156,20 +159,26 @@ def psd(y, fs=1.0, detrend ='constant', return_onesided=True):
 # --- Windows 
 # --------------------------------------------------------------------------------{
 """The suite of window functions."""
-def fnextpow2(x):
-    return 2**np.ceil( np.log(x)*0.99999999999/np.log(2));
 
-def fDefaultWinLen(x,overlap_frac=0.5):
-    return fnextpow2(np.sqrt(len(x)/(1-overlap_frac)))
+
+def fnextpow2(x):
+    return 2 ** np.ceil(np.log(x) * 0.99999999999 / np.log(2));
+
+
+def fDefaultWinLen(x, overlap_frac=0.5):
+    return fnextpow2(np.sqrt(len(x) / (1 - overlap_frac)))
+
 
 def fDefaultWinLenMatlab(x):
-    return  np.fix((len(x)-3)*2./9.)
+    return np.fix((len(x) - 3) * 2. / 9.)
+
 
 def _len_guards(M):
     """Handle small or incorrect window lengths"""
     if int(M) != M or M < 0:
         raise ValueError('Window length M must be a non-negative integer')
     return M <= 1
+
 
 def _extend(M, sym):
     """Extend window by 1 sample if needed for DFT-even symmetry"""
@@ -178,12 +187,14 @@ def _extend(M, sym):
     else:
         return M, False
 
+
 def _truncate(w, needed):
     """Truncate window by 1 sample if needed for DFT-even symmetry"""
     if needed:
         return w[:-1]
     else:
         return w
+
 
 def general_cosine(M, a, sym=True):
     if _len_guards(M):
@@ -212,7 +223,8 @@ def boxcar(M, sym=True):
 
     return _truncate(w, needs_trunc)
 
-def hann(M, sym=True): # same as hanning(*args, **kwargs):
+
+def hann(M, sym=True):  # same as hanning(*args, **kwargs):
     return general_hamming(M, 0.5, sym)
 
 
@@ -234,6 +246,7 @@ def hamming(M, sym=True):
                \qquad 0 \leq n \leq M-1
     """
     return general_hamming(M, 0.54, sym)
+
 
 _win_equiv_raw = {
     ('boxcar', 'box', 'ones', 'rect', 'rectangular'): (boxcar, False),
@@ -282,7 +295,7 @@ def get_window(window, Nx, fftbins=True):
         elif isinstance(window, string_types):
             if window in _needs_param:
                 raise ValueError("The '" + window + "' window needs one or "
-                                 "more parameters -- pass a tuple.")
+                                                    "more parameters -- pass a tuple.")
             else:
                 winstr = window
         else:
@@ -302,10 +315,6 @@ def get_window(window, Nx, fftbins=True):
     return winfunc(*params)
 
 
-
-
-
-
 # --------------------------------------------------------------------------------}
 # --- Helpers 
 # --------------------------------------------------------------------------------{
@@ -318,7 +327,7 @@ def odd_ext(x, n, axis=-1):
         return x
     if n > x.shape[axis] - 1:
         raise ValueError(("The extension length n (%d) is too big. " +
-                         "It must not exceed x.shape[axis]-1, which is %d.")
+                          "It must not exceed x.shape[axis]-1, which is %d.")
                          % (n, x.shape[axis] - 1))
     left_end = axis_slice(x, start=0, stop=1, axis=axis)
     left_ext = axis_slice(x, start=n, stop=0, step=-1, axis=axis)
@@ -340,7 +349,7 @@ def even_ext(x, n, axis=-1):
         return x
     if n > x.shape[axis] - 1:
         raise ValueError(("The extension length n (%d) is too big. " +
-                         "It must not exceed x.shape[axis]-1, which is %d.")
+                          "It must not exceed x.shape[axis]-1, which is %d.")
                          % (n, x.shape[axis] - 1))
     left_ext = axis_slice(x, start=n, stop=0, step=-1, axis=axis)
     right_ext = axis_slice(x, start=-2, stop=-(n + 2), step=-1, axis=axis)
@@ -388,6 +397,7 @@ def zero_ext(x, n, axis=-1):
     ext = np.concatenate((zeros, x, zeros), axis=axis)
     return ext
 
+
 def signaltools_detrend(data, axis=-1, type='linear', bp=0):
     """
     Remove linear trend along axis from data.
@@ -421,11 +431,11 @@ def signaltools_detrend(data, axis=-1, type='linear', bp=0):
     if dtype not in 'dfDF':
         dtype = 'd'
     if type in ['constant', 'c']:
-        #print('Removing mean')
+        # print('Removing mean')
         ret = data - np.expand_dims(np.mean(data, axis), axis)
         return ret
     else:
-        #print('Removing linear?')
+        # print('Removing linear?')
         dshape = data.shape
         N = dshape[axis]
         bp = sort(unique(r_[0, bp, N]))
@@ -461,27 +471,28 @@ def signaltools_detrend(data, axis=-1, type='linear', bp=0):
         return ret
 
 
-
 # --------------------------------------------------------------------------------}
 # --- Spectral Averaging
 # --------------------------------------------------------------------------------{
 """Tools for spectral analysis.  """
+
 
 def welch(x, fs=1.0, window='hann', nperseg=None, noverlap=None, nfft=None,
           detrend='constant', return_onesided=True, scaling='density',
           axis=-1):
     """Interface identical to scipy.signal """
 
-    if detrend==True:
-        detrend='constant'
+    if detrend == True:
+        detrend = 'constant'
 
     freqs, Pxx = csd(x, x, fs, window, nperseg, noverlap, nfft, detrend, return_onesided, scaling, axis)
     return freqs, Pxx.real
 
-#>>>>
-def pwelch(x, window='hamming', noverlap=None, nfft=None, fs=1.0, nperseg=None, 
-          detrend=False, return_onesided=True, scaling='density',
-          axis=-1):
+
+# >>>>
+def pwelch(x, window='hamming', noverlap=None, nfft=None, fs=1.0, nperseg=None,
+           detrend=False, return_onesided=True, scaling='density',
+           axis=-1):
     r"""
     NOTE: interface and default options modified to match matlab's implementation
        >> detrend: default to False
@@ -576,30 +587,30 @@ def pwelch(x, window='hamming', noverlap=None, nfft=None, fs=1.0, nperseg=None,
     """
     import math
     def fnextpow2(x):
-        return 2**math.ceil( math.log(x)*0.99999999999/math.log(2));
+        return 2 ** math.ceil(math.log(x) * 0.99999999999 / math.log(2));
 
     # MANU >>> CHANGE OF DEFAULT OPTIONS
     # MANU - If a length is provided use symmetric hamming window
-    if type(window)==int:
-        window=hamming(window, True) 
-    # MANU - do not use 256 as default
+    if type(window) == int:
+        window = hamming(window, True)
+        # MANU - do not use 256 as default
     if isinstance(window, string_types) or isinstance(window, tuple):
         if nperseg is None:
             if noverlap is None:
-                overlap_frac=0.5
+                overlap_frac = 0.5
             elif noverlap is 0:
-                overlap_frac=0
+                overlap_frac = 0
             else:
                 raise NotImplementedError('TODO noverlap set but not nperseg')
-            #nperseg = 256  # then change to default
-            nperseg=fnextpow2(math.sqrt(x.shape[-1]/(1-overlap_frac)));
+            # nperseg = 256  # then change to default
+            nperseg = fnextpow2(math.sqrt(x.shape[-1] / (1 - overlap_frac)));
 
     # MANU accepting true as detrend
-    if detrend==True:
-        detrend='constant'
+    if detrend == True:
+        detrend = 'constant'
 
     freqs, Pxx, Info = csd(x, x, fs, window, nperseg, noverlap, nfft, detrend,
-                     return_onesided, scaling, axis)
+                           return_onesided, scaling, axis)
 
     return freqs, Pxx.real, Info
 
@@ -612,8 +623,8 @@ def csd(x, y, fs=1.0, window='hann', nperseg=None, noverlap=None, nfft=None,
     """
 
     freqs, _, Pxy, Info = _spectral_helper(x, y, fs, window, nperseg, noverlap, nfft,
-                                     detrend, return_onesided, scaling, axis,
-                                     mode='psd')
+                                           detrend, return_onesided, scaling, axis,
+                                           mode='psd')
 
     # Average over windows.
     if len(Pxy.shape) >= 2 and Pxy.size > 0:
@@ -623,7 +634,6 @@ def csd(x, y, fs=1.0, window='hann', nperseg=None, noverlap=None, nfft=None,
             Pxy = np.reshape(Pxy, Pxy.shape[:-1])
 
     return freqs, Pxy, Info
-
 
 
 def coherence(x, y, fs=1.0, window='hann', nperseg=None, noverlap=None,
@@ -638,10 +648,10 @@ def coherence(x, y, fs=1.0, window='hann', nperseg=None, noverlap=None,
     """
 
     freqs, Pxx, Infoxx = welch(x, fs, window, nperseg, noverlap, nfft, detrend, axis=axis)
-    _, Pyy, Infoyy     = welch(y, fs, window, nperseg, noverlap, nfft, detrend, axis=axis)
-    _, Pxy, Infoxy     = csd(x, y, fs, window, nperseg, noverlap, nfft, detrend, axis=axis)
+    _, Pyy, Infoyy = welch(y, fs, window, nperseg, noverlap, nfft, detrend, axis=axis)
+    _, Pxy, Infoxy = csd(x, y, fs, window, nperseg, noverlap, nfft, detrend, axis=axis)
 
-    Cxy = np.abs(Pxy)**2 / Pxx / Pyy
+    Cxy = np.abs(Pxy) ** 2 / Pxx / Pyy
 
     return freqs, Cxy, Infoxx
 
@@ -654,10 +664,6 @@ def _spectral_helper(x, y, fs=1.0, window='hann', nperseg=None, noverlap=None,
     if mode not in ['psd', 'stft']:
         raise ValueError("Unknown value for mode %s, must be one of: "
                          "{'psd', 'stft'}" % mode)
-    
-
-
-
 
     boundary_funcs = {'even': even_ext,
                       'odd': odd_ext,
@@ -667,7 +673,7 @@ def _spectral_helper(x, y, fs=1.0, window='hann', nperseg=None, noverlap=None,
 
     if boundary not in boundary_funcs:
         raise ValueError("Unknown boundary option '{0}', must be one of: {1}"
-                          .format(boundary, list(boundary_funcs.keys())))
+                         .format(boundary, list(boundary_funcs.keys())))
 
     # If x and y are the same object we can save ourselves some computation.
     same_data = y is x
@@ -729,7 +735,7 @@ def _spectral_helper(x, y, fs=1.0, window='hann', nperseg=None, noverlap=None,
             raise ValueError('nperseg must be a positive integer')
 
     # parse window; if array like, then set nperseg = win.shape
-    win, nperseg = _triage_segments(window, nperseg,input_length=x.shape[-1])
+    win, nperseg = _triage_segments(window, nperseg, input_length=x.shape[-1])
 
     if nfft is None:
         nfft = nperseg
@@ -739,7 +745,7 @@ def _spectral_helper(x, y, fs=1.0, window='hann', nperseg=None, noverlap=None,
         nfft = int(nfft)
 
     if noverlap is None:
-        noverlap = nperseg//2
+        noverlap = nperseg // 2
     else:
         noverlap = int(noverlap)
     if noverlap >= nperseg:
@@ -754,14 +760,14 @@ def _spectral_helper(x, y, fs=1.0, window='hann', nperseg=None, noverlap=None,
 
     if boundary is not None:
         ext_func = boundary_funcs[boundary]
-        x = ext_func(x, nperseg//2, axis=-1)
+        x = ext_func(x, nperseg // 2, axis=-1)
         if not same_data:
-            y = ext_func(y, nperseg//2, axis=-1)
+            y = ext_func(y, nperseg // 2, axis=-1)
 
     if padded:
         # Pad to integer number of windowed segments
         # I.e make x.shape[-1] = nperseg + (nseg-1)*nstep, with integer nseg
-        nadd = (-(x.shape[-1]-nperseg) % nstep) % nperseg
+        nadd = (-(x.shape[-1] - nperseg) % nstep) % nperseg
         zeros_shape = list(x.shape[:-1]) + [nadd]
         x = np.concatenate((x, np.zeros(zeros_shape)), axis=-1)
         if not same_data:
@@ -785,13 +791,13 @@ def _spectral_helper(x, y, fs=1.0, window='hann', nperseg=None, noverlap=None,
     else:
         detrend_func = detrend
 
-    if np.result_type(win,np.complex64) != outdtype:
+    if np.result_type(win, np.complex64) != outdtype:
         win = win.astype(outdtype)
 
     if scaling == 'density':
-        scale = 1.0 / (fs * (win*win).sum())
+        scale = 1.0 / (fs * (win * win).sum())
     elif scaling == 'spectrum':
-        scale = 1.0 / win.sum()**2
+        scale = 1.0 / win.sum() ** 2
     else:
         raise ValueError('Unknown scaling: %r' % scaling)
 
@@ -801,21 +807,21 @@ def _spectral_helper(x, y, fs=1.0, window='hann', nperseg=None, noverlap=None,
     if return_onesided:
         if np.iscomplexobj(x):
             sides = 'twosided'
-            #warnings.warn('Input data is complex, switching to ' 'return_onesided=False')
+            # warnings.warn('Input data is complex, switching to ' 'return_onesided=False')
         else:
             sides = 'onesided'
             if not same_data:
                 if np.iscomplexobj(y):
                     sides = 'twosided'
-                    #warnings.warn('Input data is complex, switching to return_onesided=False')
+                    # warnings.warn('Input data is complex, switching to return_onesided=False')
     else:
         sides = 'twosided'
 
     if sides == 'twosided':
         raise Exception('NOT IMPLEMENTED')
-         #freqs = fftpack.fftfreq(nfft, 1/fs)
+        # freqs = fftpack.fftfreq(nfft, 1/fs)
     elif sides == 'onesided':
-        freqs = np.fft.rfftfreq(nfft, 1/fs)
+        freqs = np.fft.rfftfreq(nfft, 1 / fs)
 
     # Perform the windowed FFTs
     result = _fft_helper(x, win, detrend_func, nperseg, noverlap, nfft, sides)
@@ -836,10 +842,10 @@ def _spectral_helper(x, y, fs=1.0, window='hann', nperseg=None, noverlap=None,
             # Last point is unpaired Nyquist freq point, don't double
             result[..., 1:-1] *= 2
 
-    time = np.arange(nperseg/2, x.shape[-1] - nperseg/2 + 1,
-                     nperseg - noverlap)/float(fs)
+    time = np.arange(nperseg / 2, x.shape[-1] - nperseg / 2 + 1,
+                     nperseg - noverlap) / float(fs)
     if boundary is not None:
-        time -= (nperseg/2) / fs
+        time -= (nperseg / 2) / fs
 
     result = result.astype(outdtype)
 
@@ -856,18 +862,19 @@ def _spectral_helper(x, y, fs=1.0, window='hann', nperseg=None, noverlap=None,
     result = np.rollaxis(result, -1, axis)
 
     # TODO
-    class InfoClass():
+    class InfoClass:
         pass
+
     Info = InfoClass();
-    Info.df=freqs[1]-freqs[0]
-    Info.fMax=freqs[-1]
-    Info.LFreq=len(freqs)
-    Info.LSeg=nperseg
-    Info.LWin=len(win)
-    Info.LOvlp=noverlap
-    Info.nFFT=nfft
-    Info.nseg=-1
-    #print('df:{:.3f} - fm:{:.2f} - nseg:{} - Lf:{:5d} - Lseg:{:5d} - Lwin:{:5d} - Lovlp:{:5d} - Nfft:{:5d} - Lsig:{}'.format(freqs[1]-freqs[0],freqs[-1],-1,len(freqs),nperseg,len(win),noverlap,nfft,x.shape[-1]))
+    Info.df = freqs[1] - freqs[0]
+    Info.fMax = freqs[-1]
+    Info.LFreq = len(freqs)
+    Info.LSeg = nperseg
+    Info.LWin = len(win)
+    Info.LOvlp = noverlap
+    Info.nFFT = nfft
+    Info.nseg = -1
+    # print('df:{:.3f} - fm:{:.2f} - nseg:{} - Lf:{:5d} - Lseg:{:5d} - Lwin:{:5d} - Lovlp:{:5d} - Nfft:{:5d} - Lsig:{}'.format(freqs[1]-freqs[0],freqs[-1],-1,len(freqs),nperseg,len(win),noverlap,nfft,x.shape[-1]))
     return freqs, time, result, Info
 
 
@@ -879,8 +886,8 @@ def _fft_helper(x, win, detrend_func, nperseg, noverlap, nfft, sides):
     else:
         # http://stackoverflow.com/a/5568169
         step = nperseg - noverlap
-        shape = x.shape[:-1]+((x.shape[-1]-noverlap)//step, nperseg)
-        strides = x.strides[:-1]+(step*x.strides[-1], x.strides[-1])
+        shape = x.shape[:-1] + ((x.shape[-1] - noverlap) // step, nperseg)
+        strides = x.strides[:-1] + (step * x.strides[-1], x.strides[-1])
         result = np.lib.stride_tricks.as_strided(x, shape=shape,
                                                  strides=strides)
 
@@ -893,7 +900,7 @@ def _fft_helper(x, win, detrend_func, nperseg, noverlap, nfft, sides):
     # Perform the fft. Acts on last axis by default. Zero-pads automatically
     if sides == 'twosided':
         raise Exception('NOT IMPLEMENTED')
-        #func = fftpack.fft
+        # func = fftpack.fft
     else:
         result = result.real
         func = np.fft.rfft
@@ -901,21 +908,22 @@ def _fft_helper(x, win, detrend_func, nperseg, noverlap, nfft, sides):
 
     return result
 
-def _triage_segments(window, nperseg,input_length):
+
+def _triage_segments(window, nperseg, input_length):
     """
     Parses window and nperseg arguments for spectrogram and _spectral_helper.
     This is a helper function, not meant to be called externally.
     """
 
-    #parse window; if array like, then set nperseg = win.shape
+    # parse window; if array like, then set nperseg = win.shape
     if isinstance(window, string_types) or isinstance(window, tuple):
         # if nperseg not specified
         if nperseg is None:
             nperseg = 256  # then change to default
         if nperseg > input_length:
             print('nperseg = {0:d} is greater than input length '
-                              ' = {1:d}, using nperseg = {1:d}'
-                              .format(nperseg, input_length))
+                  ' = {1:d}, using nperseg = {1:d}'
+                  .format(nperseg, input_length))
             nperseg = input_length
         win = get_window(window, nperseg)
     else:
@@ -934,28 +942,25 @@ def _triage_segments(window, nperseg,input_length):
     return win, nperseg
 
 
-
-
-
-
 # --------------------------------------------------------------------------------}
 # --- Unittests
 # --------------------------------------------------------------------------------{
 import unittest
 
+
 class TestSpectral(unittest.TestCase):
 
     def test_fft_amplitude(self):
-        dt=0.1
-        t=np.arange(0,10,dt);
-        f0=1;
-        A=5;
-        y=A*np.sin(2*np.pi*f0*t)
-        f,Y,_=fft_amplitude(y,fs=1/dt,detrend=False)
-        i=np.argmax(Y)
-        self.assertAlmostEqual(Y[i],A)
-        self.assertAlmostEqual(f[i],f0)
-    
+        dt = 0.1
+        t = np.arange(0, 10, dt);
+        f0 = 1;
+        A = 5;
+        y = A * np.sin(2 * np.pi * f0 * t)
+        f, Y, _ = fft_amplitude(y, fs=1 / dt, detrend=False)
+        i = np.argmax(Y)
+        self.assertAlmostEqual(Y[i], A)
+        self.assertAlmostEqual(f[i], f0)
+
+
 if __name__ == '__main__':
     unittest.main()
-

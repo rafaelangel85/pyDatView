@@ -1,24 +1,24 @@
 import unittest
+
 import numpy as np
 import pandas as pd
-from pydatview.Tables import Table
-import os
 
+from pydatview.Tables import Table
 
 
 class TestTable(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        d ={'ColA': np.linspace(0,1,100)+1,'ColB': np.random.normal(0,1,100)+0}
+        d = {'ColA': np.linspace(0, 1, 100) + 1, 'ColB': np.random.normal(0, 1, 100) + 0}
         cls.df1 = pd.DataFrame(data=d)
-        d ={'ColA': np.linspace(0,1,100)+1,'ColB': np.random.normal(0,1,100)+0}
+        d = {'ColA': np.linspace(0, 1, 100) + 1, 'ColB': np.random.normal(0, 1, 100) + 0}
         cls.df2 = pd.DataFrame(data=d)
 
     def test_table_name(self):
         print('  ')
         print('  ')
-        t1=Table(data=self.df1)
+        t1 = Table(data=self.df1)
         print(t1)
         print('  ')
         print('  ')
@@ -41,6 +41,7 @@ class TestTable(unittest.TestCase):
         # Tools add dfs like this to the GUI:
         #      self.tabList.from_dataframes(dataframes=dfs, names=names, bAdd=bAdd)
         #
+
 
 if __name__ == '__main__':
     unittest.main()

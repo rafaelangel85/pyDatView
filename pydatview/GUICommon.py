@@ -1,34 +1,35 @@
-import wx
-import numpy as np
 import os
 import platform
+
+import wx
+
 
 # --------------------------------------------------------------------------------}
 # ---  
 # --------------------------------------------------------------------------------{
 def getMonoFontAbs():
-    #return wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, False, u'Monospace')
-    if os.name=='nt':
-        font=wx.Font(9, wx.TELETYPE, wx.NORMAL, wx.NORMAL, False)
-    elif os.name=='posix':
-        font=wx.Font(10, wx.TELETYPE, wx.NORMAL, wx.NORMAL, False)
+    # return wx.Font(9, wx.MODERN, wx.NORMAL, wx.NORMAL, False, u'Monospace')
+    if os.name == 'nt':
+        font = wx.Font(9, wx.TELETYPE, wx.NORMAL, wx.NORMAL, False)
+    elif os.name == 'posix':
+        font = wx.Font(10, wx.TELETYPE, wx.NORMAL, wx.NORMAL, False)
     else:
-        font=wx.Font(8, wx.TELETYPE, wx.NORMAL, wx.NORMAL, False)
+        font = wx.Font(8, wx.TELETYPE, wx.NORMAL, wx.NORMAL, False)
     return font
+
 
 def getMonoFont(widget):
     font = widget.GetFont()
     font.SetFamily(wx.TELETYPE)
-    if platform.system()=='Windows':
+    if platform.system() == 'Windows':
         pass
-    elif platform.system()=='Linux':
+    elif platform.system() == 'Linux':
         pass
-    elif platform.system()=='Darwin':
-        font.SetPointSize(font.GetPointSize()-1)
+    elif platform.system() == 'Darwin':
+        font.SetPointSize(font.GetPointSize() - 1)
     else:
         pass
     return font
-
 
 
 # def getColumn(df,i):
@@ -52,23 +53,26 @@ def getMonoFont(widget):
 # --------------------------------------------------------------------------------}
 # --- Helper functions
 # --------------------------------------------------------------------------------{
-def YesNo(parent, question, caption = 'Yes or no?'):
+def YesNo(parent, question, caption='Yes or no?'):
     dlg = wx.MessageDialog(parent, question, caption, wx.YES_NO | wx.ICON_QUESTION)
     result = dlg.ShowModal() == wx.ID_YES
     dlg.Destroy()
     return result
-def Info(parent, message, caption = 'Info'):
+
+
+def Info(parent, message, caption='Info'):
     dlg = wx.MessageDialog(parent, message, caption, wx.OK | wx.ICON_INFORMATION)
     dlg.ShowModal()
     dlg.Destroy()
-def Warn(parent, message, caption = 'Warning!'):
+
+
+def Warn(parent, message, caption='Warning!'):
     dlg = wx.MessageDialog(parent, message, caption, wx.OK | wx.ICON_WARNING)
     dlg.ShowModal()
     dlg.Destroy()
-def Error(parent, message, caption = 'Error!'):
+
+
+def Error(parent, message, caption='Error!'):
     dlg = wx.MessageDialog(parent, message, caption, wx.OK | wx.ICON_ERROR)
     dlg.ShowModal()
     dlg.Destroy()
-
-
-

@@ -31,7 +31,7 @@ class GUIMeasure:
         if self.x is None or self.y is None:
             return None
         else:
-            return (self.x, self.y)
+            return self.x, self.y
 
     def set(self, axis_idx, x, y):
         self.axis_idx = axis_idx
@@ -63,7 +63,7 @@ class GUIMeasure:
                         rdist_min = rdist
                         x_closest = x
                         y_closest = y
-                except (TypeError,ValueError):
+                except (TypeError, ValueError):
                     # Fails when x/y data are dates or strings 
                     pass
         self.x = x_closest
@@ -107,13 +107,13 @@ def find_closest(matrix, vector, single=True):
     ind = np.argsort(np.abs(matrix - vector), axis=0)
     closest = matrix[ind[0, 0]]
     N = 5
-    closest_Nind = ind[0:N-1]
+    closest_Nind = ind[0:N - 1]
     diff = np.diff(closest_Nind[:, 0])
     discont_ind = [i for i, x in enumerate(diff) if abs(x) > (len(matrix) / 100)]
     for di in discont_ind:
-        y = matrix[closest_Nind[di+1, 0]][1]
+        y = matrix[closest_Nind[di + 1, 0]][1]
         if abs(closest[1] - y) > (max(matrix[:, 1]) / 20):
-            closest = np.vstack([closest, matrix[closest_Nind[di+1, 0]]])
+            closest = np.vstack([closest, matrix[closest_Nind[di + 1, 0]]])
             break
     if closest.ndim == 2:
         # For multiple y-candidates find closest on y-direction:

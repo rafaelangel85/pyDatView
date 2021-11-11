@@ -24,17 +24,19 @@ or
 - 'rainflow_astm' (based on the c-implementation by Adam Nieslony found at the MATLAB Central File Exchange
                    http://www.mathworks.com/matlabcentral/fileexchange/3026)
 '''
+from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
-from __future__ import absolute_import
-from future import standard_library
+
 import warnings
+
+from future import standard_library
+
 standard_library.install_aliases()
 import numpy as np
 
-
-__all__  = ['rainflow_astm', 'rainflow_windap','eq_load','eq_load_and_cycles','cycle_matrix','cycle_matrix2']
+__all__ = ['rainflow_astm', 'rainflow_windap', 'eq_load', 'eq_load_and_cycles', 'cycle_matrix', 'cycle_matrix2']
 
 
 def check_signal(signal):
@@ -63,9 +65,7 @@ def rainflow_windap(signal, levels=255., thresshold=(255 / 50)):
 
     Parameters
     ----------
-    Signal : array-like
-        The raw signal
-
+    signal
     levels : int, optional
         The signal is discretize into this number of levels.
         255 is equivalent to the implementation in Windap
@@ -89,7 +89,7 @@ def rainflow_windap(signal, levels=255., thresshold=(255 / 50)):
     >>> ampl, mean = rainflow_windap(signal)
     """
     check_signal(signal)
-    #type <double> is required by <find_extreme> and <rainflow>
+    # type <double> is required by <find_extreme> and <rainflow>
     signal = signal.astype(np.double)
     if np.all(np.isnan(signal)):
         return None
@@ -100,22 +100,18 @@ def rainflow_windap(signal, levels=255., thresshold=(255 / 50)):
         signal = signal / gain
         signal = np.round(signal).astype(np.int)
 
-
         # If possible the module is compiled using cython otherwise the python implementation is used
 
-
-        #Convert to list of local minima/maxima where difference > thresshold
+        # Convert to list of local minima/maxima where difference > thresshold
         sig_ext = peak_trough(signal, thresshold)
 
-
-        #rainflow count
+        # rainflow count
         ampl_mean = pair_range_amplitude_mean(sig_ext)
 
         ampl_mean = np.array(ampl_mean)
         ampl_mean = np.round(ampl_mean / thresshold) * gain * thresshold
         ampl_mean[:, 1] += offset
         return ampl_mean.T
-
 
 
 def rainflow_astm(signal):
@@ -128,8 +124,7 @@ def rainflow_astm(signal):
 
     Parameters
     ----------
-    Signal : array-like
-        The raw signal
+    signal
 
     Returns
     -------
@@ -206,7 +201,8 @@ def eq_load(signals, no_bins=46, m=[3, 4, 6, 8, 10, 12], neq=1, rainflow_func=ra
         return [[np.nan] * len(np.atleast_1d(m))] * len(np.atleast_1d(neq))
 
 
-def eq_load_and_cycles(signals, no_bins=46, m=[3, 4, 6, 8, 10, 12], neq=[10 ** 6, 10 ** 7, 10 ** 8], rainflow_func=rainflow_windap):
+def eq_load_and_cycles(signals, no_bins=46, m=[3, 4, 6, 8, 10, 12], neq=[10 ** 6, 10 ** 7, 10 ** 8],
+                       rainflow_func=rainflow_windap):
     """Calculate combined fatigue equivalent load
 
     Parameters
@@ -237,12 +233,13 @@ def eq_load_and_cycles(signals, no_bins=46, m=[3, 4, 6, 8, 10, 12], neq=[10 ** 6
         Edges of the amplitude bins
     """
     cycles, ampl_bin_mean, ampl_bin_edges, _, _ = cycle_matrix(signals, no_bins, 1, rainflow_func)
-    if 0:  #to be similar to windap
+    if 0:  # to be similar to windap
         ampl_bin_mean = (ampl_bin_edges[:-1] + ampl_bin_edges[1:]) / 2
     cycles, ampl_bin_mean = cycles.flatten(), ampl_bin_mean.flatten()
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        eq_loads = [[((np.nansum(cycles * ampl_bin_mean ** _m) / _neq) ** (1. / _m)) for _m in np.atleast_1d(m)]  for _neq in np.atleast_1d(neq)]
+        eq_loads = [[((np.nansum(cycles * ampl_bin_mean ** _m) / _neq) ** (1. / _m)) for _m in np.atleast_1d(m)] for
+                    _neq in np.atleast_1d(neq)]
     return eq_loads, cycles, ampl_bin_mean, ampl_bin_edges
 
 
@@ -253,9 +250,7 @@ def cycle_matrix(signals, ampl_bins=10, mean_bins=10, rainflow_func=rainflow_win
 
     Parameters
     ----------
-    Signals : array-like or list of tuples
-        - if array-like, the raw signal\n
-        - if list of tuples, list of (weight, signal), e.g. [(0.1,sig1), (0.8,sig2), (.1,sig3)]\n
+    signals
     ampl_bins : int or array-like, optional
         if int, Number of amplitude value bins (default is 10)
         if array-like, the bin edges for amplitude
@@ -287,17 +282,19 @@ def cycle_matrix(signals, ampl_bins=10, mean_bins=10, rainflow_func=rainflow_win
     """
 
     if isinstance(signals[0], tuple):
-        weights, ampls, means = np.array([(np.zeros_like(ampl)+weight,ampl,mean) for weight, signal in signals for ampl,mean in rainflow_func(signal[:]).T], dtype=np.float64).T
+        weights, ampls, means = np.array(
+            [(np.zeros_like(ampl) + weight, ampl, mean) for weight, signal in signals for ampl, mean in
+             rainflow_func(signal[:]).T], dtype=np.float64).T
     else:
         ampls, means = rainflow_func(signals[:])
         weights = np.ones_like(ampls)
     if isinstance(ampl_bins, int):
-        ampl_bins = np.linspace(0, 1, num=ampl_bins + 1) * ampls[weights>0].max()
+        ampl_bins = np.linspace(0, 1, num=ampl_bins + 1) * ampls[weights > 0].max()
     cycles, ampl_edges, mean_edges = np.histogram2d(ampls, means, [ampl_bins, mean_bins], weights=weights)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         ampl_bin_sum = np.histogram2d(ampls, means, [ampl_bins, mean_bins], weights=weights * ampls)[0]
-        ampl_bin_mean = np.nanmean(ampl_bin_sum / np.where(cycles,cycles,np.nan),1)
+        ampl_bin_mean = np.nanmean(ampl_bin_sum / np.where(cycles, cycles, np.nan), 1)
         mean_bin_sum = np.histogram2d(ampls, means, [ampl_bins, mean_bins], weights=weights * means)[0]
         mean_bin_mean = np.nanmean(mean_bin_sum / np.where(cycles, cycles, np.nan), 1)
     cycles = cycles / 2  # to get full cycles
@@ -312,9 +309,7 @@ def cycle_matrix2(signal, nrb_amp, nrb_mean, rainflow_func=rainflow_windap):
     Parameters
     ----------
 
-    Signal : ndarray(n)
-        1D Raw signal array
-
+    signal
     nrb_amp : int
         Number of bins for the amplitudes
 
@@ -348,6 +343,7 @@ def cycle_matrix2(signal, nrb_amp, nrb_mean, rainflow_func=rainflow_windap):
 
     return cycles, ampl_edges, mean_edges
 
+
 # --------------------------------------------------------------------------------}
 # --- Rainflowcount_astm.py
 # --------------------------------------------------------------------------------{
@@ -364,10 +360,12 @@ from cy_rainflowcount import find_extremes,rainflow
 ext = find_extremes(np.array([-2,0,1,0,-3,0,5,0,-1,0,3,0,-4,0,4,0,-2]).astype(np.double))
 print rainflow(ext)
 '''
-def find_extremes(signal):  #cpdef find_extremes(np.ndarray[double,ndim=1] signal):
+
+
+def find_extremes(signal):  # cpdef find_extremes(np.ndarray[double,ndim=1] signal):
     """return indexes of local minima and maxima plus first and last element of signal"""
 
-    #cdef int pi, i
+    # cdef int pi, i
     # sign of gradient
     sign_grad = np.int8(np.sign(np.diff(signal)))
 
@@ -376,8 +374,8 @@ def find_extremes(signal):  #cpdef find_extremes(np.ndarray[double,ndim=1] signa
     if len(plateau_indexes) > 0 and plateau_indexes[0] == 0:
         # first element is a plateau
         if len(plateau_indexes) == len(sign_grad):
-                # All values are equal to crossing level!
-                return np.array([0])
+            # All values are equal to crossing level!
+            return np.array([0])
 
         # set first element = first element which is not a plateau and delete plateau index
         i = 0
@@ -395,7 +393,7 @@ def find_extremes(signal):  #cpdef find_extremes(np.ndarray[double,ndim=1] signa
     return signal[extremes]
 
 
-def rainflowcount(sig):  #cpdef rainflowcount(np.ndarray[double,ndim=1] sig):
+def rainflowcount(sig):  # cpdef rainflowcount(np.ndarray[double,ndim=1] sig):
     """Cython compilable rain ampl_mean count without time analysis
 
 
@@ -421,8 +419,8 @@ def rainflowcount(sig):  #cpdef rainflowcount(np.ndarray[double,ndim=1] sig):
 
     """
 
-    #cdef int sig_ptr, index
-    #cdef double ampl
+    # cdef int sig_ptr, index
+    # cdef double ampl
     a = []
     sig_ptr = 0
     ampl_mean = []
@@ -448,12 +446,13 @@ def rainflowcount(sig):  #cpdef rainflowcount(np.ndarray[double,ndim=1] sig):
             ampl_mean.append((ampl, mean))
     return ampl_mean
 
+
 # --------------------------------------------------------------------------------}
 # --- Peak_trough.py
 # --------------------------------------------------------------------------------{
 # @cython.locals(BEGIN=cython.int, MINZO=cython.int, MAXZO=cython.int, ENDZO=cython.int, \
 #                R=cython.int, L=cython.int, i=cython.int, p=cython.int, f=cython.int)
-def peak_trough(x, R):  #cpdef np.ndarray[long,ndim=1] peak_trough(np.ndarray[long,ndim=1] x, int R):
+def peak_trough(x, R):  # cpdef np.ndarray[long,ndim=1] peak_trough(np.ndarray[long,ndim=1] x, int R):
     """
     Returns list of local maxima/minima.
 
@@ -568,7 +567,7 @@ def pair_range_amplitude(x):  # cpdef pair_range(np.ndarray[long,ndim=1]  x):
     n = x.shape[0]
     S = np.zeros(n + 1)
 
-    #A = np.zeros(k+1)
+    # A = np.zeros(k+1)
     flow = []
     S[1] = x[0]
     ptr = 1
@@ -588,7 +587,7 @@ def pair_range_amplitude(x):  # cpdef pair_range(np.ndarray[long,ndim=1]  x):
             f = 1
         while p >= 4:
             if (S[p - 2] > S[p - 3] and S[p - 1] >= S[p - 3] and S[p] >= S[p - 2]) \
-                or\
+                    or \
                     (S[p - 2] < S[p - 3] and S[p - 1] <= S[p - 3] and S[p] <= S[p - 2]):
                 ampl = abs(S[p - 2] - S[p - 1])
                 # A[ampl]+=2 #Two half cycles
@@ -615,9 +614,6 @@ def pair_range_amplitude(x):  # cpdef pair_range(np.ndarray[long,ndim=1]  x):
             # A[ampl]+=1
             flow.append(ampl)
     return flow
-
-
-
 
 
 # @cython.locals(p=cython.int, q=cython.int, f=cython.int, flow=list, k=cython.int, n=cython.int, ptr=cython.int)
@@ -654,12 +650,12 @@ def pair_range_from_to(x):  # cpdef pair_range(np.ndarray[long,ndim=1]  x):
         if q == n:
             f = 1
         while p >= 4:
-            #print S[p - 3:p + 1]
-            #print S[p - 2], ">", S[p - 3], ", ", S[p - 1], ">=", S[p - 3], ", ", S[p], ">=", S[p - 2], (S[p - 2] > S[p - 3] and S[p - 1] >= S[p - 3] and S[p] >= S[p - 2])
-            #print S[p - 2], "<", S[p - 3], ", ", S[p - 1], "<=", S[p - 3], ", ", S[p], "<=", S[p - 2], (S[p - 2] < S[p - 3] and S[p - 1] <= S[p - 3] and S[p] <= S[p - 2])
-            #print (S[p - 2] > S[p - 3] and S[p - 1] >= S[p - 3] and S[p] >= S[p - 2]) or (S[p - 2] < S[p - 3] and S[p - 1] <= S[p - 3] and S[p] <= S[p - 2])
+            # print S[p - 3:p + 1]
+            # print S[p - 2], ">", S[p - 3], ", ", S[p - 1], ">=", S[p - 3], ", ", S[p], ">=", S[p - 2], (S[p - 2] > S[p - 3] and S[p - 1] >= S[p - 3] and S[p] >= S[p - 2])
+            # print S[p - 2], "<", S[p - 3], ", ", S[p - 1], "<=", S[p - 3], ", ", S[p], "<=", S[p - 2], (S[p - 2] < S[p - 3] and S[p - 1] <= S[p - 3] and S[p] <= S[p - 2])
+            # print (S[p - 2] > S[p - 3] and S[p - 1] >= S[p - 3] and S[p] >= S[p - 2]) or (S[p - 2] < S[p - 3] and S[p - 1] <= S[p - 3] and S[p] <= S[p - 2])
             if (S[p - 2] > S[p - 3] and S[p - 1] >= S[p - 3] and S[p] >= S[p - 2]) or \
-               (S[p - 2] < S[p - 3] and S[p - 1] <= S[p - 3] and S[p] <= S[p - 2]):
+                    (S[p - 2] < S[p - 3] and S[p - 1] <= S[p - 3] and S[p] <= S[p - 2]):
                 A[S[p - 2], S[p - 1]] += 1
                 A[S[p - 1], S[p - 2]] += 1
                 S[p - 2] = S[p]
@@ -676,9 +672,10 @@ def pair_range_from_to(x):  # cpdef pair_range(np.ndarray[long,ndim=1]  x):
         if p == q:
             break
         else:
-            #print S[q], "to", S[q + 1]
+            # print S[q], "to", S[q + 1]
             A[S[q], S[q + 1]] += 1
     return A
+
 
 # @cython.locals(p=cython.int, q=cython.int, f=cython.int, flow=list, k=cython.int, n=cython.int, ptr=cython.int)
 def pair_range_amplitude_mean(x):  # cpdef pair_range(np.ndarray[long,ndim=1]  x):
@@ -707,7 +704,7 @@ def pair_range_amplitude_mean(x):  # cpdef pair_range(np.ndarray[long,ndim=1]  x
         p += 1
         q += 1
 
-                # read
+        # read
         S[p] = x[ptr]
         ptr += 1
 
@@ -715,7 +712,7 @@ def pair_range_amplitude_mean(x):  # cpdef pair_range(np.ndarray[long,ndim=1]  x
             f = 1
         while p >= 4:
             if (S[p - 2] > S[p - 3] and S[p - 1] >= S[p - 3] and S[p] >= S[p - 2]) \
-                or\
+                    or \
                     (S[p - 2] < S[p - 3] and S[p - 1] <= S[p - 3] and S[p] <= S[p - 2]):
                 # Extract two intermediate half cycles
                 ampl = abs(S[p - 2] - S[p - 1])
@@ -746,12 +743,11 @@ def pair_range_amplitude_mean(x):  # cpdef pair_range(np.ndarray[long,ndim=1]  x
     return ampl_mean
 
 
-
-
 # --------------------------------------------------------------------------------}
 # --- Unittests
 # --------------------------------------------------------------------------------{
 import unittest
+
 
 class TestFatigue(unittest.TestCase):
 
@@ -763,26 +759,26 @@ class TestFatigue(unittest.TestCase):
         m = 1
         point_per_deg = 100
 
-        for amplitude in [1,2,3]:
+        for amplitude in [1, 2, 3]:
             peak2peak = amplitude * 2
             # sine signal with 10 periods (20 peaks)
             nr_periods = 10
-            time = np.linspace(0, nr_periods*2*np.pi, point_per_deg*180)
+            time = np.linspace(0, nr_periods * 2 * np.pi, point_per_deg * 180)
             neq = time[-1]
             # mean value of the signal shouldn't matter
             signal = amplitude * np.sin(time) + 5
             r_eq_1hz = eq_load(signal, no_bins=1, m=m, neq=neq)[0]
-            r_eq_1hz_expected = ((2*nr_periods*amplitude**m)/neq)**(1/m)
+            r_eq_1hz_expected = ((2 * nr_periods * amplitude ** m) / neq) ** (1 / m)
             np.testing.assert_allclose(r_eq_1hz, r_eq_1hz_expected)
 
             # sine signal with 20 periods (40 peaks)
             nr_periods = 20
-            time = np.linspace(0, nr_periods*2*np.pi, point_per_deg*180)
+            time = np.linspace(0, nr_periods * 2 * np.pi, point_per_deg * 180)
             neq = time[-1]
             # mean value of the signal shouldn't matter
             signal = amplitude * np.sin(time) + 9
             r_eq_1hz2 = eq_load(signal, no_bins=1, m=m, neq=neq)[0]
-            r_eq_1hz_expected2 = ((2*nr_periods*amplitude**m)/neq)**(1/m)
+            r_eq_1hz_expected2 = ((2 * nr_periods * amplitude ** m) / neq) ** (1 / m)
             np.testing.assert_allclose(r_eq_1hz2, r_eq_1hz_expected2)
 
             # 1hz equivalent should be independent of the length of the signal
@@ -796,51 +792,50 @@ class TestFatigue(unittest.TestCase):
         point_per_deg = 100
 
         nr_periods = 10
-        time = np.linspace(0, nr_periods*2*np.pi, point_per_deg*180)
+        time = np.linspace(0, nr_periods * 2 * np.pi, point_per_deg * 180)
 
-        signal = (amplitude*np.sin(time)) + 5 + (amplitude*0.2*np.cos(5*time))
+        signal = (amplitude * np.sin(time)) + 5 + (amplitude * 0.2 * np.cos(5 * time))
         cycles, ampl_bin_mean, ampl_edges, mean_bin_mean, mean_edges = \
             cycle_matrix(signal, ampl_bins=10, mean_bins=5)
 
         cycles.sum()
-
-
 
     def test_astm1(self):
 
         signal = np.array([-2.0, 0.0, 1.0, 0.0, -3.0, 0.0, 5.0, 0.0, -1.0, 0.0, 3.0, 0.0, -4.0, 0.0, 4.0, 0.0, -2.0])
 
         ampl, mean = rainflow_astm(signal)
-        np.testing.assert_array_equal(np.histogram2d(ampl, mean, [6, 4])[0], np.array([[ 0., 1., 0., 0.],
-                                                                                                           [ 1., 0., 0., 2.],
-                                                                                                           [ 0., 0., 0., 0.],
-                                                                                                           [ 0., 0., 0., 1.],
-                                                                                                           [ 0., 0., 0., 0.],
-                                                                                                           [ 0., 0., 1., 2.]]))
+        np.testing.assert_array_equal(np.histogram2d(ampl, mean, [6, 4])[0], np.array([[0., 1., 0., 0.],
+                                                                                       [1., 0., 0., 2.],
+                                                                                       [0., 0., 0., 0.],
+                                                                                       [0., 0., 0., 1.],
+                                                                                       [0., 0., 0., 0.],
+                                                                                       [0., 0., 1., 2.]]))
 
     def test_windap1(self):
         signal = np.array([-2.0, 0.0, 1.0, 0.0, -3.0, 0.0, 5.0, 0.0, -1.0, 0.0, 3.0, 0.0, -4.0, 0.0, 4.0, 0.0, -2.0])
         ampl, mean = rainflow_windap(signal, 18, 2)
-        np.testing.assert_array_equal(np.histogram2d(ampl, mean, [6, 4])[0], np.array([[ 0., 0., 1., 0.],
-                                                                                       [ 1., 0., 0., 2.],
-                                                                                       [ 0., 0., 0., 0.],
-                                                                                       [ 0., 0., 0., 1.],
-                                                                                       [ 0., 0., 0., 0.],
-                                                                                       [ 0., 0., 2., 1.]]))
+        np.testing.assert_array_equal(np.histogram2d(ampl, mean, [6, 4])[0], np.array([[0., 0., 1., 0.],
+                                                                                       [1., 0., 0., 2.],
+                                                                                       [0., 0., 0., 0.],
+                                                                                       [0., 0., 0., 1.],
+                                                                                       [0., 0., 0., 0.],
+                                                                                       [0., 0., 2., 1.]]))
 
     def test_eq_load_basic(self):
         import numpy.testing
         signal1 = np.array([-2.0, 0.0, 1.0, 0.0, -3.0, 0.0, 5.0, 0.0, -1.0, 0.0, 3.0, 0.0, -4.0, 0.0, 4.0, 0.0, -2.0])
         try:
-            M1=eq_load(signal1, no_bins=50, neq=[1, 17], m=[3, 4, 6], rainflow_func=rainflow_windap)
-            doTest=True
+            M1 = eq_load(signal1, no_bins=50, neq=[1, 17], m=[3, 4, 6], rainflow_func=rainflow_windap)
+            doTest = True
         except FloatingPointError as e:
-            doTest=False
+            doTest = False
             print('>>> Floating point error')
-        M1_ref=np.array([[10.348414123746581, 9.635653414943068, 9.122399471334054], [4.024613313976801, 4.745357541147315, 5.68897815218057]])
-        #M1_ref=np.array([[10.311095426959747, 9.5942535021382174, 9.0789213365013932],[4.010099657859783, 4.7249689509841746, 5.6618639965313005]])
-        numpy.testing.assert_almost_equal(M1,M1_ref,decimal=5)
-        #signal2 = signal1 * 1.1
+        M1_ref = np.array([[10.348414123746581, 9.635653414943068, 9.122399471334054],
+                           [4.024613313976801, 4.745357541147315, 5.68897815218057]])
+        # M1_ref=np.array([[10.311095426959747, 9.5942535021382174, 9.0789213365013932],[4.010099657859783, 4.7249689509841746, 5.6618639965313005]])
+        numpy.testing.assert_almost_equal(M1, M1_ref, decimal=5)
+        # signal2 = signal1 * 1.1
         #         print (eq_load(signal1, no_bins=50, neq=17, rainflow_func=rainflow_windap))
         #         print (eq_load(signal1, no_bins=50, neq=17, rainflow_func=rainflow_astm))
         #         # equivalent load for default wohler slopes
@@ -851,9 +846,5 @@ class TestFatigue(unittest.TestCase):
         #         print (cycle_matrix([(.5, signal1), (.5, signal2)], 4, 8, rainflow_func=rainflow_astm))
 
 
-
-
-
 if __name__ == '__main__':
     unittest.main()
-

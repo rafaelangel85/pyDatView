@@ -8,10 +8,11 @@ Set of tools for statistics
 import numpy as np
 import pandas as pd
 
+
 # --------------------------------------------------------------------------------}
 # --- Stats measures 
 # --------------------------------------------------------------------------------{
-def rsquare(y,f, c = True): 
+def rsquare(y, f, c=True):
     """ Compute coefficient of determination of data fit model and RMSE
     [r2 rmse] = rsquare(y,f)
     [r2 rmse] = rsquare(y,f,c)
@@ -36,22 +37,23 @@ def rsquare(y,f, c = True):
       R2      : Coefficient of determination
       RMSE    : Root mean squared error """
     # Compare inputs
-    if not np.all(y.shape == f.shape) :
+    if not np.all(y.shape == f.shape):
         raise Exception('Y and F must be the same size')
     # Check for NaN
-    tmp = np.logical_not(np.logical_or(np.isnan(y),np.isnan(f))) 
+    tmp = np.logical_not(np.logical_or(np.isnan(y), np.isnan(f)))
     y = y[tmp]
     f = f[tmp]
     if c:
-        r2 = max(0,1-np.sum((y-f)**2)/np.sum((y-np.mean(y))** 2))
+        r2 = max(0, 1 - np.sum((y - f) ** 2) / np.sum((y - np.mean(y)) ** 2))
     else:
-        r2 = 1 - np.sum((y - f) ** 2) / np.sum((y) ** 2)
+        r2 = 1 - np.sum((y - f) ** 2) / np.sum(y ** 2)
         if r2 < 0:
             import warnings
             warnings.warn('Consider adding a constant term to your model')
             r2 = 0
     rmse = np.sqrt(np.mean((y - f) ** 2))
-    return r2,rmse
+    return r2, rmse
+
 
 def mean_rel_err(t1, y1, t2, y2, method='mean'):
     """ 
@@ -61,42 +63,43 @@ def mean_rel_err(t1, y1, t2, y2, method='mean'):
       'minmax': y1 and y2 scaled between 0.001 and 1
                 |y1s-y2s|/|y1|
     """
-    if len(y1)!=len(y2):
-        y2=np.interp(t1,t2,y2)
+    if len(y1) != len(y2):
+        y2 = np.interp(t1, t2, y2)
     # Method 1 relative to mean
-    if method=='mean':
+    if method == 'mean':
         ref_val = np.mean(y1)
-        meanrelerr = np.mean(np.abs(y1-y2)/ref_val)*100 
-    elif method=='meanabs':
+        meanrelerr = np.mean(np.abs(y1 - y2) / ref_val) * 100
+    elif method == 'meanabs':
         ref_val = np.mean(np.abs(y1))
-        meanrelerr = np.mean(np.abs(y1-y2)/ref_val)*100 
-    elif method=='minmax':
+        meanrelerr = np.mean(np.abs(y1 - y2) / ref_val) * 100
+    elif method == 'minmax':
         # Method 2 scaling signals
-        Min=min(np.min(y1), np.min(y2))
-        Max=max(np.max(y1), np.max(y2))
-        y1=(y1-Min)/(Max-Min)+0.001
-        y2=(y2-Min)/(Max-Min)+0.001
-        meanrelerr = np.mean(np.abs(y1-y2)/np.abs(y1))*100 
-    #print('Mean rel error {:7.2f} %'.format( meanrelerr))
+        Min = min(np.min(y1), np.min(y2))
+        Max = max(np.max(y1), np.max(y2))
+        y1 = (y1 - Min) / (Max - Min) + 0.001
+        y2 = (y2 - Min) / (Max - Min) + 0.001
+        meanrelerr = np.mean(np.abs(y1 - y2) / np.abs(y1)) * 100
+        # print('Mean rel error {:7.2f} %'.format( meanrelerr))
     return meanrelerr
 
 
 # --------------------------------------------------------------------------------}
 # --- PDF 
 # --------------------------------------------------------------------------------{
-def pdf_histogram(y,nBins=50, norm=True, count=False):
+def pdf_histogram(y, nBins=50, norm=True, count=False):
     yh, xh = np.histogram(y[~np.isnan(y)], bins=nBins)
-    dx   = xh[1] - xh[0]
-    xh  = xh[:-1] + dx/2
+    dx = xh[1] - xh[0]
+    xh = xh[:-1] + dx / 2
     if count:
-        yh  = yh / (len(n)*dx) # TODO DEBUG /VERIFY THIS
+        yh = yh / (len(n) * dx)  # TODO DEBUG /VERIFY THIS
     else:
-        yh  = yh / (nBins*dx) 
+        yh = yh / (nBins * dx)
     if norm:
-        yh=yh/np.trapz(yh,xh)
-    return xh,yh
+        yh = yh / np.trapz(yh, xh)
+    return xh, yh
 
-def pdf_gaussian_kde(data, bw='scott', nOut=100, cut=3, clip=(-np.inf,np.inf)):
+
+def pdf_gaussian_kde(data, bw='scott', nOut=100, cut=3, clip=(-np.inf, np.inf)):
     """ 
     Returns a smooth probability density function (univariate kernel density estimate - kde) 
     Inspired from `_univariate_kdeplot` from `seaborn.distributions`
@@ -114,7 +117,7 @@ def pdf_gaussian_kde(data, bw='scott', nOut=100, cut=3, clip=(-np.inf,np.inf)):
     data = np.asarray(data)
     data = data[~np.isnan(data)]
     # Gaussian kde
-    kde  = stats.gaussian_kde(data, bw_method = bw)
+    kde = stats.gaussian_kde(data, bw_method=bw)
     # Finding a relevant support (i.e. x values)
     if isinstance(bw, string_types):
         bw_ = "scotts" if bw == "scott" else bw
@@ -128,20 +131,20 @@ def pdf_gaussian_kde(data, bw='scott', nOut=100, cut=3, clip=(-np.inf,np.inf)):
 
 
 def pdf_sklearn(y):
-    #from sklearn.neighbors import KernelDensity
-    #kde = KernelDensity(kernel='gaussian', bandwidth=0.75).fit(y) #you can supply a bandwidth
-    #x=np.linspace(0,5,100)[:, np.newaxis]
-    #log_density_values=kde.score_samples(x)
-    #density=np.exp(log_density)
+    # from sklearn.neighbors import KernelDensity
+    # kde = KernelDensity(kernel='gaussian', bandwidth=0.75).fit(y) #you can supply a bandwidth
+    # x=np.linspace(0,5,100)[:, np.newaxis]
+    # log_density_values=kde.score_samples(x)
+    # density=np.exp(log_density)
     pass
 
-def pdf_sns(y,nBins=50):
-    import seaborn.apionly as sns
-    hh=sns.distplot(y,hist=True,norm_hist=False).get_lines()[0].get_data()
-    xh=hh[0]
-    yh=hh[1]
-    return xh,yh
 
+def pdf_sns(y, nBins=50):
+    import seaborn.apionly as sns
+    hh = sns.distplot(y, hist=True, norm_hist=False).get_lines()[0].get_data()
+    xh = hh[0]
+    yh = hh[1]
+    return xh, yh
 
 
 # --------------------------------------------------------------------------------}
@@ -160,36 +163,33 @@ def bin_DF(df, xbins, colBin):
     """
     if colBin not in df.columns.values:
         raise Exception('The column `{}` does not appear to be in the dataframe'.format(colBin))
-    xmid      = (xbins[:-1]+xbins[1:])/2
-    df['Bin'] = pd.cut(df[colBin], bins=xbins, labels=xmid ) # Adding a column that has bin attribute
-    df2       = df.groupby('Bin').mean()                     # Average by bin
+    xmid = (xbins[:-1] + xbins[1:]) / 2
+    df['Bin'] = pd.cut(df[colBin], bins=xbins, labels=xmid)  # Adding a column that has bin attribute
+    df2 = df.groupby('Bin').mean()  # Average by bin
     # also counting
     df['Counts'] = 1
-    dfCount=df[['Counts','Bin']].groupby('Bin').sum()
+    dfCount = df[['Counts', 'Bin']].groupby('Bin').sum()
     df2['Counts'] = dfCount['Counts']
     # Just in case some bins are missing (will be nan)
-    df2       = df2.reindex(xmid)
+    df2 = df2.reindex(xmid)
     return df2
+
 
 def azimuthal_average_DF(df, psiBin=None, colPsi='Azimuth_[deg]', tStart=None, colTime='Time_[s]'):
     """ 
     Average a dataframe based on azimuthal value
     Returns a dataframe with same amount of columns as input, and azimuthal values as index
     """
-    if psiBin is None: 
-        psiBin = np.arange(0,360+1,10)
+    if psiBin is None:
+        psiBin = np.arange(0, 360 + 1, 10)
 
     if tStart is not None:
         if colTime not in df.columns.values:
             raise Exception('The column `{}` does not appear to be in the dataframe'.format(colTime))
-        df=df[ df[colTime]>tStart].copy()
+        df = df[df[colTime] > tStart].copy()
 
-    dfPsi= bin_DF(df, psiBin, colPsi)
-    if np.any(dfPsi['Counts']<1):
+    dfPsi = bin_DF(df, psiBin, colPsi)
+    if np.any(dfPsi['Counts'] < 1):
         print('[WARN] some bins have no data! Increase the bin size.')
 
     return dfPsi
-
-
-
-
