@@ -9,7 +9,6 @@ numpy
 openpyxl
 pandas
 pyarrow
-pyparsin
 python-dateutil
 pytz
 scipy
