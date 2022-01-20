@@ -1,6 +1,5 @@
 # Intento de instalacion de paquetes para Colab
 Pillow
-chardset
 cycler
 et-xmlfile
 future
