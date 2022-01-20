@@ -25,6 +25,12 @@ More information about the download, requirements and installation is provided [
 
 
 ## Usage
+
+### Installing wxpython in Linux
+
+#### Ubuntu
+sudo apt install make gcc libgtk-3-dev libwebkitgtk-dev libwebkitgtk-3.0-dev libgstreamer-gl1.0-0 freeglut3 freeglut3-dev python-gst-1.0 python3-gst-1.0 libglib2.0-dev ubuntu-restricted-extras libgstreamer-plugins-base1.0-dev
+
 ### Launching the GUI
 Windows users that used a `setup.exe` file should be able to look for `pyDatView` in the Windows menu, then launch it, and pin the program to the taskbar for easier access.  
 
