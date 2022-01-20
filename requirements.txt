@@ -1,3 +1,24 @@
+# Intento de instalacion de paquetes para Colab
+Pillow
+chardset
+cycler
+et-xmlfile
+future
+kiwisolver
+matplotlib
+numpy
+openpyxl
+pandas
+pyarrow
+pyparsin
+python-dateutil
+pytz
+scipy
+six
+wheel
+wxPython
+
+# contenido original de la rama master
 openpyxl
 numpy>=1.16.5
 numpy
