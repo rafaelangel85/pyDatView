@@ -1,0 +1,670 @@
+[2022-01-20T10:40:59.500419 16968] === CCACHE 4.3 STARTED =========================================
+[2022-01-20T10:40:59.500419 16968] Config: (default) absolute_paths_in_stderr = false
+[2022-01-20T10:40:59.500419 16968] Config: (default) base_dir = 
+[2022-01-20T10:40:59.500419 16968] Config: (environment) cache_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache
+[2022-01-20T10:40:59.500419 16968] Config: (default) compiler = 
+[2022-01-20T10:40:59.500419 16968] Config: (default) compiler_check = mtime
+[2022-01-20T10:40:59.500419 16968] Config: (default) compiler_type = auto
+[2022-01-20T10:40:59.500419 16968] Config: (default) compression = true
+[2022-01-20T10:40:59.500419 16968] Config: (default) compression_level = 0
+[2022-01-20T10:40:59.500419 16968] Config: (default) cpp_extension = 
+[2022-01-20T10:40:59.500419 16968] Config: (default) debug = false
+[2022-01-20T10:40:59.500419 16968] Config: (default) debug_dir = 
+[2022-01-20T10:40:59.500419 16968] Config: (default) depend_mode = false
+[2022-01-20T10:40:59.500419 16968] Config: (default) direct_mode = true
+[2022-01-20T10:40:59.500419 16968] Config: (default) disable = false
+[2022-01-20T10:40:59.500419 16968] Config: (default) extra_files_to_hash = 
+[2022-01-20T10:40:59.500419 16968] Config: (default) file_clone = false
+[2022-01-20T10:40:59.500419 16968] Config: (default) hard_link = false
+[2022-01-20T10:40:59.500419 16968] Config: (default) hash_dir = true
+[2022-01-20T10:40:59.500419 16968] Config: (default) ignore_headers_in_manifest = 
+[2022-01-20T10:40:59.500419 16968] Config: (default) ignore_options = 
+[2022-01-20T10:40:59.500419 16968] Config: (default) inode_cache = false
+[2022-01-20T10:40:59.500419 16968] Config: (default) keep_comments_cpp = false
+[2022-01-20T10:40:59.500419 16968] Config: (default) limit_multiple = 0.8
+[2022-01-20T10:40:59.500419 16968] Config: (environment) log_file = D:\OneDrive\OneDrive - Segula\Documentos\GitHub\pyDatView\pyDatView.build\ccache-7204.txt
+[2022-01-20T10:40:59.500419 16968] Config: (default) max_files = 0
+[2022-01-20T10:40:59.500419 16968] Config: (default) max_size = 5.0G
+[2022-01-20T10:40:59.500419 16968] Config: (default) path = 
+[2022-01-20T10:40:59.500419 16968] Config: (default) pch_external_checksum = false
+[2022-01-20T10:40:59.500419 16968] Config: (default) prefix_command = 
+[2022-01-20T10:40:59.500419 16968] Config: (default) prefix_command_cpp = 
+[2022-01-20T10:40:59.500419 16968] Config: (default) read_only = false
+[2022-01-20T10:40:59.500419 16968] Config: (default) read_only_direct = false
+[2022-01-20T10:40:59.500419 16968] Config: (default) recache = false
+[2022-01-20T10:40:59.500419 16968] Config: (default) run_second_cpp = true
+[2022-01-20T10:40:59.500419 16968] Config: (default) sloppiness = 
+[2022-01-20T10:40:59.500419 16968] Config: (default) stats = true
+[2022-01-20T10:40:59.500419 16968] Config: (default) temporary_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp
+[2022-01-20T10:40:59.500419 16968] Config: (default) umask = 
+[2022-01-20T10:40:59.501108 16968] Command line: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\ccache.exe C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\gcc.exe -o __helpers.o -c -flto -fuse-linker-plugin -fno-fat-lto-objects -std=c11 -fvisibility=hidden -fwrapv -pipe -fpartial-inlining -ftrack-macro-expansion=0 -Wno-deprecated-declarations -fno-var-tracking -Wno-misleading-indentation -fcompare-debug-second -O3 -D_WIN32_WINNT=0x0501 -D__NUITKA_NO_ASSERT__ -DMS_WIN64 -D_NUITKA_CONSTANTS_FROM_RESOURCE -D_NUITKA_FROZEN=0 -D_NUITKA_EXE -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\include -I. -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\include -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\static_src __helpers.c
+[2022-01-20T10:40:59.501659 16968] Hostname: unknown
+[2022-01-20T10:40:59.501844 16968] Working directory: D:/OneDrive/OneDrive - Segula/Documentos/GitHub/pyDatView/pyDatView.build
+[2022-01-20T10:40:59.501973 16968] Compiler type: gcc
+[2022-01-20T10:40:59.502876 16968] Source file: __helpers.c
+[2022-01-20T10:40:59.502912 16968] Object file: __helpers.o
+[2022-01-20T10:40:59.503220 16968] Trying direct lookup
+[2022-01-20T10:40:59.503792 16968] No manifest with name 139543o9qr15qno1jdigkf1ruhm3pp9ss in the cache
+[2022-01-20T10:40:59.506705 14536] === CCACHE 4.3 STARTED =========================================
+[2022-01-20T10:40:59.506705 14536] Config: (default) absolute_paths_in_stderr = false
+[2022-01-20T10:40:59.506705 14536] Config: (default) base_dir = 
+[2022-01-20T10:40:59.506705 14536] Config: (environment) cache_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache
+[2022-01-20T10:40:59.506705 14536] Config: (default) compiler = 
+[2022-01-20T10:40:59.506705 14536] Config: (default) compiler_check = mtime
+[2022-01-20T10:40:59.506705 14536] Config: (default) compiler_type = auto
+[2022-01-20T10:40:59.506705 14536] Config: (default) compression = true
+[2022-01-20T10:40:59.506705 14536] Config: (default) compression_level = 0
+[2022-01-20T10:40:59.506705 14536] Config: (default) cpp_extension = 
+[2022-01-20T10:40:59.506705 14536] Config: (default) debug = false
+[2022-01-20T10:40:59.506705 14536] Config: (default) debug_dir = 
+[2022-01-20T10:40:59.506705 14536] Config: (default) depend_mode = false
+[2022-01-20T10:40:59.506705 14536] Config: (default) direct_mode = true
+[2022-01-20T10:40:59.506705 14536] Config: (default) disable = false
+[2022-01-20T10:40:59.506705 14536] Config: (default) extra_files_to_hash = 
+[2022-01-20T10:40:59.506705 14536] Config: (default) file_clone = false
+[2022-01-20T10:40:59.506705 14536] Config: (default) hard_link = false
+[2022-01-20T10:40:59.506705 14536] Config: (default) hash_dir = true
+[2022-01-20T10:40:59.506705 14536] Config: (default) ignore_headers_in_manifest = 
+[2022-01-20T10:40:59.506705 14536] Config: (default) ignore_options = 
+[2022-01-20T10:40:59.506705 14536] Config: (default) inode_cache = false
+[2022-01-20T10:40:59.506705 14536] Config: (default) keep_comments_cpp = false
+[2022-01-20T10:40:59.506705 14536] Config: (default) limit_multiple = 0.8
+[2022-01-20T10:40:59.506705 14536] Config: (environment) log_file = D:\OneDrive\OneDrive - Segula\Documentos\GitHub\pyDatView\pyDatView.build\ccache-7204.txt
+[2022-01-20T10:40:59.506705 14536] Config: (default) max_files = 0
+[2022-01-20T10:40:59.506705 14536] Config: (default) max_size = 5.0G
+[2022-01-20T10:40:59.506705 14536] Config: (default) path = 
+[2022-01-20T10:40:59.506705 14536] Config: (default) pch_external_checksum = false
+[2022-01-20T10:40:59.506705 14536] Config: (default) prefix_command = 
+[2022-01-20T10:40:59.506705 14536] Config: (default) prefix_command_cpp = 
+[2022-01-20T10:40:59.506705 14536] Config: (default) read_only = false
+[2022-01-20T10:40:59.506705 14536] Config: (default) read_only_direct = false
+[2022-01-20T10:40:59.506705 14536] Config: (default) recache = false
+[2022-01-20T10:40:59.506705 14536] Config: (default) run_second_cpp = true
+[2022-01-20T10:40:59.506705 14536] Config: (default) sloppiness = 
+[2022-01-20T10:40:59.506705 14536] Config: (default) stats = true
+[2022-01-20T10:40:59.506705 14536] Config: (default) temporary_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp
+[2022-01-20T10:40:59.506705 14536] Config: (default) umask = 
+[2022-01-20T10:40:59.512913 14536] Command line: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\ccache.exe C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\gcc.exe -o __constants.o -c -flto -fuse-linker-plugin -fno-fat-lto-objects -std=c11 -fvisibility=hidden -fwrapv -pipe -fpartial-inlining -ftrack-macro-expansion=0 -Wno-deprecated-declarations -fno-var-tracking -Wno-misleading-indentation -fcompare-debug-second -O3 -D_WIN32_WINNT=0x0501 -D__NUITKA_NO_ASSERT__ -DMS_WIN64 -D_NUITKA_CONSTANTS_FROM_RESOURCE -D_NUITKA_FROZEN=0 -D_NUITKA_EXE -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\include -I. -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\include -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\static_src __constants.c
+[2022-01-20T10:40:59.513044 14536] Hostname: unknown
+[2022-01-20T10:40:59.513079 14536] Working directory: D:/OneDrive/OneDrive - Segula/Documentos/GitHub/pyDatView/pyDatView.build
+[2022-01-20T10:40:59.513107 14536] Compiler type: gcc
+[2022-01-20T10:40:59.513828 14536] Source file: __constants.c
+[2022-01-20T10:40:59.513867 14536] Object file: __constants.o
+[2022-01-20T10:40:59.514105 14536] Trying direct lookup
+[2022-01-20T10:40:59.514815 14536] No manifest with name b6862uadvs250leghe111c316ljf80jpm in the cache
+[2022-01-20T10:40:59.518884 16968] Running preprocessor
+[2022-01-20T10:40:59.525507 14536] Running preprocessor
+[2022-01-20T10:40:59.533468 14624] === CCACHE 4.3 STARTED =========================================
+[2022-01-20T10:40:59.533468 14624] Config: (default) absolute_paths_in_stderr = false
+[2022-01-20T10:40:59.533468 14624] Config: (default) base_dir = 
+[2022-01-20T10:40:59.533468 14624] Config: (environment) cache_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache
+[2022-01-20T10:40:59.533468 14624] Config: (default) compiler = 
+[2022-01-20T10:40:59.533468 14624] Config: (default) compiler_check = mtime
+[2022-01-20T10:40:59.533468 14624] Config: (default) compiler_type = auto
+[2022-01-20T10:40:59.533468 14624] Config: (default) compression = true
+[2022-01-20T10:40:59.533468 14624] Config: (default) compression_level = 0
+[2022-01-20T10:40:59.533468 14624] Config: (default) cpp_extension = 
+[2022-01-20T10:40:59.533468 14624] Config: (default) debug = false
+[2022-01-20T10:40:59.533468 14624] Config: (default) debug_dir = 
+[2022-01-20T10:40:59.533468 14624] Config: (default) depend_mode = false
+[2022-01-20T10:40:59.533468 14624] Config: (default) direct_mode = true
+[2022-01-20T10:40:59.533468 14624] Config: (default) disable = false
+[2022-01-20T10:40:59.533468 14624] Config: (default) extra_files_to_hash = 
+[2022-01-20T10:40:59.533468 14624] Config: (default) file_clone = false
+[2022-01-20T10:40:59.533468 14624] Config: (default) hard_link = false
+[2022-01-20T10:40:59.533468 14624] Config: (default) hash_dir = true
+[2022-01-20T10:40:59.533468 14624] Config: (default) ignore_headers_in_manifest = 
+[2022-01-20T10:40:59.533468 14624] Config: (default) ignore_options = 
+[2022-01-20T10:40:59.533468 14624] Config: (default) inode_cache = false
+[2022-01-20T10:40:59.533468 14624] Config: (default) keep_comments_cpp = false
+[2022-01-20T10:40:59.533468 14624] Config: (default) limit_multiple = 0.8
+[2022-01-20T10:40:59.533468 14624] Config: (environment) log_file = D:\OneDrive\OneDrive - Segula\Documentos\GitHub\pyDatView\pyDatView.build\ccache-7204.txt
+[2022-01-20T10:40:59.533468 14624] Config: (default) max_files = 0
+[2022-01-20T10:40:59.533468 14624] Config: (default) max_size = 5.0G
+[2022-01-20T10:40:59.533468 14624] Config: (default) path = 
+[2022-01-20T10:40:59.533468 14624] Config: (default) pch_external_checksum = false
+[2022-01-20T10:40:59.533468 14624] Config: (default) prefix_command = 
+[2022-01-20T10:40:59.533468 14624] Config: (default) prefix_command_cpp = 
+[2022-01-20T10:40:59.533468 14624] Config: (default) read_only = false
+[2022-01-20T10:40:59.533468 14624] Config: (default) read_only_direct = false
+[2022-01-20T10:40:59.533468 14624] Config: (default) recache = false
+[2022-01-20T10:40:59.533468 14624] Config: (default) run_second_cpp = true
+[2022-01-20T10:40:59.533468 14624] Config: (default) sloppiness = 
+[2022-01-20T10:40:59.533468 14624] Config: (default) stats = true
+[2022-01-20T10:40:59.533468 14624] Config: (default) temporary_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp
+[2022-01-20T10:40:59.533468 14624] Config: (default) umask = 
+[2022-01-20T10:40:59.533870 14624] Command line: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\ccache.exe C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\gcc.exe -o __loader.o -c -flto -fuse-linker-plugin -fno-fat-lto-objects -std=c11 -fvisibility=hidden -fwrapv -pipe -fpartial-inlining -ftrack-macro-expansion=0 -Wno-deprecated-declarations -fno-var-tracking -Wno-misleading-indentation -fcompare-debug-second -O3 -D_WIN32_WINNT=0x0501 -D__NUITKA_NO_ASSERT__ -DMS_WIN64 -D_NUITKA_CONSTANTS_FROM_RESOURCE -D_NUITKA_FROZEN=0 -D_NUITKA_EXE -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\include -I. -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\include -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\static_src __loader.c
+[2022-01-20T10:40:59.533974 14624] Hostname: unknown
+[2022-01-20T10:40:59.534008 14624] Working directory: D:/OneDrive/OneDrive - Segula/Documentos/GitHub/pyDatView/pyDatView.build
+[2022-01-20T10:40:59.534033 14624] Compiler type: gcc
+[2022-01-20T10:40:59.534681 14624] Source file: __loader.c
+[2022-01-20T10:40:59.534713 14624] Object file: __loader.o
+[2022-01-20T10:40:59.534926 14624] Trying direct lookup
+[2022-01-20T10:40:59.535586 14624] No manifest with name 8b8fi2aon6jbms90qo33tkd0nbl0mrvso in the cache
+[2022-01-20T10:40:59.538844 14624] Running preprocessor
+[2022-01-20T10:40:59.563425 14768] === CCACHE 4.3 STARTED =========================================
+[2022-01-20T10:40:59.563425 14768] Config: (default) absolute_paths_in_stderr = false
+[2022-01-20T10:40:59.563425 14768] Config: (default) base_dir = 
+[2022-01-20T10:40:59.563425 14768] Config: (environment) cache_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache
+[2022-01-20T10:40:59.563425 14768] Config: (default) compiler = 
+[2022-01-20T10:40:59.563425 14768] Config: (default) compiler_check = mtime
+[2022-01-20T10:40:59.563425 14768] Config: (default) compiler_type = auto
+[2022-01-20T10:40:59.563425 14768] Config: (default) compression = true
+[2022-01-20T10:40:59.563425 14768] Config: (default) compression_level = 0
+[2022-01-20T10:40:59.563425 14768] Config: (default) cpp_extension = 
+[2022-01-20T10:40:59.563425 14768] Config: (default) debug = false
+[2022-01-20T10:40:59.563425 14768] Config: (default) debug_dir = 
+[2022-01-20T10:40:59.563425 14768] Config: (default) depend_mode = false
+[2022-01-20T10:40:59.563425 14768] Config: (default) direct_mode = true
+[2022-01-20T10:40:59.563425 14768] Config: (default) disable = false
+[2022-01-20T10:40:59.563425 14768] Config: (default) extra_files_to_hash = 
+[2022-01-20T10:40:59.563425 14768] Config: (default) file_clone = false
+[2022-01-20T10:40:59.563425 14768] Config: (default) hard_link = false
+[2022-01-20T10:40:59.563425 14768] Config: (default) hash_dir = true
+[2022-01-20T10:40:59.563425 14768] Config: (default) ignore_headers_in_manifest = 
+[2022-01-20T10:40:59.563425 14768] Config: (default) ignore_options = 
+[2022-01-20T10:40:59.563425 14768] Config: (default) inode_cache = false
+[2022-01-20T10:40:59.563425 14768] Config: (default) keep_comments_cpp = false
+[2022-01-20T10:40:59.563425 14768] Config: (default) limit_multiple = 0.8
+[2022-01-20T10:40:59.563425 14768] Config: (environment) log_file = D:\OneDrive\OneDrive - Segula\Documentos\GitHub\pyDatView\pyDatView.build\ccache-7204.txt
+[2022-01-20T10:40:59.563425 14768] Config: (default) max_files = 0
+[2022-01-20T10:40:59.563425 14768] Config: (default) max_size = 5.0G
+[2022-01-20T10:40:59.563425 14768] Config: (default) path = 
+[2022-01-20T10:40:59.563425 14768] Config: (default) pch_external_checksum = false
+[2022-01-20T10:40:59.563425 14768] Config: (default) prefix_command = 
+[2022-01-20T10:40:59.563425 14768] Config: (default) prefix_command_cpp = 
+[2022-01-20T10:40:59.563425 14768] Config: (default) read_only = false
+[2022-01-20T10:40:59.563425 14768] Config: (default) read_only_direct = false
+[2022-01-20T10:40:59.563425 14768] Config: (default) recache = false
+[2022-01-20T10:40:59.563425 14768] Config: (default) run_second_cpp = true
+[2022-01-20T10:40:59.563425 14768] Config: (default) sloppiness = 
+[2022-01-20T10:40:59.563425 14768] Config: (default) stats = true
+[2022-01-20T10:40:59.563425 14768] Config: (default) temporary_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp
+[2022-01-20T10:40:59.563425 14768] Config: (default) umask = 
+[2022-01-20T10:40:59.563843 14768] Command line: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\ccache.exe C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\gcc.exe -o module.__main__.o -c -flto -fuse-linker-plugin -fno-fat-lto-objects -std=c11 -fvisibility=hidden -fwrapv -pipe -fpartial-inlining -ftrack-macro-expansion=0 -Wno-deprecated-declarations -fno-var-tracking -Wno-misleading-indentation -fcompare-debug-second -O3 -D_WIN32_WINNT=0x0501 -D__NUITKA_NO_ASSERT__ -DMS_WIN64 -D_NUITKA_CONSTANTS_FROM_RESOURCE -D_NUITKA_FROZEN=0 -D_NUITKA_EXE -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\include -I. -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\include -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\static_src module.__main__.c
+[2022-01-20T10:40:59.563970 14768] Hostname: unknown
+[2022-01-20T10:40:59.564007 14768] Working directory: D:/OneDrive/OneDrive - Segula/Documentos/GitHub/pyDatView/pyDatView.build
+[2022-01-20T10:40:59.564033 14768] Compiler type: gcc
+[2022-01-20T10:40:59.564663 14768] Source file: module.__main__.c
+[2022-01-20T10:40:59.564704 14768] Object file: module.__main__.o
+[2022-01-20T10:40:59.564909 14768] Trying direct lookup
+[2022-01-20T10:40:59.565599 14768] No manifest with name 0dbf5l4p0dp7ru8v1j3a0hh4rbtmbffca in the cache
+[2022-01-20T10:40:59.580814 14768] Running preprocessor
+[2022-01-20T10:41:00.342840 14624] Got result name from preprocessor
+[2022-01-20T10:41:00.343053 14624] No result with name 8c79h4llnm34qot3bs4dn6bfovrfn72sm in the cache
+[2022-01-20T10:41:00.343117 14624] Running real compiler
+[2022-01-20T10:41:01.363743 14624] Using default compression level 1
+[2022-01-20T10:41:01.364010 14624] Storing result __loader.o
+[2022-01-20T10:41:01.364122 14624] Storing embedded file #0 .o (9335 bytes) from __loader.o
+[2022-01-20T10:41:01.371700 14624] Stored in cache: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/8/c/79h4llnm34qot3bs4dn6bfovrfn72smR
+[2022-01-20T10:41:01.373372 14624] Adding result name to C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/8/b/8fi2aon6jbms90qo33tkd0nbl0mrvsoM
+[2022-01-20T10:41:01.387559 14624] Using default compression level 1
+[2022-01-20T10:41:01.391137 14624] Result: cache miss
+[2022-01-20T10:41:01.391925 14624] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/8/stats.lock
+[2022-01-20T10:41:01.421836 14624] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/8/stats.lock
+[2022-01-20T10:41:01.422713 14624] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/8/stats.lock
+[2022-01-20T10:41:01.440749 14624] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/8/stats.lock
+[2022-01-20T10:41:01.441206 14624] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stderr.rEgV2y
+[2022-01-20T10:41:01.441475 14624] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stdout.PwbJGj
+[2022-01-20T10:41:01.441741 14624] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stderr.PIFZgq
+[2022-01-20T10:41:01.442012 14624] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.gqi2Kx.i
+[2022-01-20T10:41:01.442418 14624] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.gqi2Kx
+[2022-01-20T10:41:01.525654 14996] === CCACHE 4.3 STARTED =========================================
+[2022-01-20T10:41:01.525654 14996] Config: (default) absolute_paths_in_stderr = false
+[2022-01-20T10:41:01.525654 14996] Config: (default) base_dir = 
+[2022-01-20T10:41:01.525654 14996] Config: (environment) cache_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache
+[2022-01-20T10:41:01.525654 14996] Config: (default) compiler = 
+[2022-01-20T10:41:01.525654 14996] Config: (default) compiler_check = mtime
+[2022-01-20T10:41:01.525654 14996] Config: (default) compiler_type = auto
+[2022-01-20T10:41:01.525654 14996] Config: (default) compression = true
+[2022-01-20T10:41:01.525654 14996] Config: (default) compression_level = 0
+[2022-01-20T10:41:01.525654 14996] Config: (default) cpp_extension = 
+[2022-01-20T10:41:01.525654 14996] Config: (default) debug = false
+[2022-01-20T10:41:01.525654 14996] Config: (default) debug_dir = 
+[2022-01-20T10:41:01.525654 14996] Config: (default) depend_mode = false
+[2022-01-20T10:41:01.525654 14996] Config: (default) direct_mode = true
+[2022-01-20T10:41:01.525654 14996] Config: (default) disable = false
+[2022-01-20T10:41:01.525654 14996] Config: (default) extra_files_to_hash = 
+[2022-01-20T10:41:01.525654 14996] Config: (default) file_clone = false
+[2022-01-20T10:41:01.525654 14996] Config: (default) hard_link = false
+[2022-01-20T10:41:01.525654 14996] Config: (default) hash_dir = true
+[2022-01-20T10:41:01.525654 14996] Config: (default) ignore_headers_in_manifest = 
+[2022-01-20T10:41:01.525654 14996] Config: (default) ignore_options = 
+[2022-01-20T10:41:01.525654 14996] Config: (default) inode_cache = false
+[2022-01-20T10:41:01.525654 14996] Config: (default) keep_comments_cpp = false
+[2022-01-20T10:41:01.525654 14996] Config: (default) limit_multiple = 0.8
+[2022-01-20T10:41:01.525654 14996] Config: (environment) log_file = D:\OneDrive\OneDrive - Segula\Documentos\GitHub\pyDatView\pyDatView.build\ccache-7204.txt
+[2022-01-20T10:41:01.525654 14996] Config: (default) max_files = 0
+[2022-01-20T10:41:01.525654 14996] Config: (default) max_size = 5.0G
+[2022-01-20T10:41:01.525654 14996] Config: (default) path = 
+[2022-01-20T10:41:01.525654 14996] Config: (default) pch_external_checksum = false
+[2022-01-20T10:41:01.525654 14996] Config: (default) prefix_command = 
+[2022-01-20T10:41:01.525654 14996] Config: (default) prefix_command_cpp = 
+[2022-01-20T10:41:01.525654 14996] Config: (default) read_only = false
+[2022-01-20T10:41:01.525654 14996] Config: (default) read_only_direct = false
+[2022-01-20T10:41:01.525654 14996] Config: (default) recache = false
+[2022-01-20T10:41:01.525654 14996] Config: (default) run_second_cpp = true
+[2022-01-20T10:41:01.525654 14996] Config: (default) sloppiness = 
+[2022-01-20T10:41:01.525654 14996] Config: (default) stats = true
+[2022-01-20T10:41:01.525654 14996] Config: (default) temporary_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp
+[2022-01-20T10:41:01.525654 14996] Config: (default) umask = 
+[2022-01-20T10:41:01.525996 14996] Command line: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\ccache.exe C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\gcc.exe -o static_src\MainProgram.o -c -flto -fuse-linker-plugin -fno-fat-lto-objects -std=c11 -fvisibility=hidden -fwrapv -pipe -fpartial-inlining -ftrack-macro-expansion=0 -Wno-deprecated-declarations -fno-var-tracking -Wno-misleading-indentation -fcompare-debug-second -O3 -D_WIN32_WINNT=0x0501 -D__NUITKA_NO_ASSERT__ -DMS_WIN64 -D_NUITKA_CONSTANTS_FROM_RESOURCE -D_NUITKA_FROZEN=0 -D_NUITKA_EXE -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\include -I. -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\include -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\static_src static_src\MainProgram.c
+[2022-01-20T10:41:01.526113 14996] Hostname: unknown
+[2022-01-20T10:41:01.526144 14996] Working directory: D:/OneDrive/OneDrive - Segula/Documentos/GitHub/pyDatView/pyDatView.build
+[2022-01-20T10:41:01.526177 14996] Compiler type: gcc
+[2022-01-20T10:41:01.526747 14996] Source file: static_src\MainProgram.c
+[2022-01-20T10:41:01.526781 14996] Object file: static_src\MainProgram.o
+[2022-01-20T10:41:01.527018 14996] Trying direct lookup
+[2022-01-20T10:41:01.527751 14996] No manifest with name bf05krvovmf6563oriso0ihifec2875lu in the cache
+[2022-01-20T10:41:01.531233 14996] Running preprocessor
+[2022-01-20T10:41:01.716027 16968] Got result name from preprocessor
+[2022-01-20T10:41:01.716276 16968] No result with name f1f1o3rs1fmfracm97sn9h6o0to3svsuq in the cache
+[2022-01-20T10:41:01.716328 16968] Running real compiler
+[2022-01-20T10:41:01.872188 14536] Got result name from preprocessor
+[2022-01-20T10:41:01.872433 14536] No result with name 44e91lmc99v8ni0hhddf0j8grfmdgo3km in the cache
+[2022-01-20T10:41:01.872481 14536] Running real compiler
+[2022-01-20T10:41:01.877383 14768] Got result name from preprocessor
+[2022-01-20T10:41:01.877612 14768] No result with name 84b35m0m5i7kkcrqml7g723krkrss4hug in the cache
+[2022-01-20T10:41:01.877662 14768] Running real compiler
+[2022-01-20T10:41:04.278499 16968] Using default compression level 1
+[2022-01-20T10:41:04.278698 16968] Storing result __helpers.o
+[2022-01-20T10:41:04.278813 16968] Storing embedded file #0 .o (2647 bytes) from __helpers.o
+[2022-01-20T10:41:04.286166 16968] Stored in cache: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/f/1/f1o3rs1fmfracm97sn9h6o0to3svsuqR
+[2022-01-20T10:41:04.288275 16968] Adding result name to C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/1/3/9543o9qr15qno1jdigkf1ruhm3pp9ssM
+[2022-01-20T10:41:04.335322 16968] Using default compression level 1
+[2022-01-20T10:41:04.339882 16968] Result: cache miss
+[2022-01-20T10:41:04.340601 16968] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/1/stats.lock
+[2022-01-20T10:41:04.344322 16968] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/1/stats.lock
+[2022-01-20T10:41:04.345248 16968] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/f/stats.lock
+[2022-01-20T10:41:04.348958 16968] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/f/stats.lock
+[2022-01-20T10:41:04.349465 16968] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stderr.ZENoJa
+[2022-01-20T10:41:04.349796 16968] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stdout.CWEZUV
+[2022-01-20T10:41:04.350116 16968] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stderr.BtRHUe
+[2022-01-20T10:41:04.350421 16968] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.2rnVOm.i
+[2022-01-20T10:41:04.351321 16968] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.2rnVOm
+[2022-01-20T10:41:04.483333 14536] Using default compression level 1
+[2022-01-20T10:41:04.483540 14536] Storing result __constants.o
+[2022-01-20T10:41:04.483646 14536] Storing embedded file #0 .o (14387 bytes) from __constants.o
+[2022-01-20T10:41:04.490416 14536] Stored in cache: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/4/4/e91lmc99v8ni0hhddf0j8grfmdgo3kmR
+[2022-01-20T10:41:04.492138 14536] Adding result name to C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/b/6/862uadvs250leghe111c316ljf80jpmM
+[2022-01-20T10:41:04.505476 14768] Using default compression level 1
+[2022-01-20T10:41:04.505681 14768] Storing result module.__main__.o
+[2022-01-20T10:41:04.505783 14768] Storing embedded file #0 .o (50901 bytes) from module.__main__.o
+[2022-01-20T10:41:04.512445 14768] Stored in cache: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/8/4/b35m0m5i7kkcrqml7g723krkrss4hugR
+[2022-01-20T10:41:04.512923 14768] Adding result name to C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/0/d/bf5l4p0dp7ru8v1j3a0hh4rbtmbffcaM
+[2022-01-20T10:41:04.533165 14536] Using default compression level 1
+[2022-01-20T10:41:04.537599 14536] Result: cache miss
+[2022-01-20T10:41:04.538519 14536] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/b/stats.lock
+[2022-01-20T10:41:04.546873 14536] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/b/stats.lock
+[2022-01-20T10:41:04.547716 14536] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/4/stats.lock
+[2022-01-20T10:41:04.551789 14536] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/4/stats.lock
+[2022-01-20T10:41:04.552263 14536] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stderr.5AW4Wz
+[2022-01-20T10:41:04.552551 14536] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stdout.tBzKwg
+[2022-01-20T10:41:04.552627 14768] Using default compression level 1
+[2022-01-20T10:41:04.552857 14536] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stderr.r0Akfn
+[2022-01-20T10:41:04.553142 14536] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.1ofc33.i
+[2022-01-20T10:41:04.554015 14536] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.1ofc33
+[2022-01-20T10:41:04.557544 14768] Result: cache miss
+[2022-01-20T10:41:04.558304 14768] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/0/stats.lock
+[2022-01-20T10:41:04.562222 14768] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/0/stats.lock
+[2022-01-20T10:41:04.563216 14768] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/8/stats.lock
+[2022-01-20T10:41:04.570737 14768] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/8/stats.lock
+[2022-01-20T10:41:04.571180 14768] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stderr.Kp2saY
+[2022-01-20T10:41:04.571432 14768] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stdout.eYVDHF
+[2022-01-20T10:41:04.571692 14768] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stderr.BKHdlA
+[2022-01-20T10:41:04.571938 14768] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.jAoAMb.i
+[2022-01-20T10:41:04.572854 14768] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.jAoAMb
+[2022-01-20T10:41:04.738950 14996] Got result name from preprocessor
+[2022-01-20T10:41:04.739132 14996] No result with name 93e579up2ltcbc2u5o149om08v4ak1hae in the cache
+[2022-01-20T10:41:04.739171 14996] Running real compiler
+[2022-01-20T10:41:06.789219 14996] Using default compression level 1
+[2022-01-20T10:41:06.789408 14996] Storing result static_src\MainProgram.o
+[2022-01-20T10:41:06.789516 14996] Storing embedded file #0 .o (24545 bytes) from static_src\MainProgram.o
+[2022-01-20T10:41:06.796263 14996] Stored in cache: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/9/3/e579up2ltcbc2u5o149om08v4ak1haeR
+[2022-01-20T10:41:06.797988 14996] Adding result name to C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/b/f/05krvovmf6563oriso0ihifec2875luM
+[2022-01-20T10:41:06.829792 14996] Using default compression level 1
+[2022-01-20T10:41:06.834093 14996] Result: cache miss
+[2022-01-20T10:41:06.834852 14996] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/b/stats.lock
+[2022-01-20T10:41:06.841818 14996] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/b/stats.lock
+[2022-01-20T10:41:06.842670 14996] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/9/stats.lock
+[2022-01-20T10:41:06.846072 14996] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/9/stats.lock
+[2022-01-20T10:41:06.846512 14996] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stderr.8jDDFp
+[2022-01-20T10:41:06.846776 14996] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stdout.weHjs9
+[2022-01-20T10:41:06.847029 14996] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stderr.tvjCYQ
+[2022-01-20T10:41:06.847274 14996] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.8LjClK.i
+[2022-01-20T10:41:06.848112 14996] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.8LjClK
+[2022-01-20T10:43:44.528012 17004] === CCACHE 4.3 STARTED =========================================
+[2022-01-20T10:43:44.528012 17004] Config: (default) absolute_paths_in_stderr = false
+[2022-01-20T10:43:44.528012 17004] Config: (default) base_dir = 
+[2022-01-20T10:43:44.528012 17004] Config: (environment) cache_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache
+[2022-01-20T10:43:44.528012 17004] Config: (default) compiler = 
+[2022-01-20T10:43:44.528012 17004] Config: (default) compiler_check = mtime
+[2022-01-20T10:43:44.528012 17004] Config: (default) compiler_type = auto
+[2022-01-20T10:43:44.528012 17004] Config: (default) compression = true
+[2022-01-20T10:43:44.528012 17004] Config: (default) compression_level = 0
+[2022-01-20T10:43:44.528012 17004] Config: (default) cpp_extension = 
+[2022-01-20T10:43:44.528012 17004] Config: (default) debug = false
+[2022-01-20T10:43:44.528012 17004] Config: (default) debug_dir = 
+[2022-01-20T10:43:44.528012 17004] Config: (default) depend_mode = false
+[2022-01-20T10:43:44.528012 17004] Config: (default) direct_mode = true
+[2022-01-20T10:43:44.528012 17004] Config: (default) disable = false
+[2022-01-20T10:43:44.528012 17004] Config: (default) extra_files_to_hash = 
+[2022-01-20T10:43:44.528012 17004] Config: (default) file_clone = false
+[2022-01-20T10:43:44.528012 17004] Config: (default) hard_link = false
+[2022-01-20T10:43:44.528012 17004] Config: (default) hash_dir = true
+[2022-01-20T10:43:44.528012 17004] Config: (default) ignore_headers_in_manifest = 
+[2022-01-20T10:43:44.528012 17004] Config: (default) ignore_options = 
+[2022-01-20T10:43:44.528012 17004] Config: (default) inode_cache = false
+[2022-01-20T10:43:44.528012 17004] Config: (default) keep_comments_cpp = false
+[2022-01-20T10:43:44.528012 17004] Config: (default) limit_multiple = 0.8
+[2022-01-20T10:43:44.528012 17004] Config: (environment) log_file = D:\OneDrive\OneDrive - Segula\Documentos\GitHub\pyDatView\pyDatView.build\ccache-7204.txt
+[2022-01-20T10:43:44.528012 17004] Config: (default) max_files = 0
+[2022-01-20T10:43:44.528012 17004] Config: (default) max_size = 5.0G
+[2022-01-20T10:43:44.528012 17004] Config: (default) path = 
+[2022-01-20T10:43:44.528012 17004] Config: (default) pch_external_checksum = false
+[2022-01-20T10:43:44.528012 17004] Config: (default) prefix_command = 
+[2022-01-20T10:43:44.528012 17004] Config: (default) prefix_command_cpp = 
+[2022-01-20T10:43:44.528012 17004] Config: (default) read_only = false
+[2022-01-20T10:43:44.528012 17004] Config: (default) read_only_direct = false
+[2022-01-20T10:43:44.528012 17004] Config: (default) recache = false
+[2022-01-20T10:43:44.528012 17004] Config: (default) run_second_cpp = true
+[2022-01-20T10:43:44.528012 17004] Config: (default) sloppiness = 
+[2022-01-20T10:43:44.528012 17004] Config: (default) stats = true
+[2022-01-20T10:43:44.528012 17004] Config: (default) temporary_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp
+[2022-01-20T10:43:44.528012 17004] Config: (default) umask = 
+[2022-01-20T10:43:44.528527 17004] Command line: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\ccache.exe C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\gcc.exe -o static_src\CompiledCellType.o -c -flto -fuse-linker-plugin -fno-fat-lto-objects -std=c11 -fvisibility=hidden -fwrapv -pipe -fpartial-inlining -ftrack-macro-expansion=0 -Wno-deprecated-declarations -fno-var-tracking -Wno-misleading-indentation -fcompare-debug-second -O3 -D_WIN32_WINNT=0x0501 -D__NUITKA_NO_ASSERT__ -DMS_WIN64 -D_NUITKA_CONSTANTS_FROM_RESOURCE -D_NUITKA_FROZEN=0 -D_NUITKA_EXE -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\include -I. -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\include -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\static_src static_src\CompiledCellType.c
+[2022-01-20T10:43:44.528579 17004] Hostname: unknown
+[2022-01-20T10:43:44.528663 17004] Working directory: D:/OneDrive/OneDrive - Segula/Documentos/GitHub/pyDatView/pyDatView.build
+[2022-01-20T10:43:44.528694 17004] Compiler type: gcc
+[2022-01-20T10:43:44.529394 17004] Source file: static_src\CompiledCellType.c
+[2022-01-20T10:43:44.529430 17004] Object file: static_src\CompiledCellType.o
+[2022-01-20T10:43:44.529641 17004] Trying direct lookup
+[2022-01-20T10:43:44.530186 17004] No manifest with name e57dvfj3hlpf1obfeeihvr7p0ne2pkkoq in the cache
+[2022-01-20T10:43:44.533656 17004] Running preprocessor
+[2022-01-20T10:43:45.096109 16688] === CCACHE 4.3 STARTED =========================================
+[2022-01-20T10:43:45.096109 16688] Config: (default) absolute_paths_in_stderr = false
+[2022-01-20T10:43:45.096109 16688] Config: (default) base_dir = 
+[2022-01-20T10:43:45.096109 16688] Config: (environment) cache_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache
+[2022-01-20T10:43:45.096109 16688] Config: (default) compiler = 
+[2022-01-20T10:43:45.096109 16688] Config: (default) compiler_check = mtime
+[2022-01-20T10:43:45.096109 16688] Config: (default) compiler_type = auto
+[2022-01-20T10:43:45.096109 16688] Config: (default) compression = true
+[2022-01-20T10:43:45.096109 16688] Config: (default) compression_level = 0
+[2022-01-20T10:43:45.096109 16688] Config: (default) cpp_extension = 
+[2022-01-20T10:43:45.096109 16688] Config: (default) debug = false
+[2022-01-20T10:43:45.096109 16688] Config: (default) debug_dir = 
+[2022-01-20T10:43:45.096109 16688] Config: (default) depend_mode = false
+[2022-01-20T10:43:45.096109 16688] Config: (default) direct_mode = true
+[2022-01-20T10:43:45.096109 16688] Config: (default) disable = false
+[2022-01-20T10:43:45.096109 16688] Config: (default) extra_files_to_hash = 
+[2022-01-20T10:43:45.096109 16688] Config: (default) file_clone = false
+[2022-01-20T10:43:45.096109 16688] Config: (default) hard_link = false
+[2022-01-20T10:43:45.096109 16688] Config: (default) hash_dir = true
+[2022-01-20T10:43:45.096109 16688] Config: (default) ignore_headers_in_manifest = 
+[2022-01-20T10:43:45.096109 16688] Config: (default) ignore_options = 
+[2022-01-20T10:43:45.096109 16688] Config: (default) inode_cache = false
+[2022-01-20T10:43:45.096109 16688] Config: (default) keep_comments_cpp = false
+[2022-01-20T10:43:45.096109 16688] Config: (default) limit_multiple = 0.8
+[2022-01-20T10:43:45.096109 16688] Config: (environment) log_file = D:\OneDrive\OneDrive - Segula\Documentos\GitHub\pyDatView\pyDatView.build\ccache-7204.txt
+[2022-01-20T10:43:45.096109 16688] Config: (default) max_files = 0
+[2022-01-20T10:43:45.096109 16688] Config: (default) max_size = 5.0G
+[2022-01-20T10:43:45.096109 16688] Config: (default) path = 
+[2022-01-20T10:43:45.096109 16688] Config: (default) pch_external_checksum = false
+[2022-01-20T10:43:45.096109 16688] Config: (default) prefix_command = 
+[2022-01-20T10:43:45.096109 16688] Config: (default) prefix_command_cpp = 
+[2022-01-20T10:43:45.096109 16688] Config: (default) read_only = false
+[2022-01-20T10:43:45.096109 16688] Config: (default) read_only_direct = false
+[2022-01-20T10:43:45.096109 16688] Config: (default) recache = false
+[2022-01-20T10:43:45.096109 16688] Config: (default) run_second_cpp = true
+[2022-01-20T10:43:45.096109 16688] Config: (default) sloppiness = 
+[2022-01-20T10:43:45.096109 16688] Config: (default) stats = true
+[2022-01-20T10:43:45.096109 16688] Config: (default) temporary_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp
+[2022-01-20T10:43:45.096109 16688] Config: (default) umask = 
+[2022-01-20T10:43:45.096440 16688] Command line: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\ccache.exe C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\gcc.exe -o static_src\CompiledFunctionType.o -c -flto -fuse-linker-plugin -fno-fat-lto-objects -std=c11 -fvisibility=hidden -fwrapv -pipe -fpartial-inlining -ftrack-macro-expansion=0 -Wno-deprecated-declarations -fno-var-tracking -Wno-misleading-indentation -fcompare-debug-second -O3 -D_WIN32_WINNT=0x0501 -D__NUITKA_NO_ASSERT__ -DMS_WIN64 -D_NUITKA_CONSTANTS_FROM_RESOURCE -D_NUITKA_FROZEN=0 -D_NUITKA_EXE -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\include -I. -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\include -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\static_src static_src\CompiledFunctionType.c
+[2022-01-20T10:43:45.096546 16688] Hostname: unknown
+[2022-01-20T10:43:45.096582 16688] Working directory: D:/OneDrive/OneDrive - Segula/Documentos/GitHub/pyDatView/pyDatView.build
+[2022-01-20T10:43:45.096608 16688] Compiler type: gcc
+[2022-01-20T10:43:45.097446 16688] Source file: static_src\CompiledFunctionType.c
+[2022-01-20T10:43:45.097504 16688] Object file: static_src\CompiledFunctionType.o
+[2022-01-20T10:43:45.097587 13512] === CCACHE 4.3 STARTED =========================================
+[2022-01-20T10:43:45.097776 16688] Trying direct lookup
+[2022-01-20T10:43:45.097587 13512] Config: (default) absolute_paths_in_stderr = false
+[2022-01-20T10:43:45.097587 13512] Config: (default) base_dir = 
+[2022-01-20T10:43:45.097587 13512] Config: (environment) cache_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache
+[2022-01-20T10:43:45.097587 13512] Config: (default) compiler = 
+[2022-01-20T10:43:45.097587 13512] Config: (default) compiler_check = mtime
+[2022-01-20T10:43:45.097587 13512] Config: (default) compiler_type = auto
+[2022-01-20T10:43:45.097587 13512] Config: (default) compression = true
+[2022-01-20T10:43:45.097587 13512] Config: (default) compression_level = 0
+[2022-01-20T10:43:45.097587 13512] Config: (default) cpp_extension = 
+[2022-01-20T10:43:45.097587 13512] Config: (default) debug = false
+[2022-01-20T10:43:45.097587 13512] Config: (default) debug_dir = 
+[2022-01-20T10:43:45.097587 13512] Config: (default) depend_mode = false
+[2022-01-20T10:43:45.097587 13512] Config: (default) direct_mode = true
+[2022-01-20T10:43:45.097587 13512] Config: (default) disable = false
+[2022-01-20T10:43:45.097587 13512] Config: (default) extra_files_to_hash = 
+[2022-01-20T10:43:45.097587 13512] Config: (default) file_clone = false
+[2022-01-20T10:43:45.097587 13512] Config: (default) hard_link = false
+[2022-01-20T10:43:45.097587 13512] Config: (default) hash_dir = true
+[2022-01-20T10:43:45.097587 13512] Config: (default) ignore_headers_in_manifest = 
+[2022-01-20T10:43:45.097587 13512] Config: (default) ignore_options = 
+[2022-01-20T10:43:45.097587 13512] Config: (default) inode_cache = false
+[2022-01-20T10:43:45.097587 13512] Config: (default) keep_comments_cpp = false
+[2022-01-20T10:43:45.097587 13512] Config: (default) limit_multiple = 0.8
+[2022-01-20T10:43:45.097587 13512] Config: (environment) log_file = D:\OneDrive\OneDrive - Segula\Documentos\GitHub\pyDatView\pyDatView.build\ccache-7204.txt
+[2022-01-20T10:43:45.097587 13512] Config: (default) max_files = 0
+[2022-01-20T10:43:45.097587 13512] Config: (default) max_size = 5.0G
+[2022-01-20T10:43:45.097587 13512] Config: (default) path = 
+[2022-01-20T10:43:45.097587 13512] Config: (default) pch_external_checksum = false
+[2022-01-20T10:43:45.097587 13512] Config: (default) prefix_command = 
+[2022-01-20T10:43:45.097587 13512] Config: (default) prefix_command_cpp = 
+[2022-01-20T10:43:45.097587 13512] Config: (default) read_only = false
+[2022-01-20T10:43:45.097587 13512] Config: (default) read_only_direct = false
+[2022-01-20T10:43:45.097587 13512] Config: (default) recache = false
+[2022-01-20T10:43:45.097587 13512] Config: (default) run_second_cpp = true
+[2022-01-20T10:43:45.097587 13512] Config: (default) sloppiness = 
+[2022-01-20T10:43:45.097587 13512] Config: (default) stats = true
+[2022-01-20T10:43:45.097587 13512] Config: (default) temporary_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp
+[2022-01-20T10:43:45.097587 13512] Config: (default) umask = 
+[2022-01-20T10:43:45.097917 13512] Command line: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\ccache.exe C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\gcc.exe -o static_src\InspectPatcher.o -c -flto -fuse-linker-plugin -fno-fat-lto-objects -std=c11 -fvisibility=hidden -fwrapv -pipe -fpartial-inlining -ftrack-macro-expansion=0 -Wno-deprecated-declarations -fno-var-tracking -Wno-misleading-indentation -fcompare-debug-second -O3 -D_WIN32_WINNT=0x0501 -D__NUITKA_NO_ASSERT__ -DMS_WIN64 -D_NUITKA_CONSTANTS_FROM_RESOURCE -D_NUITKA_FROZEN=0 -D_NUITKA_EXE -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\include -I. -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\include -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\static_src static_src\InspectPatcher.c
+[2022-01-20T10:43:45.098017 13512] Hostname: unknown
+[2022-01-20T10:43:45.098049 13512] Working directory: D:/OneDrive/OneDrive - Segula/Documentos/GitHub/pyDatView/pyDatView.build
+[2022-01-20T10:43:45.098074 13512] Compiler type: gcc
+[2022-01-20T10:43:45.098545 16688] No manifest with name e988gdknarqnqncgln7ellnlstk864caa in the cache
+[2022-01-20T10:43:45.098731 13512] Source file: static_src\InspectPatcher.c
+[2022-01-20T10:43:45.098764 13512] Object file: static_src\InspectPatcher.o
+[2022-01-20T10:43:45.098940 13512] Trying direct lookup
+[2022-01-20T10:43:45.099493 13512] No manifest with name 16f0v1ri0tp2esvmvch7tokm80d794otu in the cache
+[2022-01-20T10:43:45.105565 16688] Running preprocessor
+[2022-01-20T10:43:45.106279 13512] Running preprocessor
+[2022-01-20T10:43:45.145136 14488] === CCACHE 4.3 STARTED =========================================
+[2022-01-20T10:43:45.145136 14488] Config: (default) absolute_paths_in_stderr = false
+[2022-01-20T10:43:45.145136 14488] Config: (default) base_dir = 
+[2022-01-20T10:43:45.145136 14488] Config: (environment) cache_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache
+[2022-01-20T10:43:45.145136 14488] Config: (default) compiler = 
+[2022-01-20T10:43:45.145136 14488] Config: (default) compiler_check = mtime
+[2022-01-20T10:43:45.145136 14488] Config: (default) compiler_type = auto
+[2022-01-20T10:43:45.145136 14488] Config: (default) compression = true
+[2022-01-20T10:43:45.145136 14488] Config: (default) compression_level = 0
+[2022-01-20T10:43:45.145136 14488] Config: (default) cpp_extension = 
+[2022-01-20T10:43:45.145136 14488] Config: (default) debug = false
+[2022-01-20T10:43:45.145136 14488] Config: (default) debug_dir = 
+[2022-01-20T10:43:45.145136 14488] Config: (default) depend_mode = false
+[2022-01-20T10:43:45.145136 14488] Config: (default) direct_mode = true
+[2022-01-20T10:43:45.145136 14488] Config: (default) disable = false
+[2022-01-20T10:43:45.145136 14488] Config: (default) extra_files_to_hash = 
+[2022-01-20T10:43:45.145136 14488] Config: (default) file_clone = false
+[2022-01-20T10:43:45.145136 14488] Config: (default) hard_link = false
+[2022-01-20T10:43:45.145136 14488] Config: (default) hash_dir = true
+[2022-01-20T10:43:45.145136 14488] Config: (default) ignore_headers_in_manifest = 
+[2022-01-20T10:43:45.145136 14488] Config: (default) ignore_options = 
+[2022-01-20T10:43:45.145136 14488] Config: (default) inode_cache = false
+[2022-01-20T10:43:45.145136 14488] Config: (default) keep_comments_cpp = false
+[2022-01-20T10:43:45.145136 14488] Config: (default) limit_multiple = 0.8
+[2022-01-20T10:43:45.145136 14488] Config: (environment) log_file = D:\OneDrive\OneDrive - Segula\Documentos\GitHub\pyDatView\pyDatView.build\ccache-7204.txt
+[2022-01-20T10:43:45.145136 14488] Config: (default) max_files = 0
+[2022-01-20T10:43:45.145136 14488] Config: (default) max_size = 5.0G
+[2022-01-20T10:43:45.145136 14488] Config: (default) path = 
+[2022-01-20T10:43:45.145136 14488] Config: (default) pch_external_checksum = false
+[2022-01-20T10:43:45.145136 14488] Config: (default) prefix_command = 
+[2022-01-20T10:43:45.145136 14488] Config: (default) prefix_command_cpp = 
+[2022-01-20T10:43:45.145136 14488] Config: (default) read_only = false
+[2022-01-20T10:43:45.145136 14488] Config: (default) read_only_direct = false
+[2022-01-20T10:43:45.145136 14488] Config: (default) recache = false
+[2022-01-20T10:43:45.145136 14488] Config: (default) run_second_cpp = true
+[2022-01-20T10:43:45.145136 14488] Config: (default) sloppiness = 
+[2022-01-20T10:43:45.145136 14488] Config: (default) stats = true
+[2022-01-20T10:43:45.145136 14488] Config: (default) temporary_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp
+[2022-01-20T10:43:45.145136 14488] Config: (default) umask = 
+[2022-01-20T10:43:45.145634 14488] Command line: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\ccache.exe C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\gcc.exe -o static_src\CompiledGeneratorType.o -c -flto -fuse-linker-plugin -fno-fat-lto-objects -std=c11 -fvisibility=hidden -fwrapv -pipe -fpartial-inlining -ftrack-macro-expansion=0 -Wno-deprecated-declarations -fno-var-tracking -Wno-misleading-indentation -fcompare-debug-second -O3 -D_WIN32_WINNT=0x0501 -D__NUITKA_NO_ASSERT__ -DMS_WIN64 -D_NUITKA_CONSTANTS_FROM_RESOURCE -D_NUITKA_FROZEN=0 -D_NUITKA_EXE -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\include -I. -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\include -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\static_src static_src\CompiledGeneratorType.c
+[2022-01-20T10:43:45.145797 14488] Hostname: unknown
+[2022-01-20T10:43:45.145851 14488] Working directory: D:/OneDrive/OneDrive - Segula/Documentos/GitHub/pyDatView/pyDatView.build
+[2022-01-20T10:43:45.145880 14488] Compiler type: gcc
+[2022-01-20T10:43:45.146900 14488] Source file: static_src\CompiledGeneratorType.c
+[2022-01-20T10:43:45.146944 14488] Object file: static_src\CompiledGeneratorType.o
+[2022-01-20T10:43:45.147156 14488] Trying direct lookup
+[2022-01-20T10:43:45.148059 14488] No manifest with name 19d9gf5d13m4k5qog4aopso3rktmfj4fg in the cache
+[2022-01-20T10:43:45.156901 14488] Running preprocessor
+[2022-01-20T10:43:54.429614 13512] Got result name from preprocessor
+[2022-01-20T10:43:54.429859 13512] No result with name 5db1t4i2il5t73i0lvofmvt009q5sa0h2 in the cache
+[2022-01-20T10:43:54.429913 13512] Running real compiler
+[2022-01-20T10:43:54.809685 17004] Got result name from preprocessor
+[2022-01-20T10:43:54.809961 17004] No result with name d1ab7bn8vo3s25e7jbfv8cfroj1om3fv6 in the cache
+[2022-01-20T10:43:54.810011 17004] Running real compiler
+[2022-01-20T10:43:55.799517 14488] Got result name from preprocessor
+[2022-01-20T10:43:55.961447 14488] No result with name 7ce7g05sfijeggaabaklqshisqk1lduv0 in the cache
+[2022-01-20T10:43:55.961511 14488] Running real compiler
+[2022-01-20T10:44:05.199047 16688] Got result name from preprocessor
+[2022-01-20T10:44:05.199277 16688] No result with name f9683fa397jfjod53nu1vfd4ovqasltg0 in the cache
+[2022-01-20T10:44:05.199343 16688] Running real compiler
+[2022-01-20T10:44:07.096479 13512] Using default compression level 1
+[2022-01-20T10:44:07.096671 13512] Storing result static_src\InspectPatcher.o
+[2022-01-20T10:44:07.096775 13512] Storing embedded file #0 .o (45075 bytes) from static_src\InspectPatcher.o
+[2022-01-20T10:44:07.103949 13512] Stored in cache: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/5/d/b1t4i2il5t73i0lvofmvt009q5sa0h2R
+[2022-01-20T10:44:07.105730 13512] Adding result name to C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/1/6/f0v1ri0tp2esvmvch7tokm80d794otuM
+[2022-01-20T10:44:07.238492 17004] Using default compression level 1
+[2022-01-20T10:44:07.238686 17004] Storing result static_src\CompiledCellType.o
+[2022-01-20T10:44:07.238798 17004] Storing embedded file #0 .o (35883 bytes) from static_src\CompiledCellType.o
+[2022-01-20T10:44:07.246073 17004] Stored in cache: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/d/1/ab7bn8vo3s25e7jbfv8cfroj1om3fv6R
+[2022-01-20T10:44:07.247853 17004] Adding result name to C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/e/5/7dvfj3hlpf1obfeeihvr7p0ne2pkkoqM
+[2022-01-20T10:44:07.362975 13512] Using default compression level 1
+[2022-01-20T10:44:07.367080 13512] Result: cache miss
+[2022-01-20T10:44:07.367789 13512] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/1/stats.lock
+[2022-01-20T10:44:07.375428 13512] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/1/stats.lock
+[2022-01-20T10:44:07.376259 13512] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/5/stats.lock
+[2022-01-20T10:44:07.379479 13512] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/5/stats.lock
+[2022-01-20T10:44:07.380021 13512] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stderr.NwPweJ
+[2022-01-20T10:44:07.380395 13512] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stdout.oyX1js
+[2022-01-20T10:44:07.380675 13512] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stderr.5UHJc4
+[2022-01-20T10:44:07.380961 13512] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.Krkq61.i
+[2022-01-20T10:44:07.381813 13512] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.Krkq61
+[2022-01-20T10:44:07.390997 17004] Using default compression level 1
+[2022-01-20T10:44:07.395037 17004] Result: cache miss
+[2022-01-20T10:44:07.395720 17004] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/e/stats.lock
+[2022-01-20T10:44:07.398896 17004] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/e/stats.lock
+[2022-01-20T10:44:07.399719 17004] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/d/stats.lock
+[2022-01-20T10:44:07.402810 17004] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/d/stats.lock
+[2022-01-20T10:44:07.403245 17004] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stderr.JlSaFC
+[2022-01-20T10:44:07.403501 17004] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stdout.1n3NlK
+[2022-01-20T10:44:07.403783 17004] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stderr.oK0l8h
+[2022-01-20T10:44:07.404035 17004] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.Oz00s9.i
+[2022-01-20T10:44:07.404888 17004] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.Oz00s9
+[2022-01-20T10:44:08.161156 16092] === CCACHE 4.3 STARTED =========================================
+[2022-01-20T10:44:08.161156 16092] Config: (default) absolute_paths_in_stderr = false
+[2022-01-20T10:44:08.161156 16092] Config: (default) base_dir = 
+[2022-01-20T10:44:08.161156 16092] Config: (environment) cache_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache
+[2022-01-20T10:44:08.161156 16092] Config: (default) compiler = 
+[2022-01-20T10:44:08.161156 16092] Config: (default) compiler_check = mtime
+[2022-01-20T10:44:08.161156 16092] Config: (default) compiler_type = auto
+[2022-01-20T10:44:08.161156 16092] Config: (default) compression = true
+[2022-01-20T10:44:08.161156 16092] Config: (default) compression_level = 0
+[2022-01-20T10:44:08.161156 16092] Config: (default) cpp_extension = 
+[2022-01-20T10:44:08.161156 16092] Config: (default) debug = false
+[2022-01-20T10:44:08.161156 16092] Config: (default) debug_dir = 
+[2022-01-20T10:44:08.161156 16092] Config: (default) depend_mode = false
+[2022-01-20T10:44:08.161156 16092] Config: (default) direct_mode = true
+[2022-01-20T10:44:08.161156 16092] Config: (default) disable = false
+[2022-01-20T10:44:08.161156 16092] Config: (default) extra_files_to_hash = 
+[2022-01-20T10:44:08.161156 16092] Config: (default) file_clone = false
+[2022-01-20T10:44:08.161156 16092] Config: (default) hard_link = false
+[2022-01-20T10:44:08.161156 16092] Config: (default) hash_dir = true
+[2022-01-20T10:44:08.161156 16092] Config: (default) ignore_headers_in_manifest = 
+[2022-01-20T10:44:08.161156 16092] Config: (default) ignore_options = 
+[2022-01-20T10:44:08.161156 16092] Config: (default) inode_cache = false
+[2022-01-20T10:44:08.161156 16092] Config: (default) keep_comments_cpp = false
+[2022-01-20T10:44:08.161156 16092] Config: (default) limit_multiple = 0.8
+[2022-01-20T10:44:08.161156 16092] Config: (environment) log_file = D:\OneDrive\OneDrive - Segula\Documentos\GitHub\pyDatView\pyDatView.build\ccache-7204.txt
+[2022-01-20T10:44:08.161156 16092] Config: (default) max_files = 0
+[2022-01-20T10:44:08.161156 16092] Config: (default) max_size = 5.0G
+[2022-01-20T10:44:08.161156 16092] Config: (default) path = 
+[2022-01-20T10:44:08.161156 16092] Config: (default) pch_external_checksum = false
+[2022-01-20T10:44:08.161156 16092] Config: (default) prefix_command = 
+[2022-01-20T10:44:08.161156 16092] Config: (default) prefix_command_cpp = 
+[2022-01-20T10:44:08.161156 16092] Config: (default) read_only = false
+[2022-01-20T10:44:08.161156 16092] Config: (default) read_only_direct = false
+[2022-01-20T10:44:08.161156 16092] Config: (default) recache = false
+[2022-01-20T10:44:08.161156 16092] Config: (default) run_second_cpp = true
+[2022-01-20T10:44:08.161156 16092] Config: (default) sloppiness = 
+[2022-01-20T10:44:08.161156 16092] Config: (default) stats = true
+[2022-01-20T10:44:08.161156 16092] Config: (default) temporary_dir = C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp
+[2022-01-20T10:44:08.161156 16092] Config: (default) umask = 
+[2022-01-20T10:44:08.161509 16092] Command line: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\ccache.exe C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\gcc\x86_64\11.2.0-12.0.1-9.0.0-r1\mingw64\bin\gcc.exe -o static_src\MetaPathBasedLoader.o -c -flto -fuse-linker-plugin -fno-fat-lto-objects -std=c11 -fvisibility=hidden -fwrapv -pipe -fpartial-inlining -ftrack-macro-expansion=0 -Wno-deprecated-declarations -fno-var-tracking -Wno-misleading-indentation -fcompare-debug-second -O3 -D_WIN32_WINNT=0x0501 -D__NUITKA_NO_ASSERT__ -DMS_WIN64 -D_NUITKA_CONSTANTS_FROM_RESOURCE -D_NUITKA_FROZEN=0 -D_NUITKA_EXE -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\include -I. -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\include -IC:\Users\jrangel\AppData\Local\Programs\Python\Python39\lib\SITE-P~1\nuitka\build\static_src static_src\MetaPathBasedLoader.c
+[2022-01-20T10:44:08.161564 16092] Hostname: unknown
+[2022-01-20T10:44:08.161595 16092] Working directory: D:/OneDrive/OneDrive - Segula/Documentos/GitHub/pyDatView/pyDatView.build
+[2022-01-20T10:44:08.161621 16092] Compiler type: gcc
+[2022-01-20T10:44:08.162261 16092] Source file: static_src\MetaPathBasedLoader.c
+[2022-01-20T10:44:08.162296 16092] Object file: static_src\MetaPathBasedLoader.o
+[2022-01-20T10:44:08.162474 16092] Trying direct lookup
+[2022-01-20T10:44:08.163181 16092] No manifest with name 11468p0jfooajvqjtks3e44nh1nhf74i2 in the cache
+[2022-01-20T10:44:08.166457 16092] Running preprocessor
+[2022-01-20T10:44:09.411262 14488] Using default compression level 1
+[2022-01-20T10:44:09.411450 14488] Storing result static_src\CompiledGeneratorType.o
+[2022-01-20T10:44:09.411561 14488] Storing embedded file #0 .o (360961 bytes) from static_src\CompiledGeneratorType.o
+[2022-01-20T10:44:09.420750 14488] Stored in cache: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/7/c/e7g05sfijeggaabaklqshisqk1lduv0R
+[2022-01-20T10:44:09.422511 14488] Adding result name to C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/1/9/d9gf5d13m4k5qog4aopso3rktmfj4fgM
+[2022-01-20T10:44:09.506831 14488] Using default compression level 1
+[2022-01-20T10:44:09.511303 14488] Result: cache miss
+[2022-01-20T10:44:09.512024 14488] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/1/stats.lock
+[2022-01-20T10:44:09.519194 14488] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/1/stats.lock
+[2022-01-20T10:44:09.520051 14488] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/7/stats.lock
+[2022-01-20T10:44:09.523376 14488] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/7/stats.lock
+[2022-01-20T10:44:09.523845 14488] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stderr.1OMSlw
+[2022-01-20T10:44:09.524144 14488] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stdout.02Ir9H
+[2022-01-20T10:44:09.524446 14488] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stderr.vWhSAH
+[2022-01-20T10:44:09.524733 14488] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.9syGNv.i
+[2022-01-20T10:44:09.525549 14488] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.9syGNv
+[2022-01-20T10:44:10.938296 16092] Got result name from preprocessor
+[2022-01-20T10:44:10.938537 16092] No result with name f81cbdonntjbth757k5ked41o7alurf0c in the cache
+[2022-01-20T10:44:10.938578 16092] Running real compiler
+[2022-01-20T10:44:13.472874 16092] Using default compression level 1
+[2022-01-20T10:44:13.473072 16092] Storing result static_src\MetaPathBasedLoader.o
+[2022-01-20T10:44:13.473190 16092] Storing embedded file #0 .o (109347 bytes) from static_src\MetaPathBasedLoader.o
+[2022-01-20T10:44:13.480526 16092] Stored in cache: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/f/8/1cbdonntjbth757k5ked41o7alurf0cR
+[2022-01-20T10:44:13.481044 16092] Adding result name to C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/1/1/468p0jfooajvqjtks3e44nh1nhf74i2M
+[2022-01-20T10:44:13.514963 16092] Using default compression level 1
+[2022-01-20T10:44:13.519310 16092] Result: cache miss
+[2022-01-20T10:44:13.520050 16092] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/1/stats.lock
+[2022-01-20T10:44:13.527666 16092] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/1/stats.lock
+[2022-01-20T10:44:13.528556 16092] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/f/stats.lock
+[2022-01-20T10:44:13.536338 16092] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/f/stats.lock
+[2022-01-20T10:44:13.536810 16092] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stderr.J51oJN
+[2022-01-20T10:44:13.537098 16092] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stdout.EXJoMk
+[2022-01-20T10:44:13.537394 16092] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stderr.NZ3jtS
+[2022-01-20T10:44:13.537666 16092] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.C41Syn.i
+[2022-01-20T10:44:13.538451 16092] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.C41Syn
+[2022-01-20T10:44:21.508374 16688] Using default compression level 1
+[2022-01-20T10:44:21.508568 16688] Storing result static_src\CompiledFunctionType.o
+[2022-01-20T10:44:21.508687 16688] Storing embedded file #0 .o (3244212 bytes) from static_src\CompiledFunctionType.o
+[2022-01-20T10:44:21.535597 16688] Stored in cache: C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/f/9/683fa397jfjod53nu1vfd4ovqasltg0R
+[2022-01-20T10:44:21.536108 16688] Adding result name to C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/e/9/88gdknarqnqncgln7ellnlstk864caaM
+[2022-01-20T10:44:21.845629 16688] Using default compression level 1
+[2022-01-20T10:44:22.151708 16688] Result: cache miss
+[2022-01-20T10:44:22.349125 16688] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/e/stats.lock
+[2022-01-20T10:44:22.362043 16688] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/e/stats.lock
+[2022-01-20T10:44:22.362846 16688] Acquired lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/f/stats.lock
+[2022-01-20T10:44:22.369647 16688] Releasing lock C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/f/stats.lock
+[2022-01-20T10:44:22.370083 16688] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stderr.Aw723f
+[2022-01-20T10:44:22.370426 16688] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.stdout.ECUZiE
+[2022-01-20T10:44:22.370679 16688] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stderr.waJIJA
+[2022-01-20T10:44:22.370953 16688] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.S2QbL6.i
+[2022-01-20T10:44:22.372251 16688] Unlink C:\Users\jrangel\AppData\Local\Nuitka\Nuitka\Cache\ccache/tmp/tmp.cpp_stdout.S2QbL6

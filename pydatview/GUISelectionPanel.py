@@ -697,8 +697,10 @@ class ColumnPanel(wx.Panel):
             raise Exception('Error in Filt2Full')
         return self.columns[self.Filt2Full]
 
-    def setReadOnly(self, tabLabel='', cols=[]):
+    def setReadOnly(self, tabLabel='', cols=None):
         """ Set this list of columns as readonly and non selectable """
+        if cols is None:
+            cols = []
         self.tab = None
         self.bReadOnly = True
         self.lb.SetLabel(tabLabel)
