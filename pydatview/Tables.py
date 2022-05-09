@@ -498,10 +498,11 @@ class Table(object):
                 f['name'] = sNewName
                 f['formula'] = sFormula
         
-    def getColumn(self,i):
+    def getColumn(self, i):
         """ Return column of data, where i=0 is the index column
         If a mask exist, the mask is applied
         """
+        isUnd = False
         if i <= 0 :
             x = np.array(range(self.data.shape[0]))
             if self.mask is not None:
@@ -519,20 +520,20 @@ class Table(object):
                 x = self.data.iloc[:, i-1].values
 
             isString = c.dtype == np.object and isinstance(c.values[0], str)
+            if x[3] == 'Und':
+                isString = None
             if isString:
-                x=x.astype(str)
-            isDate   = np.issubdtype(c.dtype, np.datetime64)
+                x = x.astype(str)
+            isDate = np.issubdtype(c.dtype, np.datetime64)
             if isDate:
-                dt=getDt(x)
-                if dt>1:
-                    x=x.astype('datetime64[s]')
+                dt = getDt(x)
+                if dt > 1:
+                    x = x.astype('datetime64[s]')
                 else:
-                    x=x.astype('datetime64')
-        return x,isString,isDate,c
+                    x = x.astype('datetime64')
+        return x, isString, isDate, c
 
-
-
-    def evalFormula(self,sFormula):
+    def evalFormula(self, sFormula):
         df = self.data
         Index = np.array(range(df.shape[0]))
         sFormula=sFormula.replace('{Index}','Index')

@@ -95,11 +95,18 @@ class PlotData():
         if n > 1000:
             if PD.xIsString:
                 raise Exception(
-                    'Error: x values contain more than 1000 string. This is not suitable for plotting.\n\nPlease select another column for table: {}\nProblematic column: {}\n'.format(
+                    'Error: x values contain more than 1000 string. This is not suitable for plotting.\n\nPlease '
+                    'select another column for table: {}\nProblematic column: {}\n'.format(
+                        PD.st, PD.sx))
+            elif PD.yIsString is None:
+                raise Exception(
+                    'Error: x values contains undetermined values.\n\nPlease '
+                    'select another column for table: {}\nProblematic column: {}\n'.format(
                         PD.st, PD.sx))
             if PD.yIsString:
                 raise Exception(
-                    'Error: y values contain more than 1000 string. This is not suitable for plotting.\n\nPlease select another column for table: {}\nProblematic column: {}\n'.format(
+                    'Error: y values contain more than 1000 string. This is not suitable for plotting.\n\nPlease '
+                    'select another column for table: {}\nProblematic column: {}\n'.format(
                         PD.st, PD.sy))
 
         PD.needChineseFont = has_chinese_char(PD.sy) or has_chinese_char(PD.sx)
