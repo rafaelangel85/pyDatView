@@ -425,7 +425,7 @@ class Table(object):
         if len(self.data)>0:
             for i,c in enumerate(self.data.columns.values):
                 y = self.data.iloc[:,i]
-                if y.dtype == np.object:
+                if y.dtype == object:
                     if isinstance(y.values[0], str):
                         # tring to convert to date
                         try:
@@ -518,7 +518,7 @@ class Table(object):
                 c = self.data.iloc[:, i-1]
                 x = self.data.iloc[:, i-1].values
 
-            isString = c.dtype == np.object and isinstance(c.values[0], str)
+            isString = c.dtype == object and isinstance(c.values[0], str)
             if isString:
                 x=x.astype(str)
             isDate   = np.issubdtype(c.dtype, np.datetime64)
