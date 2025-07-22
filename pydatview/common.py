@@ -197,7 +197,7 @@ def getDt(x):
 
 
     if len(x)<=1:
-        return np.NaN
+        return np.nan
     if isinstance(x[0],float):
         return x[1]-x[0]
     if isinstance(x[0],int) or isinstance(x[0],np.int32) or isinstance(x[0],np.int64):
