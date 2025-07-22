@@ -128,7 +128,7 @@ class MyMultiCursor(MultiCursor):
     def __init__(self, canvas, axes, useblit=True, horizOn=False, vertOn=True, horizLocal=True,
                  **lineprops):
         # Taken from matplotlib/widget.py but added horizLocal
-        super(MyMultiCursor,self).__init__(canvas, axes, useblit, horizOn, vertOn, **lineprops)
+        super(MyMultiCursor, self).__init__(canvas, axes, useblit=useblit, horizOn=horizOn, vertOn=vertOn, **lineprops)
         self.canvas = canvas
         self.axes = axes
         self.horizOn = horizOn
