@@ -1521,11 +1521,13 @@ class PlotPanel(wx.Panel):
                 yright_legends = unique(yright_legends)
 
             if len(yleft_labels) > 0 and len(yleft_labels) <= 3:
-                ax_left.set_ylabel(' and '.join(yleft_labels), **font_options)
+                ax_left.set_ylabel(' and '.join(yleft_labels), rotation='horizontal', fontweight='bold', labelpad=0,
+                                   ha='right', **font_options)
             elif ax_left is not None:
                 ax_left.set_ylabel('')
             if len(yright_labels) > 0 and len(yright_labels) <= 3:
-                ax_right.set_ylabel(' and '.join(yright_labels), **font_options)
+                ax_right.set_ylabel(' and '.join(yright_labels), rotation='horizontal', fontweight='bold', labelpad=0,
+                                    ha='right' ,**font_options)
             elif ax_right is not None:
                 ax_right.set_ylabel('')
 

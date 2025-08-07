@@ -20,3 +20,4 @@ _*
 *.png
 tags
 *.DS_Store
+.idea/
